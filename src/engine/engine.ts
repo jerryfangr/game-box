@@ -24,7 +24,6 @@ class Engine {
   }
 
   static getInstance (canvas?: HTMLCanvasElement, maxFps?: number) {
-    console.log('instance', this.instance);
     if (this.instance) {
       return this.instance;
     }
