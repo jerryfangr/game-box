@@ -20,7 +20,7 @@ module.exports = {
   module:{
     rules:[
       {
-        test: /\.less$/,
+        test: /\.less$/i,
         use: [
           'style-loader', // MiniCssExtractPlugin.loader
           'css-loader',
@@ -41,7 +41,11 @@ module.exports = {
         ]
       },
       {
-        test: /\.ts$/,
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.ts$/i,
         use: [
           {
             loader: 'babel-loader',
@@ -63,14 +67,14 @@ module.exports = {
           },
           'ts-loader'
         ]
-      }
+      },
     ]
   },
   plugins:[
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'tower n | game page',
-      template: './src/asserts/index.html'
+      template: './src/assets/index.html'
     })
   ],
 }
