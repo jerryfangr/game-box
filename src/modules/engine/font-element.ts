@@ -24,7 +24,7 @@ class FontElement implements EngineElement {
     this.text = options.text;
     this.x = options.x || 0;
     this.y = options.y || 0;
-    this.engine.ctx.font = options.font || '16px Microsoft YaHei';
+    this.font = options.font || '16px Microsoft YaHei';
     this.type = options.type || 'fill';
     this.style = options.style || '#000';
   }
@@ -41,6 +41,7 @@ class FontElement implements EngineElement {
   }
 
   render(): void {
+    this.engine.ctx.font = this.font;
     if (this.type === 'fill') {
       this.engine.ctx.fillStyle = this.style;
       this.engine.ctx.fillText(this.text, this.x, this.y);

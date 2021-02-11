@@ -1,25 +1,23 @@
-import EnginElement from './engine-element';
+import EngineScene from './engine-scene';
+import EngineListener from './engine-listener';
 
 /**
- * game engine
- * draw elements(image、rect、font...) on the canvas 
+ * engine
+ * draw scene to canvas 
  */
 class Engine {
   static instance: Engine;
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D ;
   maxFps:number;
-  elements: EnginElement[];
-  inputs: {[key:string]: 'down' | 'up'};
-  events: {[key:string]: Function[]};
+  _listener: EngineListener;
+  [props: string]: any;
 
   constructor(canvas: HTMLCanvasElement, maxFps:number = 60) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     this.maxFps = maxFps;
-    this.elements = [];
-    this.inputs = {};
-    this.events = {};
+    this._listener = new EngineListener();
     this.init();
   }
 
@@ -27,16 +25,15 @@ class Engine {
     if (this.instance) {
       return this.instance;
     }
-
     if (!this.instance && canvas) {
       return this.instance = new this(canvas, maxFps);
     }
-
     throw new Error('You need to create at least one instance')
   }
 
   init() {
-    this.listenerInput();
+    this._pause = false;
+    this._scene = null;
   }
 
   get width ():number {
@@ -47,91 +44,56 @@ class Engine {
     return this.canvas.height;
   }
 
-  addElement (element: EnginElement) {
-    this.elements.push(element);
+  bindEvent (keyName: string, callback: Function) {
+    this._listener.bindEvent(keyName, callback);
   }
 
-  addElements (elements: EnginElement[]) {
-    elements.forEach(element => {
-      this.addElement(element);
-    })
+  cancelEvent (keyName: string, callback: Function) {
+    this._listener.cancelEvent(keyName, callback);
   }
 
-  removeElement (element: EnginElement) {
-    let index = this.elements.indexOf(element);
-    if (index !== -1) {
-      this.elements.splice(index);
-    }
+  clearEvents () {
+    this._listener.clear();
   }
 
-  removeElements (elements: EnginElement[]) {
-    elements.forEach(element => {
-      this.removeElement(element);
-    })
-  }
-
-  listenerInput () {
-    window.addEventListener('keydown', e => {
-      let keyName = e.key === '' ? 'SPACE' : e.key.toUpperCase();
-      this.inputs[keyName] = 'down';
-    })
-    window.addEventListener('keyup', e => {
-      let keyName = e.key === '' ? 'SPACE' : e.key.toUpperCase();
-      this.inputs[keyName] = 'up';
-    })
-    window.addEventListener('mousedown', e => {
-      this.inputs['MOUSE'] = 'down';
-    })
-    window.addEventListener('mouseup', e => {
-      this.inputs['MOUSE'] = 'up';
-    })
-  }
-
-  bindEvent (keyName:string, callback:Function) {
-    keyName = keyName.toUpperCase();
-    this.events[keyName] = this.events[keyName] || [];
-    this.events[keyName].push(callback);
-  }
-
-  cancelEvent (keyName:string, callback:Function) {
-    keyName = keyName.toUpperCase();
-    let index = this.events[keyName]?.indexOf(callback);
-    if (index && index !== -1) {
-      this.events[keyName].splice(index);
-    }
-  }
-
-  emitEvents (keyName:string, event:Event) {
-    this.events[keyName].forEach(callback => {
-      callback(event); // .call(undefined/this, event)
-    })
-  }
-
-  render () {
-    this.elements.forEach(element => {
-      this.ctx.save();
-      element.render();
-      this.ctx.restore();
-    })
-  }
-
-  update () {
-    this.elements.forEach(element => {
-      element.update();
-    })
-  }
-
-  clearScreen () {
+  clearScreen() {
     this.ctx.clearRect(0, 0, this.width, this.height);
   }
 
-  run () {
-    this.clearScreen();
-    this.render();
-    this.update();
+  _render () {
+    this._scene.render?.()
+  }
+
+  _update () {
+    this._scene.update?.() 
+  }
+
+  _run () {
+    if (!this._pause) {
+      this.clearScreen();
+      this._listener.emitEvents();
+      this._render();
+      this._update();
+    }
     setTimeout(() => {
-      this.run();
+      this._run();
     }, 1000 / this.maxFps);
+  }
+
+  pause () {
+    this._pause = true;
+  }
+
+  continue () {
+    this._pause = false;
+  }
+  startWith (scene: EngineScene) {
+    this._scene = scene;
+    this._run();
+  }
+
+  replace (scene: EngineScene) {
+    this._scene = scene;
   }
 }
 

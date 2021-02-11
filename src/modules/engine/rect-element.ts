@@ -32,10 +32,10 @@ class RectElement implements EngineElement {
   init(options: optionType) {
     this.x = options.x || 0;
     this.y = options.y || 0;
-    this.width = options.width || 10;
-    this.height = options.height || 10;
+    this.width = options.width || this.engine.width;
+    this.height = options.height || this.engine.height;
     this.radius = options.radius || 0;
-    this.lineWidth = this.lineWidth || 1;
+    this.lineWidth = options.lineWidth || 1;
     this.type = options.type || 'stroke';
     this.style = options.style || '#000';
     if (this.radius*2 > this.width || this.radius*2 > this.height) {

@@ -38,16 +38,15 @@ class PenElement implements EngineElement {
   }
 
   render(): void {
-    if (!this.hasDraw) {
-      return;
-    }
-
-    if (this.type === 'fill') {
-      this.engine.ctx.fillStyle = this.style;
-      this.engine.ctx.fill();
-    } else {
-      this.engine.ctx.strokeStyle = this.style;
-      this.engine.ctx.stroke();
+    if (this.hasDraw) {
+      this.engine.ctx.lineWidth = this.lineWidth;
+      if (this.type === 'fill') {
+        this.engine.ctx.fillStyle = this.style;
+        this.engine.ctx.fill();
+      } else {
+        this.engine.ctx.strokeStyle = this.style;
+        this.engine.ctx.stroke();
+      }
     }
   }
 
