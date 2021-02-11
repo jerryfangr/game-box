@@ -109,7 +109,9 @@ class Engine {
 
   render () {
     this.elements.forEach(element => {
+      this.ctx.save();
       element.render();
+      this.ctx.restore();
     })
   }
 

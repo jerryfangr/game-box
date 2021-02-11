@@ -15,7 +15,11 @@ module.exports = {
     }
   },
   resolve:{
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
+    modules: [path.resolve(__dirname, 'src','modules'), path.resolve('node_modules')],
+    alias: {
+      '@': path.join(__dirname, 'src')
+    }
   },
   module:{
     rules:[
@@ -31,7 +35,7 @@ module.exports = {
                 plugins: [
                   [
                     'postcss-preset-env', 
-                    { browsers: 'last 2 versions'} 
+                    { browsers: 'last 3 versions'} 
                   ]
                 ]
               }

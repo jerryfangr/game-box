@@ -29,9 +29,6 @@ class FontElement implements EngineElement {
     this.style = options.style || '#000';
   }
 
-  setStyle (style: string | CanvasGradient | CanvasPattern) {
-  }
-
   move (x?: number, y?:number) {
     this.x = x || this.x;
     this.y = y || this.y;
