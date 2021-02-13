@@ -44,8 +44,8 @@ class RectElement implements EngineElement {
   }
 
   move(x?: number, y?: number) {
-    this.x = x || this.x;
-    this.y = y || this.y;
+    this.x = x === undefined ? this.x : x;
+    this.y = y === undefined ? this.y : y;
   }
 
   changeStyle(style?: string | CanvasGradient | CanvasPattern, lineWidth?: number) {

@@ -30,8 +30,8 @@ class FontElement implements EngineElement {
   }
 
   move (x?: number, y?:number) {
-    this.x = x || this.x;
-    this.y = y || this.y;
+    this.x = x === undefined ? this.x : x;
+    this.y = y === undefined ? this.y : y;
   }
 
   changeTexture (text?: string, font?: string, style?: string | CanvasGradient | CanvasPattern) {

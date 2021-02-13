@@ -94,6 +94,7 @@ class Engine {
 
   replace (scene: EngineScene) {
     this._scene = scene;
+    this.clearEvents();
   }
 }
 

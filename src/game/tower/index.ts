@@ -2,6 +2,9 @@
 
 import imageUrl from './assets/game.jpg';
 import { Engine, FontElement, PenElement, RectElement, ImageElement } from '@/modules/engine'
+import StartScene from './start-scene';
+
+
 
 let canvas = document.querySelector('#canvas');
 let engine = Engine.getInstance(canvas as HTMLCanvasElement, 30);
@@ -16,30 +19,4 @@ let img = new ImageElement(image, {
   sHeight: 32
 });
 
-let message = new FontElement({
-  text: 'Magic Tower 5',
-  x: 200,
-  y: 160,
-  style: '#f0f'
-})
 
-let rect = new RectElement({
-  x: 200,
-  y: 200,
-  lineWidth: 2,
-  width: 100,
-  height: 100,
-  style: '#000',
-  radius: 50,
-  type: 'fill'
-});
-
-// engine.addElement(rect);
-// engine.addElements([img, message]);
-// engine.run();
-
-
-// setTimeout(() => {
-//   img.changeTexture(66);
-//   message.move(100, 200)
-// }, 1000);

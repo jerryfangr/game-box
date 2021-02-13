@@ -6,10 +6,10 @@ type optionType = {
   y?: number,
   width?: number,
   height?: number,
-  sx?: number,
-  sy?: number,
-  sWidth?: number,
-  sHeight?: number,
+  sx?: number, // clipe x coordinates
+  sy?: number, // clipe x coordinates
+  sWidth?: number, // clipe width
+  sHeight?: number,// clipe height
 }
 
 class ImageElement implements EngineElement {
@@ -37,8 +37,8 @@ class ImageElement implements EngineElement {
   }
 
   move (x?: number, y?:number) {
-    this.x = x || this.x;
-    this.y = y || this.y;
+    this.x = x === undefined ? this.x : x;
+    this.y = y === undefined ? this.y : y;
   }
 
   changeTexture (sx?: number, sy?:number, sWidth?: number, sHeight?: number) {
