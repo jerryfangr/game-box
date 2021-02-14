@@ -1,4 +1,5 @@
 import imageUrl from '@/assets/tower.jpg';
+// import imageUrl from '@/assets/tower.png';
 import { 
   Engine, 
   EngineElement, 
@@ -9,21 +10,34 @@ import {
 } from '@/modules/engine'
 import GameBackground from './game-background';
 import GameElements from './game-elements';
-import levels from './level';
+import { getLevelCode } from './level-load';
 
 
 class GameScene extends EngineScene {
+  levelsCode: { bg: string, elements: string[][]}[];
+  levelNumber: number;
+  gameWindowSize: {
+    rowNumber: number,
+    columnNumber: number
+  }
   [key: string]: any;
 
   constructor() {
     super();
-    this.bgSize = { rowNumber: 13, columnNumber: 13 };
-    this.levels = levels;
+    this.gameWindowSize = { rowNumber: 13, columnNumber: 13 };
+    this.levelsCode = [];
     this.levelNumber = 0;
     this.init();
   }
 
   init() {
+    if (this.levelsCode[this.levelNumber] === undefined) {
+      let levelCode: null | { bg: string, elements: string[][] } = getLevelCode(this.levelNumber);
+      if (levelCode === null) {
+        throw new Error('Level config error, content is null')
+      }
+      this.levelsCode[this.levelNumber] = levelCode;      
+    }
     this.loadTexture(() => {
       this.initBackground();
       this.initElements();
@@ -41,12 +55,13 @@ class GameScene extends EngineScene {
   }
 
   initBackground () {
-    let bg = new GameBackground(this.texture, this.bgSize, this.levels[this.levelNumber][0])
+    let bg = new GameBackground(this.texture, this.gameWindowSize, this.levelsCode[this.levelNumber].bg)
     this.addElement(bg);
   }
 
   initElements () {
-    let ge = new GameElements(this.texture, this.levels[this.levelNumber][1]);
+    let ge = new GameElements(this.texture, this.levelsCode[this.levelNumber].elements);
+    console.log(ge);
     this.addElement(ge);
   }
 

@@ -4,47 +4,48 @@ import {
   EngineScene
 } from '@/modules/engine'
 
+import { getTextureOption } from './level-load';
+
 type optionType = {
-  options: {
-    sx: number;
-    sy: number;
-    sWidth: number;
-    sHeight: number;
-    width?: number;
-    height?:number;
-  },
-  counts: number
+  sx: number;
+  sy: number;
+  sWidth: number;
+  sHeight: number;
+  width?: number;
+  height?:number;
 };
 
 class GameBackGround implements EngineElement {
   element: ImageElement;
   texture: HTMLImageElement;
   size: { rowNumber: number, columnNumber: number };
-  config: optionType;
+  bgCode: string;
   [key: string]: any;
-  constructor(texture: HTMLImageElement, size: {rowNumber: number, columnNumber: number}, bgOptions: optionType[]) {
+
+  constructor(texture: HTMLImageElement, size: { rowNumber: number, columnNumber: number }, bgCode: string) {
     this.element = {} as ImageElement;
     this.texture = texture;
     this.size = size;
-    this.config = bgOptions[0];
+    this.bgCode = bgCode;
     this.init();
   }
 
   init () {
+    this.bgOptions = getTextureOption(this.bgCode);
     this.elementDistance = 32;
-    this.element = this.createElementsBy(this.config);
+    this.element = this.createElementsBy(this.bgOptions);
   }
 
-  createElementsBy(config: optionType): ImageElement {
+  createElementsBy(bgOptions: optionType): ImageElement {
       let options = {
         x: 0,
         y: 0,
-        width: config.options.width,
-        height: config.options.height,
-        sx: config.options.sx, 
-        sy: config.options.sy, 
-        sWidth: config.options.sWidth, 
-        sHeight: config.options.sHeight,
+        width: bgOptions.width,
+        height: bgOptions.height,
+        sx: bgOptions.sx, 
+        sy: bgOptions.sy, 
+        sWidth: bgOptions.sWidth, 
+        sHeight: bgOptions.sHeight,
       }
       return new ImageElement(this.texture, options);
   }

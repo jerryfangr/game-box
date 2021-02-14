@@ -4,69 +4,53 @@ import {
   EngineScene
 } from '@/modules/engine'
 
-type levelRowType = {
-  options: {
-    sx: number;
-    sy: number;
-    sWidth: number;
-    sHeight: number;
-    width?: number;
-    height?: number;
-  },
-  counts: number
-}[];
+import { elementsCodeToOptions } from './level-load';
 
 class GameElements extends EngineScene {
   elements: EngineElement[];
-  level: levelRowType[];
+  elementsCode: string[][];
   texture: HTMLImageElement;
   [key: string]: any;
 
-  constructor(texture: HTMLImageElement, level: levelRowType[]) {
+  constructor(texture: HTMLImageElement, elementsCode: string[][]) {
     super();
+    this.elementsCode = elementsCode;
     this.elements = [];
-    this.level = level;
     this.texture = texture;
     this.init();
   }
 
   init() {
+    this.elementsOption = elementsCodeToOptions(this.elementsCode);
     this.elementDistance = 32;
-    this.loadLevel();
+    this.loadElements();
   }
 
-  loadLevel() {
-    for (let row = 0; row < this.level.length; row++) {
-      let elementConfigs = this.level[row];
+  loadElements () {
+    for (let r = 0; r < this.elementsOption.length; r++) {
+      let rowOptions = this.elementsOption[r];
       let columIndex = 0;
-      for (let i = 0; i < elementConfigs.length; i++) {
-        let elementConfig = elementConfigs[i];
-        let elements: EngineElement[] = [];
-        columIndex = this.createElementsBy(elements, elementConfig, row, columIndex);
-        this.addElements(elements);
+      for (let i = 0; i < rowOptions.length; i++) {
+        columIndex = this.createElement(rowOptions[i], r, columIndex);
       }
     }
   }
 
-  createElementsBy(elements: EngineElement[], config: { [k: string]: any }, rowIndex: number, columIndex: number): number {
-    let options = config.options;
-    for (let i = 0; i < config.counts; i++) {
-      if (options.sx >= 0 && options.sy >= 0) {
-        let tempOptions = {
-          x: columIndex * this.elementDistance,
-          y: rowIndex * this.elementDistance,
-          width: options.width,
-          height: options.height,
-          sx: options.sx, // clipe x coordinates
-          sy: options.sy, // clipe x coordinates
-          sWidth: options.sWidth, // clipe width
-          sHeight: options.sHeight,// clipe height
-        }
-        elements.push(new ImageElement(this.texture, tempOptions))
+  createElement (option: { [k: string]: any }, rowIndex: number, columIndex: number): number {
+    if (option.sx >= 0 && option.sy >= 0) {
+      let tempOptions = {
+        x: columIndex * this.elementDistance,
+        y: rowIndex * this.elementDistance,
+        width: option.width,
+        height: option.height,
+        sx: option.sx, // clipe x coordinates
+        sy: option.sy, // clipe x coordinates
+        sWidth: option.sWidth, // clipe width
+        sHeight: option.sHeight,// clipe height
       }
-      columIndex++;
+      this.addElement(new ImageElement(this.texture, tempOptions))
     }
-    return columIndex;
+    return ++columIndex;
   }
 }
 
