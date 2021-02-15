@@ -13,10 +13,10 @@ function getConfig(shortName: string) {
 
 /**
  * get texture  by a shortcut name
- * @param shortConfigName eg: b1-10 => options: TEXTURE_NAME.background[0], counts: 10
+ * @param nameCoded eg: b1-10 => options: TEXTURE_NAME.background[0], counts: 10
  */
-function getTextureOption(shortName: string) {
-  let config = getConfig(shortName);
+function getTextureOption(nameCode: string) {
+  let config = getConfig(nameCode);
   let textures = getTextures(config.textureName[0])
   let optionName = textures[config.textureName[1]];
   let option = getOptions(optionName);

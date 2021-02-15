@@ -1,7 +1,6 @@
 import {
-  EngineElement,
-  ImageElement,
-  EngineScene
+  EngineElementInterface,
+  ImageElement
 } from '@/modules/engine'
 
 import { getTextureOption } from './level-load';
@@ -15,7 +14,7 @@ type optionType = {
   height?:number;
 };
 
-class GameBackGround implements EngineElement {
+class GameBackGround implements EngineElementInterface {
   element: ImageElement;
   texture: HTMLImageElement;
   size: { rowNumber: number, columnNumber: number };
@@ -53,7 +52,7 @@ class GameBackGround implements EngineElement {
   render () {
     for (let rowIndex = 0; rowIndex < this.size.rowNumber; rowIndex++) {
       for (let colIndex = 0; colIndex < this.size.columnNumber; colIndex++) {
-        this.element.move(colIndex * this.elementDistance, rowIndex * this.elementDistance);
+        this.element.setCoordinates(colIndex * this.elementDistance, rowIndex * this.elementDistance);
         this.element.render();
       }
     }

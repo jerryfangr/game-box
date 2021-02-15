@@ -29,7 +29,7 @@ const TEXTURE_NAME: {
     '6': 'wizardBlue',
   },
   player: {
-
+    '0': 'playFemale'
   }
 }
 
@@ -65,6 +65,7 @@ const OPTIONS_MAP: {
   smallBatBlue: { sx: 924, sy: 0, sWidth: 32, sHeight: 32 },
   wizardBlue: { sx: 891, sy: 198, sWidth: 32, sHeight: 32 },
   // player
+  playFemale: { sx: 792, sy: 858, sWidth: 32, sHeight: 32}
 }
 
 function getTextures(type: string) {

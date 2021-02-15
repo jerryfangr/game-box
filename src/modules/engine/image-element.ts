@@ -1,5 +1,4 @@
-import  Engine from './engine';
-import  EngineElement from './engine-element';
+import { EngineElement} from './engine-element';
 
 type optionType = {
   x?: number,
@@ -12,33 +11,25 @@ type optionType = {
   sHeight?: number,// clipe height
 }
 
-class ImageElement implements EngineElement {
-  engine: Engine;
+class ImageElement extends EngineElement {
   image: CanvasImageSource;
   options: optionType;
   [props: string]: any;
 
   constructor(image: CanvasImageSource, options: optionType) {
-    this.engine = Engine.getInstance();
+    super(options);
     this.image = image;
     this.options = options;
     this.init();
   }
 
   init () {
-    this.x = this.options.x || 0;
-    this.y = this.options.y || 0;
     this.sx = this.options.sx || 0;
     this.sy = this.options.sy || 0;
     this.sWidth = this.options.sWidth || this.image.width as number;
     this.sHeight = this.options.sHeight || this.image.height as number;
     this.width = this.options.width || this.sWidth;
     this.height = this.options.height || this.sHeight;
-  }
-
-  move (x?: number, y?:number) {
-    this.x = x === undefined ? this.x : x;
-    this.y = y === undefined ? this.y : y;
   }
 
   changeTexture (sx?: number, sy?:number, sWidth?: number, sHeight?: number) {
@@ -53,8 +44,6 @@ class ImageElement implements EngineElement {
   render(): void {
     this.engine.ctx.drawImage(this.image, this.sx, this.sy, this.sWidth, this.sHeight, this.x, this.y, this.width, this.height);
   }
-
-  update(): void {}
 }
 
 export default ImageElement;

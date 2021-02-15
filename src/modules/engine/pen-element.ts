@@ -1,5 +1,5 @@
 import  Engine from './engine';
-import  EngineElement from './engine-element';
+import {EngineElementInterface} from './engine-element';
 
 type optionType = {
   lineWidth?: number,   // x coordinate in canvas
@@ -8,14 +8,16 @@ type optionType = {
 }
 
 
-class PenElement implements EngineElement {
+class PenElement implements EngineElementInterface {
   engine: Engine;
+  isDead: boolean;
   hasDraw: boolean;
   [props: string]: any;
 
   constructor(options: optionType) {
     this.engine = Engine.getInstance();
     this.hasDraw = false;
+    this.isDead = false;
     this.init(options);
   }
 

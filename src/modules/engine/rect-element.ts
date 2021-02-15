@@ -1,5 +1,4 @@
-import Engine from './engine';
-import EngineElement from './engine-element';
+import {EngineElement} from './engine-element';
 import PenElement from './pen-element';
 
 type optionType = {
@@ -13,14 +12,12 @@ type optionType = {
   style?: string | CanvasGradient | CanvasPattern,
 }
 
-
-class RectElement implements EngineElement {
-  engine: Engine;
+class RectElement extends EngineElement {
   pen: PenElement;
   [props: string]: any;
 
   constructor(options: optionType) {
-    this.engine = Engine.getInstance();
+    super(options);
     this.init(options);
     this.pen = new PenElement({
       lineWidth: this.lineWidth,
@@ -30,8 +27,6 @@ class RectElement implements EngineElement {
   }
 
   init(options: optionType) {
-    this.x = options.x || 0;
-    this.y = options.y || 0;
     this.width = options.width || this.engine.width;
     this.height = options.height || this.engine.height;
     this.radius = options.radius || 0;
@@ -41,11 +36,6 @@ class RectElement implements EngineElement {
     if (this.radius*2 > this.width || this.radius*2 > this.height) {
       throw new Error('radius is too big, the diameter should small than width and height');
     }
-  }
-
-  move(x?: number, y?: number) {
-    this.x = x === undefined ? this.x : x;
-    this.y = y === undefined ? this.y : y;
   }
 
   changeStyle(style?: string | CanvasGradient | CanvasPattern, lineWidth?: number) {
@@ -76,8 +66,6 @@ class RectElement implements EngineElement {
     this.draw();
     this.pen.render();
   }
-
-  update(): void { }
 }
 
 export default RectElement;

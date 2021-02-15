@@ -1,5 +1,5 @@
 import EngineScene from './engine-scene';
-import EngineListener from './engine-listener';
+import EngineEvent from './engine-event';
 
 /**
  * engine
@@ -10,14 +10,14 @@ class Engine {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D ;
   maxFps:number;
-  _listener: EngineListener;
+  _listener: EngineEvent;
   [props: string]: any;
 
   constructor(canvas: HTMLCanvasElement, maxFps:number = 60) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     this.maxFps = maxFps;
-    this._listener = new EngineListener();
+    this._listener = new EngineEvent();
     this.init();
   }
 
@@ -28,7 +28,7 @@ class Engine {
     if (!this.instance && canvas) {
       return this.instance = new this(canvas, maxFps);
     }
-    throw new Error('You need to create at least one instance')
+    throw new Error('You have to create at least one instance')
   }
 
   init() {
@@ -44,8 +44,8 @@ class Engine {
     return this.canvas.height;
   }
 
-  bindEvent (keyName: string, callback: Function) {
-    this._listener.bindEvent(keyName, callback);
+  bindEvent(keyName: string, callback: (keyState: string, event: Event) => void, delay?: number): Function {
+    return this._listener.bindEvent(keyName, callback, delay);
   }
 
   cancelEvent (keyName: string, callback: Function) {
@@ -69,6 +69,7 @@ class Engine {
   }
 
   _run () {
+    console.log('pause', this._pause);
     if (!this._pause) {
       this.clearScreen();
       this._listener.emitEvents();
@@ -80,13 +81,18 @@ class Engine {
     }, 1000 / this.maxFps);
   }
 
-  pause () {
-    this._pause = true;
+  togglePause () {
+    this._pause = !this._pause;
   }
 
-  continue () {
-    this._pause = false;
+  bindPause (keyName: string) {
+    window.addEventListener('keydown', e => {
+      if (e.key === keyName) {
+        this.togglePause();
+      }
+    })
   }
+
   startWith (scene: EngineScene) {
     this._scene = scene;
     this._run();

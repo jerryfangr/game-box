@@ -1,5 +1,5 @@
-import imageUrl from '@/assets/tower.jpg';
-// import imageUrl from '@/assets/tower.png';
+// import imageUrl from '@/assets/tower.jpg';
+import imageUrl from '@/assets/tower.png';
 import { 
   Engine, 
   EngineElement, 
@@ -10,7 +10,8 @@ import {
 } from '@/modules/engine'
 import GameBackground from './game-background';
 import GameElements from './game-elements';
-import { getLevelCode } from './level-load';
+import GamePlayer from './game-player';
+import { getLevelCode, getTextureOption } from './level-load';
 
 
 class GameScene extends EngineScene {
@@ -41,7 +42,7 @@ class GameScene extends EngineScene {
     this.loadTexture(() => {
       this.initBackground();
       this.initElements();
-      // this.initTitle();
+      this.initPlayer();
       this.bindEvents();
     });
   }
@@ -55,37 +56,43 @@ class GameScene extends EngineScene {
   }
 
   initBackground () {
-    let bg = new GameBackground(this.texture, this.gameWindowSize, this.levelsCode[this.levelNumber].bg)
-    this.addElement(bg);
+    let gbg = new GameBackground(this.texture, this.gameWindowSize, this.levelsCode[this.levelNumber].bg)
+    this.addElement(gbg);
   }
 
   initElements () {
     let ge = new GameElements(this.texture, this.levelsCode[this.levelNumber].elements);
-    console.log(ge);
     this.addElement(ge);
   }
 
-  initTitle () {
-    let title = new FontElement({
-      text: 'Magic Tower 5',
-      font: '50px yehei',
-      x: 150,
-      y: 160,
-      style: '#f0f'
-    })
-
-    let tips = new FontElement({
-      text: 'press k to continue',
-      x: 200,
-      y: 260,
-      style: '#fff',
-      font: '14px yahei'
-    })
-
-    this.addElements([title, tips]);
+  initPlayer () {
+    this.player = new GamePlayer(this.texture, 'p0');
+    this.addElement(this.player);
   }
 
-  bindEvents () {}
+  // move 
+  // 1. 以地图数组移动
+  // 2. 以循环判断移动
+  move(keyState: string, direction: string) {
+    
+    this.move(keyState, direction);
+  }
+
+  bindEvents () {
+    this.engine.bindEvent('d', (keyState, event) => {
+        this.move(keyState, 'right');
+    }, 50);
+    this.engine.bindEvent('a', (keyState, event) => {
+      this.move(keyState, 'left');
+    }, 50);
+    this.engine.bindEvent('w', (keyState, event) => {
+      this.move(keyState, 'top');
+    }, 50);
+    this.engine.bindEvent('s', (keyState, event) => {
+      this.move(keyState, 'bottom');
+    }, 50);
+    this.engine.bindPause('p');
+  }
 }
 
 export default GameScene;

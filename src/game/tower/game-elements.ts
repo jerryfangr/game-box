@@ -1,5 +1,5 @@
 import {
-  EngineElement,
+  EngineElementInterface,
   ImageElement,
   EngineScene
 } from '@/modules/engine'
@@ -7,7 +7,7 @@ import {
 import { elementsCodeToOptions } from './level-load';
 
 class GameElements extends EngineScene {
-  elements: EngineElement[];
+  elements: EngineElementInterface[];
   elementsCode: string[][];
   texture: HTMLImageElement;
   [key: string]: any;

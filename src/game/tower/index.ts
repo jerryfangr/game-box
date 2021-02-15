@@ -19,4 +19,12 @@ let img = new ImageElement(image, {
   sHeight: 32
 });
 
+    // let title = new FontElement({
+    //   text: 'Magic Tower 5',
+    //   font: '50px yehei',
+    //   x: 150,
+    //   y: 160,
+    //   style: '#f0f'
+    // })
+    // this.addElements([title]);
 

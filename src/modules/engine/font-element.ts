@@ -1,37 +1,28 @@
-import  Engine from './engine';
-import  EngineElement from './engine-element';
+import  {EngineElement} from './engine-element';
 
 type optionType = {
-  text: string, // text content
   x?: number,   // x coordinate in canvas
   y?: number,   // y coordinate in canvas
+  text: string, // text content
   font?: string,// font size and family
   type?: 'stroke' | 'fill',
   style?: string | CanvasGradient | CanvasPattern,
 }
 
 
-class FontElement implements EngineElement {
-  engine: Engine;
+class FontElement extends EngineElement {
   [props: string]: any;
 
   constructor(options: optionType) {
-    this.engine = Engine.getInstance();
+    super(options);
     this.init(options);
   }
 
   init (options: optionType) {
     this.text = options.text;
-    this.x = options.x || 0;
-    this.y = options.y || 0;
     this.font = options.font || '16px Microsoft YaHei';
     this.type = options.type || 'fill';
     this.style = options.style || '#000';
-  }
-
-  move (x?: number, y?:number) {
-    this.x = x === undefined ? this.x : x;
-    this.y = y === undefined ? this.y : y;
   }
 
   changeTexture (text?: string, font?: string, style?: string | CanvasGradient | CanvasPattern) {
@@ -50,8 +41,6 @@ class FontElement implements EngineElement {
       this.engine.ctx.strokeText(this.text, this.x, this.y);
     }
   }
-
-  update(): void {}
 }
 
 export default FontElement;

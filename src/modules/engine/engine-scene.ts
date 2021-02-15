@@ -1,32 +1,32 @@
 import Engine from './engine';
-import EnginElement from './engine-element';
+import { EngineElementInterface} from './engine-element';
 
 class EngineScene {
   engine: Engine;
-  elements: EnginElement[];
+  elements: EngineElementInterface[];
   constructor() {
     this.engine = Engine.getInstance();
     this.elements = [];
   }
 
-  addElement(element: EnginElement) {
+  addElement(element: EngineElementInterface) {
     this.elements.push(element);
   }
 
-  addElements(elements: EnginElement[]) {
+  addElements(elements: EngineElementInterface[]) {
     elements.forEach(element => {
       this.addElement(element);
     })
   }
 
-  removeElement(element: EnginElement) {
+  removeElement(element: EngineElementInterface) {
     let index = this.elements.indexOf(element);
     if (index !== -1) {
       this.elements.splice(index);
     }
   }
 
-  removeElements(elements: EnginElement[]) {
+  removeElements(elements: EngineElementInterface[]) {
     elements.forEach(element => {
       this.removeElement(element);
     })
@@ -41,9 +41,15 @@ class EngineScene {
   }
 
   update() {
+    let deadElements: EngineElementInterface[] = [];
     this.elements.forEach(element => {
-      element.update();
+      if (element.isDead !== true) {
+        element.update();
+      } else {
+        deadElements.push(element);
+      }
     })
+    this.removeElements(deadElements)
   }
 }
 

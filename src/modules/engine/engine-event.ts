@@ -1,5 +1,5 @@
-class EngineListener {
-  inputs: { [key: string]: (string | KeyboardEvent | MouseEvent)[] };
+class EngineEvent {
+  inputs: { [key: string]: (string | KeyboardEvent | MouseEvent)[] | ''};
   events: { [key: string]: Function[] };
 
   constructor() {
@@ -29,10 +29,15 @@ class EngineListener {
     })
   }
 
-  bindEvent(keyName: string, callback: Function) {
+  bindEvent(keyName: string, callback: (keyState: string, event: Event) => void, delay?: number): Function {
     keyName = keyName.toUpperCase();
+    let fn = callback;
+    if (delay !== undefined) {
+      fn = throttle(callback, delay);
+    }
     this.events[keyName] = this.events[keyName] || [];
-    this.events[keyName].push(callback);
+    this.events[keyName].push(fn);
+    return fn;
   }
 
   cancelEvent(keyName: string, callback: Function) {
@@ -45,17 +50,21 @@ class EngineListener {
 
   emitEvent(keyName: string) {
     if (this.events[keyName] !== undefined) {
-      let type = this.inputs[keyName][0];
+      let keyState = this.inputs[keyName][0];
       let event = this.inputs[keyName][1];
       this.events[keyName].forEach(callback => {
-        callback(type, event); // .call(undefined/this,type,event)
+        callback(keyState, event); // .call(undefined/this,keyState,event)
       })
+      this.inputs[keyName] = '';
+      // delete this.inputs[keyName];
     }
   }
 
   emitEvents() {
     for (const key in this.inputs) {
-      this.emitEvent(key);
+      if (this.inputs[key]) {
+        this.emitEvent(key);
+      }
     }
   }
 
@@ -65,4 +74,18 @@ class EngineListener {
   }
 }
 
-export default EngineListener;
+function throttle(callback: (keyState: string, event: Event) => void, delay: number) {
+  let canUse = true;
+  return function () {
+    let args: any = arguments;
+    if (canUse) {
+      canUse = false;
+      callback.apply(undefined, args);
+      setTimeout(() => {
+        canUse = true;
+      }, delay);
+    }
+  }
+}
+
+export default EngineEvent;
