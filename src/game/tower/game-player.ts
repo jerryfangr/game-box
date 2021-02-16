@@ -1,6 +1,8 @@
 import {
   EngineElement,
-  ImageElement
+  ImageElement,
+  RectElement,
+  FontElement
 } from '@/modules/engine'
 
 import { getTextureOption } from './level-load';
@@ -15,8 +17,8 @@ type optionType = {
 };
 
 class GamePlayer extends EngineElement {
-  element: ImageElement;
   texture: HTMLImageElement;
+  element: ImageElement;
   [key: string]: any;
 
   constructor(texture: HTMLImageElement, playerCode: string) {
@@ -24,11 +26,19 @@ class GamePlayer extends EngineElement {
     super(options);
     this.texture = texture;
     this.element = new ImageElement(this.texture, options);
-    this.init();
+    this.width = this.element.width;
+    this.height = this.element.height;
+    this.init(options);
   }
 
-  init() {
+  init(options: optionType) {
+    this.setDebugElement(new ImageElement(this.texture, options));
     this.setCoordinates(32*6, 32*11);
+  }
+
+  setDebugElement(element: EngineElement) {
+    this.debugElement = element;
+    this.debugElement.setCoordinates(32 * 15, 32 * 10)
   }
 
   setCoordinates(x?: number, y?: number) {
@@ -41,26 +51,47 @@ class GamePlayer extends EngineElement {
     this.element.move(x, y);
   }
 
-  moveByDirection (keyState: string, direction: string) {
-    if (keyState === 'down') {
-      switch (direction) {
-        case 'left':
-          this.move(-32);
-          break;
-        case 'right':
-          this.move(32);
-          break;
-        case 'top':
-          this.move(0, -32);
-          break;
-        case 'bottom':
-          this.move(0, 32);
-          break;
-        default:
-          break;
-      }
+  nextStatus(keyState: string,direction: string) {
+    if (keyState !== 'down') {
+      return null;
+    }
+    let distance = this.getMoveDistance(direction);
+    return {
+      x: this.x + distance.x,
+      y: this.y + distance.y,
+      width: this.width,
+      height: this.height
     }
   }
+
+  moveWidth (keyState: string, direction: string, element?:EngineElement) {
+    if (keyState === 'down') {
+      this.touchElement(element);
+      let distance = this.getMoveDistance(direction);
+      this.move(distance.x, distance.y);
+    }
+  }
+
+  touchElement(element?: EngineElement) {
+    element && element.delete();
+    element && this.setDebugElement(element);
+  }
+
+  getMoveDistance(direction: string): {x: number, y: number} {
+    switch (direction) {
+      case 'left':
+        return {x: -32, y:0};
+      case 'right':
+        return { x: 32, y: 0 };
+      case 'top':
+        return { x: 0, y: -32 };
+      case 'bottom':
+        return { x: 0, y: 32 };
+      default:
+        return { x: 0, y: 0 };
+    }
+  }
+
 
   replacePlayer(playerCode: string) {
     let options = getTextureOption(playerCode);
@@ -73,6 +104,7 @@ class GamePlayer extends EngineElement {
 
   render() {
     this.element.render();
+    this.debugElement.render()
   }
 
   update() {

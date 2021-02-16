@@ -13,23 +13,21 @@ type optionType = {
 
 class ImageElement extends EngineElement {
   image: CanvasImageSource;
-  options: optionType;
   [props: string]: any;
 
   constructor(image: CanvasImageSource, options: optionType) {
     super(options);
     this.image = image;
-    this.options = options;
-    this.init();
+    this.init(options);
   }
 
-  init () {
-    this.sx = this.options.sx || 0;
-    this.sy = this.options.sy || 0;
-    this.sWidth = this.options.sWidth || this.image.width as number;
-    this.sHeight = this.options.sHeight || this.image.height as number;
-    this.width = this.options.width || this.sWidth;
-    this.height = this.options.height || this.sHeight;
+  init(options: optionType) {
+    this.sx = options.sx || 0;
+    this.sy = options.sy || 0;
+    this.sWidth = options.sWidth || this.image.width as number;
+    this.sHeight = options.sHeight || this.image.height as number;
+    this.width = this.width || this.sWidth;
+    this.height = this.height || this.sHeight;
   }
 
   changeTexture (sx?: number, sy?:number, sWidth?: number, sHeight?: number) {

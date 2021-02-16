@@ -69,7 +69,7 @@ class Engine {
   }
 
   _run () {
-    console.log('pause', this._pause);
+    // console.log('pause', this._pause);
     if (!this._pause) {
       this.clearScreen();
       this._listener.emitEvents();

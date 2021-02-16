@@ -1,7 +1,7 @@
 import {EngineElement} from './engine-element';
 import PenElement from './pen-element';
 
-type optionType = {
+declare type optionType = {
   x?: number,   // x coordinate in canvas
   y?: number,   // y coordinate in canvas
   lineWidth?: number,
@@ -16,7 +16,16 @@ class RectElement extends EngineElement {
   pen: PenElement;
   [props: string]: any;
 
-  constructor(options: optionType) {
+  constructor(options: {
+    x?: number,   // x coordinate in canvas
+    y?: number,   // y coordinate in canvas
+    lineWidth?: number,
+    width?: number,
+    height?: number,
+    radius?: number,
+    type?: 'stroke' | 'fill',
+    style?: string | CanvasGradient | CanvasPattern,
+  }) {
     super(options);
     this.init(options);
     this.pen = new PenElement({

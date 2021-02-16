@@ -1,11 +1,13 @@
 import Engine from './engine';
 import { EngineElementInterface} from './engine-element';
 
-class EngineScene {
+class EngineScene implements EngineElementInterface {
   engine: Engine;
+  isDead: boolean;
   elements: EngineElementInterface[];
   constructor() {
     this.engine = Engine.getInstance();
+    this.isDead = false;
     this.elements = [];
   }
 
@@ -22,14 +24,20 @@ class EngineScene {
   removeElement(element: EngineElementInterface) {
     let index = this.elements.indexOf(element);
     if (index !== -1) {
-      this.elements.splice(index);
+      this.elements.splice(index, 1);
     }
   }
 
   removeElements(elements: EngineElementInterface[]) {
-    elements.forEach(element => {
-      this.removeElement(element);
-    })
+    if (elements.length > 0) {
+      elements.forEach(element => {
+        this.removeElement(element);
+      })
+    }
+  }
+  
+  delete() {
+    this.isDead = true;
   }
 
   render() {

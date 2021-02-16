@@ -9,6 +9,8 @@ interface EngineElementInterface {
 type optionType = {
   x?: number,   // x coordinate in canvas
   y?: number,
+  width?: number;
+  height?: number;
   [key: string]: any
 }
 
@@ -17,12 +19,20 @@ class EngineElement implements EngineElementInterface {
   isDead: boolean;
   x: number;
   y: number;
+  width: number;
+  height: number;
 
   constructor(options: optionType) {
     this.engine = Engine.getInstance();
     this.isDead = false;
     this.x = options.x || 0;
     this.y = options.y || 0;
+    this.width = options.width || 0;
+    this.height = options.height || 0;
+  }
+
+  delete () {
+    this.isDead = true;
   }
 
   setCoordinates(x?: number, y?: number) {
