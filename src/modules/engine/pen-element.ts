@@ -14,7 +14,11 @@ class PenElement implements EngineElementInterface {
   hasDraw: boolean;
   [props: string]: any;
 
-  constructor(options: optionType) {
+  constructor(options: {
+    lineWidth?: number,   // x coordinate in canvas
+    type?: 'stroke' | 'fill',
+    style?: string | CanvasGradient | CanvasPattern,
+  }) {
     this.engine = Engine.getInstance();
     this.hasDraw = false;
     this.isDead = false;

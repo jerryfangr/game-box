@@ -9,7 +9,7 @@ import {
   ImageElement 
 } from '@/modules/engine'
 import GameBackground from './game-background';
-import ItemScene from './item-scene';
+import ElementsScene from './elements-scene';
 import GamePlayer from './game-player';
 import { getLevelCode, getTextureOption } from './level-load';
 
@@ -71,7 +71,7 @@ class GameScene extends EngineScene {
   }
 
   initItemScene () {
-    let ge = new ItemScene(this.texture, this.levelsCode[this.levelNumber].elements);
+    let ge = new ElementsScene(this.texture, this.levelsCode[this.levelNumber].elements);
     this.gameElements = ge.elements as EngineElement[];
     this.addElement(ge);
   }
@@ -83,15 +83,30 @@ class GameScene extends EngineScene {
 
   initStatusBar () {
     let barBg = new RectElement({
-      x: this.gameWindowSize.columnNumber*32,
+      x: this.gameWindowSize.columnNumber * 32,
       y: 0,
-      width: 5*32,
-      height: this.gameWindowSize.rowNumber*32,
-      style: '#ddd',
+      width: 6 * 32,
+      height: this.gameWindowSize.rowNumber * 32,
+      style: '#6D696F',
       type: 'fill'
     });
-    this.addElement(barBg);
+    let barBorder = new RectElement({
+      x: this.gameWindowSize.columnNumber * 32+5,
+      y: 5,
+      width: 6 * 32-18,
+      height: this.gameWindowSize.rowNumber * 32-10,
+      style: '#efefef',
+      type: 'stroke',
+      lineWidth: 10
+    });
 
+    this.addElements([barBg, barBorder]);
+
+  }
+
+  deleteElementCallback(element: EngineElement) {
+    let level = this.levelsCode[this.levelNumber];
+    // level.elements[element.position.rIndex][element.position.cIndex] = 'o0';
   }
 
   // move 
@@ -102,8 +117,11 @@ class GameScene extends EngineScene {
     if (nextPlayer === null) {
       return;
     }
-    let touchedItem = this.getTouchedItem(nextPlayer, this.gameElements);
-    this.player.moveWidth(keyState, direction, touchedItem);
+    let element = this.getTouchedItem(nextPlayer, this.gameElements);
+    // if (element.touch(this.player, this)) {
+      
+    // }
+    this.player.moveWidth(keyState, direction, element);
   }
 
   getTouchedItem(nextPlayer: EngineElement, items: EngineElement[]) {

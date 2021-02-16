@@ -6,7 +6,7 @@ import {
 
 import { elementsCodeToOptions } from './level-load';
 
-class ItemScene extends EngineScene {
+class ElementsScene extends EngineScene {
   elements: EngineElementInterface[];
   elementsCode: string[][];
   texture: HTMLImageElement;
@@ -54,4 +54,4 @@ class ItemScene extends EngineScene {
   }
 }
 
-export default ItemScene;
+export default ElementsScene;

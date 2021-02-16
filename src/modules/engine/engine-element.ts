@@ -22,7 +22,13 @@ class EngineElement implements EngineElementInterface {
   width: number;
   height: number;
 
-  constructor(options: optionType) {
+  constructor(options: {
+    x?: number,   // x coordinate in canvas
+    y?: number,
+    width?: number;
+    height?: number;
+    [key: string]: any
+  }) {
     this.engine = Engine.getInstance();
     this.isDead = false;
     this.x = options.x || 0;

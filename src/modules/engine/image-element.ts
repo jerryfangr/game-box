@@ -15,7 +15,16 @@ class ImageElement extends EngineElement {
   image: CanvasImageSource;
   [props: string]: any;
 
-  constructor(image: CanvasImageSource, options: optionType) {
+  constructor(image: CanvasImageSource, options: {
+    x?: number,
+    y?: number,
+    width?: number,
+    height?: number,
+    sx?: number, // clipe x coordinates
+    sy?: number, // clipe x coordinates
+    sWidth?: number, // clipe width
+    sHeight?: number,// clipe height
+  }) {
     super(options);
     this.image = image;
     this.init(options);

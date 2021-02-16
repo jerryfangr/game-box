@@ -13,7 +13,14 @@ type optionType = {
 class FontElement extends EngineElement {
   [props: string]: any;
 
-  constructor(options: optionType) {
+  constructor(options: {
+    x?: number,   // x coordinate in canvas
+    y?: number,   // y coordinate in canvas
+    text: string, // text content
+    font?: string,// font size and family
+    type?: 'stroke' | 'fill',
+    style?: string | CanvasGradient | CanvasPattern,
+  }) {
     super(options);
     this.init(options);
   }

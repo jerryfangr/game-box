@@ -25,6 +25,7 @@ class EngineScene implements EngineElementInterface {
     let index = this.elements.indexOf(element);
     if (index !== -1) {
       this.elements.splice(index, 1);
+      this.deleteElementCallback?.(element);
     }
   }
 
@@ -36,6 +37,8 @@ class EngineScene implements EngineElementInterface {
     }
   }
   
+  deleteElementCallback(element: EngineElementInterface) {}
+
   delete() {
     this.isDead = true;
   }

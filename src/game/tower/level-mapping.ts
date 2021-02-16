@@ -29,12 +29,29 @@ const TEXTURE_NAME: {
     '6': 'wizardBlue',
   },
   player: {
-    '0': 'playFemale'
+    '0': 'playerFemale'
   }
 }
 
 const OPTIONS_MAP: {
   [key: string]: {
+    type?: 'block' | 'item' | 'enemy' | 'scene';
+    property?: { 
+      // item or enemy property
+      ak?: number, // attack value
+      df?: number, // defense value
+      hp?: number, // health value
+      // key or door property
+      key?: {
+        yk?: number, // yellow 
+        bk?: number, // blue
+        rk?: number // red 
+      },
+      // some item: jump level
+      level?: number,
+      // some item destory block
+      destoryBlock?: number
+    },
     sx: number,
     sy: number,
     sWidth: number,
@@ -46,26 +63,26 @@ const OPTIONS_MAP: {
   // other
   nothing: { sx: -1, sy: -1, sWidth: 32, sHeight: 32 },
   // background
-  stairsUp: { sx: 594, sy: 660, sWidth: 32, sHeight: 32 },
+  stairsUp: { type: 'scene', sx: 594, sy: 660, sWidth: 32, sHeight: 32 },
   floorGrey: { sx: 0, sy: 0, sWidth: 32, sHeight: 32 },
   floorGlass: { sx: 132, sy: 165, sWidth: 32, sHeight: 32 },
   // item
-  wallYellow: { sx: 132, sy: 495, sWidth: 32, sHeight: 32 },
-  doorYellow: { sx: 99, sy: 660, sWidth: 32, sHeight: 32 },
-  smallBottleRed: { sx: 330, sy: 726, sWidth: 32, sHeight: 32 },
-  gemRed: { sx: 495, sy: 726, sWidth: 32, sHeight: 32 },
-  gemBlue: { sx: 528, sy: 726, sWidth: 32, sHeight: 32 },
-  keyYellow: { sx: 231, sy: 660, sWidth: 32, sHeight: 32 },
+  wallYellow: { type: 'block', sx: 132, sy: 495, sWidth: 32, sHeight: 32 },
+  doorYellow: { type: 'item', property: { key: { yk: -1 } }, sx: 99, sy: 660, sWidth: 32, sHeight: 32 },
+  keyYellow: { type: 'item', property: { key: { yk: 1 } }, sx: 231, sy: 660, sWidth: 32, sHeight: 32 },
+  smallBottleRed: { type: 'item', property: { hp: 100}, sx: 330, sy: 726, sWidth: 32, sHeight: 32 },
+  gemRed: { type: 'item', property: { ak: 1 }, sx: 495, sy: 726, sWidth: 32, sHeight: 32 },
+  gemBlue: { type: 'item', property: { df: 1 }, sx: 528, sy: 726, sWidth: 32, sHeight: 32 },
   // enemy
-  slimeGreen: { sx: 759, sy: 0, sWidth: 32, sHeight: 32 },
-  slimeRed: { sx: 660, sy: 0, sWidth: 32, sHeight: 32 },
-  slimeBlue: { sx: 660, sy: 0, sWidth: 32, sHeight: 32 },
-  skullWhite: { sx: 891, sy: 66, sWidth: 32, sHeight: 32 },
-  skullWhiteEquip: { sx: 693, sy: 132, sWidth: 32, sHeight: 32 },
-  smallBatBlue: { sx: 924, sy: 0, sWidth: 32, sHeight: 32 },
-  wizardBlue: { sx: 891, sy: 198, sWidth: 32, sHeight: 32 },
+  slimeGreen: { type: 'enemy', sx: 759, sy: 0, sWidth: 32, sHeight: 32 },
+  slimeRed: { type: 'enemy', sx: 660, sy: 0, sWidth: 32, sHeight: 32 },
+  slimeBlue: { type: 'enemy', sx: 660, sy: 0, sWidth: 32, sHeight: 32 },
+  skullWhite: { type: 'enemy', sx: 891, sy: 66, sWidth: 32, sHeight: 32 },
+  skullWhiteEquip: { type: 'enemy', sx: 693, sy: 132, sWidth: 32, sHeight: 32 },
+  smallBatBlue: { type: 'enemy', sx: 924, sy: 0, sWidth: 32, sHeight: 32 },
+  wizardBlue: { type: 'enemy', sx: 891, sy: 198, sWidth: 32, sHeight: 32 },
   // player
-  playFemale: { sx: 792, sy: 858, sWidth: 32, sHeight: 32}
+  playerFemale: { sx: 792, sy: 858, sWidth: 32, sHeight: 32}
 }
 
 function getTextures(type: string) {
