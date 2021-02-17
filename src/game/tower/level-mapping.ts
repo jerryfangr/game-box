@@ -35,9 +35,9 @@ const TEXTURE_NAME: {
 
 const OPTIONS_MAP: {
   [key: string]: {
-    type?: 'block' | 'item' | 'enemy' | 'scene';
+    type?: 'block' | 'item' | 'enemy' | 'sceneItem' | 'player';
     property?: { 
-      // item or enemy property
+      // item or enemy or player property
       ak?: number, // attack value
       df?: number, // defense value
       hp?: number, // health value
@@ -47,10 +47,13 @@ const OPTIONS_MAP: {
         bk?: number, // blue
         rk?: number // red 
       },
+      // Only 'sceneItem have following property
       // some item: jump level
       level?: number,
       // some item destory block
-      destoryBlock?: number
+      destoryBlock?: number,
+      // once tool or other times
+      counts?: number
     },
     sx: number,
     sy: number,
@@ -63,7 +66,7 @@ const OPTIONS_MAP: {
   // other
   nothing: { sx: -1, sy: -1, sWidth: 32, sHeight: 32 },
   // background
-  stairsUp: { type: 'scene', sx: 594, sy: 660, sWidth: 32, sHeight: 32 },
+  stairsUp: { type: 'sceneItem', sx: 594, sy: 660, sWidth: 32, sHeight: 32 },
   floorGrey: { sx: 0, sy: 0, sWidth: 32, sHeight: 32 },
   floorGlass: { sx: 132, sy: 165, sWidth: 32, sHeight: 32 },
   // item
@@ -82,7 +85,20 @@ const OPTIONS_MAP: {
   smallBatBlue: { type: 'enemy', sx: 924, sy: 0, sWidth: 32, sHeight: 32 },
   wizardBlue: { type: 'enemy', sx: 891, sy: 198, sWidth: 32, sHeight: 32 },
   // player
-  playerFemale: { sx: 792, sy: 858, sWidth: 32, sHeight: 32}
+  playerFemale: { 
+    type: 'item', 
+    property: { 
+      hp: 1000, 
+      ak: 5, 
+      df: 5,
+      key: {
+        yk: 2,
+        bk: 0,
+        rk: 0
+      },
+      level: 1 
+    }, 
+    sx: 792, sy: 858, sWidth: 32, sHeight: 32}
 }
 
 function getTextures(type: string) {

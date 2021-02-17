@@ -4,10 +4,15 @@ import {
   EngineScene
 } from '@/modules/engine'
 
+import GameElement from './game-element';
+import Block from './block';
+import Item from './item';
+import Enemy from './enemy';
+
 import { elementsCodeToOptions } from './level-load';
 
 class ElementsScene extends EngineScene {
-  elements: EngineElementInterface[];
+  elements: GameElement[];
   elementsCode: string[][];
   texture: HTMLImageElement;
   [key: string]: any;
@@ -29,28 +34,30 @@ class ElementsScene extends EngineScene {
   loadElements () {
     for (let r = 0; r < this.elementsOption.length; r++) {
       let rowOptions = this.elementsOption[r];
-      let columIndex = 0;
-      for (let i = 0; i < rowOptions.length; i++) {
-        columIndex = this.createElement(rowOptions[i], r, columIndex);
+      for (let c = 0; c < rowOptions.length; c++) {
+        this.createElement(rowOptions[c], r, c);
       }
     }
   }
 
-  createElement (option: { [k: string]: any }, rowIndex: number, columIndex: number): number {
-    if (option.sx >= 0 && option.sy >= 0) {
-      let tempOptions = {
-        x: columIndex * this.elementDistance,
-        y: rowIndex * this.elementDistance,
-        width: option.width,
-        height: option.height,
-        sx: option.sx, // clipe x coordinates
-        sy: option.sy, // clipe x coordinates
-        sWidth: option.sWidth, // clipe width
-        sHeight: option.sHeight,// clipe height
+  createElement (options: { [k: string]: any }, rowIndex: number, columIndex: number) {
+    if (options.sx >= 0 && options.sy >= 0 && options.type !== undefined) {
+      let tempOptions = options;
+      tempOptions.x = columIndex * this.elementDistance;
+      tempOptions.y = rowIndex * this.elementDistance;
+      tempOptions.position = {
+        rIndex: rowIndex,
+        cIndex: columIndex
+      };
+      if (options.type === 'block') {
+        this.addElement(new Block(this.texture, tempOptions));
+      } else if (options.type === 'item') {
+        this.addElement(new Item(this.texture, tempOptions));
+      } else if (options.type === 'enemy') {
+        this.addElement(new Enemy(this.texture, tempOptions));
       }
-      this.addElement(new ImageElement(this.texture, tempOptions))
+      // this.addElement(new ImageElement(this.texture, tempOptions));
     }
-    return ++columIndex;
   }
 }
 

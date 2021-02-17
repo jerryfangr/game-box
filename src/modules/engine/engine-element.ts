@@ -6,14 +6,6 @@ interface EngineElementInterface {
   update ():void;
 }
 
-type optionType = {
-  x?: number,   // x coordinate in canvas
-  y?: number,
-  width?: number;
-  height?: number;
-  [key: string]: any
-}
-
 class EngineElement implements EngineElementInterface {
   engine: Engine;
   isDead: boolean;
@@ -21,6 +13,7 @@ class EngineElement implements EngineElementInterface {
   y: number;
   width: number;
   height: number;
+  [k:string]: any;
 
   constructor(options: {
     x?: number,   // x coordinate in canvas

@@ -8,8 +8,9 @@ import {
   RectElement, 
   ImageElement 
 } from '@/modules/engine'
-import GameBackground from './game-background';
+import BackGround from './background';
 import ElementsScene from './elements-scene';
+import GameElement from './game-element';
 import GamePlayer from './game-player';
 import { getLevelCode, getTextureOption } from './level-load';
 
@@ -28,7 +29,7 @@ class GameScene extends EngineScene {
     rowNumber: number,
     columnNumber: number
   }
-  gameElements: EngineElement[];
+  gameElements: GameElement[];
   [key: string]: any;
 
   constructor() {
@@ -37,24 +38,28 @@ class GameScene extends EngineScene {
     this.gameElements = [];
     this.levelsCode = [];
     this.levelNumber = 0;
-    this.init();
+    this.loadLevel(this.levelNumber);
+    this.loadTexture(() => {
+      this.init();
+    });
   }
 
   init() {
-    if (this.levelsCode[this.levelNumber] === undefined) {
-      let levelCode: null | { bg: string, elements: string[][] } = getLevelCode(this.levelNumber);
+    this.initBackground();
+    this.initItemScene();
+    this.initStatusBar();
+    this.initPlayer();
+    this.bindEvents();
+  }
+
+  loadLevel (levelNumber: number) {
+    if (this.levelsCode[levelNumber] === undefined) {
+      let levelCode: null | { bg: string, elements: string[][] } = getLevelCode(levelNumber);
       if (levelCode === null) {
         throw new Error('Level config error, content is null')
       }
-      this.levelsCode[this.levelNumber] = levelCode;      
+      this.levelsCode[levelNumber] = levelCode;
     }
-    this.loadTexture(() => {
-      this.initBackground();
-      this.initItemScene();
-      this.initStatusBar();
-      this.initPlayer();
-      this.bindEvents();
-    });
   }
 
   loadTexture (callback: Function) {
@@ -66,13 +71,13 @@ class GameScene extends EngineScene {
   }
 
   initBackground () {
-    let gbg = new GameBackground(this.texture, this.gameWindowSize, this.levelsCode[this.levelNumber].bg)
+    let gbg = new BackGround(this.texture, this.gameWindowSize, this.levelsCode[this.levelNumber].bg)
     this.addElement(gbg);
   }
 
   initItemScene () {
     let ge = new ElementsScene(this.texture, this.levelsCode[this.levelNumber].elements);
-    this.gameElements = ge.elements as EngineElement[];
+    this.gameElements = ge.elements;
     this.addElement(ge);
   }
 
@@ -104,9 +109,11 @@ class GameScene extends EngineScene {
 
   }
 
-  deleteElementCallback(element: EngineElement) {
+  deleteElementCallback(element: GameElement) {
     let level = this.levelsCode[this.levelNumber];
-    // level.elements[element.position.rIndex][element.position.cIndex] = 'o0';
+    if (element.position !== undefined) {
+      level.elements[element.position.rIndex][element.position.cIndex] = 'o0';
+    }
   }
 
   // move 
@@ -118,13 +125,16 @@ class GameScene extends EngineScene {
       return;
     }
     let element = this.getTouchedItem(nextPlayer, this.gameElements);
-    // if (element.touch(this.player, this)) {
-      
+    if (element === null) {
+      return this.player.moveWidth(keyState, direction);
+    } 
+    element.touchWith(this.player, this)
+    // if (element.touchWith(this.player, this)) {
+    //   this.player.moveWidth(keyState, direction, element);
     // }
-    this.player.moveWidth(keyState, direction, element);
   }
 
-  getTouchedItem(nextPlayer: EngineElement, items: EngineElement[]) {
+  getTouchedItem(nextPlayer: EngineElement, items: GameElement[]) {
     for (let i = 0; i < items.length; i++) {
       const element = items[i];
       if (nextPlayer.x === element.x && nextPlayer.y === element.y) {
@@ -134,30 +144,19 @@ class GameScene extends EngineScene {
     return null;
   }
 
-  // isIntersection(box1: rectType, box2: rectType) {
-  //   if (box1.x < (box2.x + box2.width) && (box1.x + box1.width) > box2.x) {
-  //     if (box1.y < (box2.y + box2.height) && (box1.y + box1.height) > box2.y) {
-  //       console.log('In box 1--> ', box1);
-  //       console.log('In box2 --> ', box2);
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
-
   bindEvents () {
     this.engine.bindPause('p');
 
-    this.engine.bindEvent('d', (keyState, event) => {
+    this.engine.bindEvent('d', (keyState) => {
         this.move(keyState, 'right');
     }, 50);
-    this.engine.bindEvent('a', (keyState, event) => {
+    this.engine.bindEvent('a', (keyState) => {
       this.move(keyState, 'left');
     }, 50);
-    this.engine.bindEvent('w', (keyState, event) => {
+    this.engine.bindEvent('w', (keyState) => {
       this.move(keyState, 'top');
     }, 50);
-    this.engine.bindEvent('s', (keyState, event) => {
+    this.engine.bindEvent('s', (keyState) => {
       this.move(keyState, 'bottom');
     }, 50);
   }

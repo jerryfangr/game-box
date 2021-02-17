@@ -14,7 +14,7 @@ type optionType = {
   height?:number;
 };
 
-class GameBackGround implements EngineElementInterface {
+class BackGround implements EngineElementInterface {
   element: ImageElement;
   texture: HTMLImageElement;
   size: { rowNumber: number, columnNumber: number };
@@ -63,4 +63,4 @@ class GameBackGround implements EngineElementInterface {
   }
 }
 
-export default GameBackGround;
+export default BackGround;

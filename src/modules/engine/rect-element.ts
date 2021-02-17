@@ -10,6 +10,7 @@ declare type optionType = {
   radius?: number,
   type?: 'stroke' | 'fill',
   style?: string | CanvasGradient | CanvasPattern,
+  [k: string]: any
 }
 
 class RectElement extends EngineElement {
@@ -25,6 +26,7 @@ class RectElement extends EngineElement {
     radius?: number,
     type?: 'stroke' | 'fill',
     style?: string | CanvasGradient | CanvasPattern,
+    [k: string]: any
   }) {
     super(options);
     this.init(options);

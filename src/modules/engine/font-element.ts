@@ -7,6 +7,7 @@ type optionType = {
   font?: string,// font size and family
   type?: 'stroke' | 'fill',
   style?: string | CanvasGradient | CanvasPattern,
+  [k: string]: any
 }
 
 
@@ -20,6 +21,7 @@ class FontElement extends EngineElement {
     font?: string,// font size and family
     type?: 'stroke' | 'fill',
     style?: string | CanvasGradient | CanvasPattern,
+    [k: string]: any
   }) {
     super(options);
     this.init(options);

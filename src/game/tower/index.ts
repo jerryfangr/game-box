@@ -28,3 +28,14 @@ let img = new ImageElement(image, {
     // })
     // this.addElements([title]);
 
+  // isIntersection(box1: rectType, box2: rectType) {
+  //   if (box1.x < (box2.x + box2.width) && (box1.x + box1.width) > box2.x) {
+  //     if (box1.y < (box2.y + box2.height) && (box1.y + box1.height) > box2.y) {
+  //       console.log('In box 1--> ', box1);
+  //       console.log('In box2 --> ', box2);
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
+

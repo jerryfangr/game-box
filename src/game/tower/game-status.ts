@@ -2,7 +2,8 @@ import {
   EngineElement,
   ImageElement,
   RectElement,
-  FontElement
+  FontElement,
+  EngineScene
 } from '@/modules/engine'
 
 import { getTextureOption } from './level-load';

@@ -1,24 +1,16 @@
 import {
-  EngineElement,
   ImageElement,
-  RectElement,
-  FontElement
 } from '@/modules/engine'
-
+import GameElement from './game-element';
 import { getTextureOption } from './level-load';
 
-type optionType = {
-  sx: number;
-  sy: number;
-  sWidth: number;
-  sHeight: number;
-  width?: number;
-  height?: number;
-};
+type propertyType = {
+  [k: string]: number | { [k: string]: number }
+}
 
-class GamePlayer extends EngineElement {
-  texture: HTMLImageElement;
+class GamePlayer extends GameElement {
   element: ImageElement;
+  texture: HTMLImageElement;
   [key: string]: any;
 
   constructor(texture: HTMLImageElement, playerCode: string) {
@@ -28,17 +20,16 @@ class GamePlayer extends EngineElement {
     this.element = new ImageElement(this.texture, options);
     this.width = this.element.width;
     this.height = this.element.height;
-    this.init(options);
+    this.init();
   }
 
-  init(options: optionType) {
-    this.setDebugElement(new ImageElement(this.texture, options));
+  init() {
     this.setCoordinates(32*6, 32*11);
-  }
-
-  setDebugElement(element: EngineElement) {
-    this.debugElement = element;
-    this.debugElement.setCoordinates(32 * 15, 32 * 10)
+    setInterval(() => {
+      console.log('\n------------------');
+      console.log('player property', this.property);
+      console.log('player property', this.property?.key);
+    }, 2000)
   }
 
   setCoordinates(x?: number, y?: number) {
@@ -64,17 +55,29 @@ class GamePlayer extends EngineElement {
     }
   }
 
-  moveWidth (keyState: string, direction: string, element?:EngineElement) {
+  moveWidth(keyState: string, direction: string, element?: GameElement) {
     if (keyState === 'down') {
-      this.touchElement(element);
       let distance = this.getMoveDistance(direction);
       this.move(distance.x, distance.y);
     }
   }
 
-  touchElement(element?: EngineElement) {
-    element && element.delete();
-    element && this.setDebugElement(element);
+  touchWith (element: GameElement, elementType: string) {
+    if (elementType === 'item') {
+      this.eatItem(element.property!, this.property!);
+    }
+    return true;
+  }
+
+  eatItem(property: propertyType, playerProperty: propertyType) {
+    for (const key in property) {
+      if (typeof playerProperty[key] === 'number') {
+        playerProperty[key] = (playerProperty[key] as number) + (property[key] as number);
+      }
+      if (typeof playerProperty[key] === 'object') {
+        this.eatItem(property[key] as propertyType, playerProperty[key] as propertyType);
+      }
+    }
   }
 
   getMoveDistance(direction: string): {x: number, y: number} {
@@ -102,14 +105,10 @@ class GamePlayer extends EngineElement {
     });
   }
 
-  render() {
-    this.element.render();
-    this.debugElement.render()
-  }
+  // render() {
+  //   this.element.render();
+  // }
 
-  update() {
-    this.element.update();
-  }
 }
 
 export default GamePlayer;

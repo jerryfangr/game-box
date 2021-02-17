@@ -5,6 +5,7 @@ type optionType = {
   lineWidth?: number,   // x coordinate in canvas
   type?: 'stroke' | 'fill',
   style?: string | CanvasGradient | CanvasPattern,
+  [k: string]: any
 }
 
 
@@ -12,12 +13,13 @@ class PenElement implements EngineElementInterface {
   engine: Engine;
   isDead: boolean;
   hasDraw: boolean;
-  [props: string]: any;
+  [k: string]: any;
 
   constructor(options: {
     lineWidth?: number,   // x coordinate in canvas
     type?: 'stroke' | 'fill',
     style?: string | CanvasGradient | CanvasPattern,
+    [k: string]: any
   }) {
     this.engine = Engine.getInstance();
     this.hasDraw = false;

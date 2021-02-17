@@ -9,6 +9,7 @@ type optionType = {
   sy?: number, // clipe x coordinates
   sWidth?: number, // clipe width
   sHeight?: number,// clipe height
+  [k: string]: any
 }
 
 class ImageElement extends EngineElement {
@@ -24,6 +25,7 @@ class ImageElement extends EngineElement {
     sy?: number, // clipe x coordinates
     sWidth?: number, // clipe width
     sHeight?: number,// clipe height
+    [k:string]:any
   }) {
     super(options);
     this.image = image;
