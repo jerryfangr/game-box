@@ -1,5 +1,5 @@
 // import imageUrl from '@/assets/tower.jpg';
-import imageUrl from '@/assets/tower.png';
+import imageUrl from './tower.png';
 import { 
   Engine, 
   EngineElement, 
@@ -10,6 +10,7 @@ import {
 } from '@/modules/engine'
 import BackGround from './background';
 import ElementsScene from './elements-scene';
+import StatusScene from './status-scene';
 import GameElement from './game-element';
 import GamePlayer from './game-player';
 import { getLevelCode, getTextureOption } from './level-load';
@@ -23,6 +24,7 @@ type rectType = {
 }
 
 class GameScene extends EngineScene {
+  texture: HTMLImageElement;
   levelsCode: { bg: string, elements: string[][]}[];
   levelNumber: number;
   gameWindowSize: {
@@ -34,7 +36,8 @@ class GameScene extends EngineScene {
 
   constructor() {
     super();
-    this.gameWindowSize = { rowNumber: 13, columnNumber: 13 };
+    this.texture = new Image();
+    this.gameWindowSize = { rowNumber: 13, columnNumber: 18 };
     this.gameElements = [];
     this.levelsCode = [];
     this.levelNumber = 0;
@@ -46,9 +49,9 @@ class GameScene extends EngineScene {
 
   init() {
     this.initBackground();
-    this.initItemScene();
-    this.initStatusBar();
+    this.initElementScene();
     this.initPlayer();
+    this.initStatusBar();
     this.bindEvents();
   }
 
@@ -63,7 +66,6 @@ class GameScene extends EngineScene {
   }
 
   loadTexture (callback: Function) {
-    this.texture = new Image();
     this.texture.src = imageUrl;
     this.texture.onload = () => {
       callback.call(this);
@@ -75,7 +77,7 @@ class GameScene extends EngineScene {
     this.addElement(gbg);
   }
 
-  initItemScene () {
+  initElementScene () {
     let ge = new ElementsScene(this.texture, this.levelsCode[this.levelNumber].elements);
     this.gameElements = ge.elements;
     this.addElement(ge);
@@ -87,26 +89,8 @@ class GameScene extends EngineScene {
   }
 
   initStatusBar () {
-    let barBg = new RectElement({
-      x: this.gameWindowSize.columnNumber * 32,
-      y: 0,
-      width: 6 * 32,
-      height: this.gameWindowSize.rowNumber * 32,
-      style: '#6D696F',
-      type: 'fill'
-    });
-    let barBorder = new RectElement({
-      x: this.gameWindowSize.columnNumber * 32+5,
-      y: 5,
-      width: 6 * 32-18,
-      height: this.gameWindowSize.rowNumber * 32-10,
-      style: '#efefef',
-      type: 'stroke',
-      lineWidth: 10
-    });
-
-    this.addElements([barBg, barBorder]);
-
+    this.statusScene = new StatusScene(this.texture, this.player.property, { x: 32 * 13, y: 0 });
+    this.addElement(this.statusScene);
   }
 
   deleteElementCallback(element: GameElement) {
@@ -116,7 +100,6 @@ class GameScene extends EngineScene {
     }
   }
 
-  // move 
   // 1. 以地图数组移动
   // 2. 以循环判断移动 -- choosed
   move(keyState: string, direction: string) {

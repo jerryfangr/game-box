@@ -26,6 +26,20 @@ abstract class GameElement extends EngineElement {
     y?: number,
     width?: number,
     height?: number,
+    texture?: {
+      default: {
+        sx: number,
+        sy: number,
+        sWidth: number,
+        sHeight: number,
+      },
+      [k: string]: {
+        sx: number,
+        sy: number,
+        sWidth: number,
+        sHeight: number,
+      }
+    },
     [k: string]: any
   }) {
     super(options);
@@ -37,6 +51,12 @@ abstract class GameElement extends EngineElement {
     }
     if (options.property !== undefined) {
       this.property = JSON.parse(JSON.stringify(options.property));
+    }
+    if (options.texture !== undefined) {
+      options.sx = options.texture.default.sx;
+      options.sy = options.texture.default.sy;
+      options.sWidth = options.texture.default.sWidth;
+      options.sHeight = options.texture.default.sHeight;
     }
   }
 

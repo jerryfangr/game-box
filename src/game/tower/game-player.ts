@@ -25,11 +25,6 @@ class GamePlayer extends GameElement {
 
   init() {
     this.setCoordinates(32*6, 32*11);
-    setInterval(() => {
-      console.log('\n------------------');
-      console.log('player property', this.property);
-      console.log('player property', this.property?.key);
-    }, 2000)
   }
 
   setCoordinates(x?: number, y?: number) {

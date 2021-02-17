@@ -41,7 +41,7 @@ class ElementsScene extends EngineScene {
   }
 
   createElement (options: { [k: string]: any }, rowIndex: number, columIndex: number) {
-    if (options.sx >= 0 && options.sy >= 0 && options.type !== undefined) {
+    if (options.type !== undefined && options.type !== 'none') {
       let tempOptions = options;
       tempOptions.x = columIndex * this.elementDistance;
       tempOptions.y = rowIndex * this.elementDistance;

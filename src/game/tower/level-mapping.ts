@@ -35,7 +35,7 @@ const TEXTURE_NAME: {
 
 const OPTIONS_MAP: {
   [key: string]: {
-    type?: 'block' | 'item' | 'enemy' | 'sceneItem' | 'player';
+    type?: 'block' | 'item' | 'enemy' | 'sceneItem' | 'player' | 'scene' | 'none';
     property?: { 
       // item or enemy or player property
       ak?: number, // attack value
@@ -55,35 +55,79 @@ const OPTIONS_MAP: {
       // once tool or other times
       counts?: number
     },
-    sx: number,
-    sy: number,
-    sWidth: number,
-    sHeight: number,
     width?: number,
     height?: number;
+    texture:{
+      default: {
+        sx: number,
+        sy: number,
+        sWidth: number,
+        sHeight: number,
+      },
+      [k:string]: {
+        sx: number,
+        sy: number,
+        sWidth: number,
+        sHeight: number,
+      }
+    }
   }
 } = {
   // other
-  nothing: { sx: -1, sy: -1, sWidth: 32, sHeight: 32 },
+  nothing: { texture: { default: {sx: -1, sy: -1, sWidth: 32, sHeight: 32}} },
   // background
-  stairsUp: { type: 'sceneItem', sx: 594, sy: 660, sWidth: 32, sHeight: 32 },
-  floorGrey: { sx: 0, sy: 0, sWidth: 32, sHeight: 32 },
-  floorGlass: { sx: 132, sy: 165, sWidth: 32, sHeight: 32 },
+  stairsUp: { type: 'sceneItem', texture: { default: {sx: 594, sy: 660, sWidth: 32, sHeight: 32}} },
+  floorGrey: { type: 'scene', texture: { default: {sx: 0, sy: 0, sWidth: 32, sHeight: 32}} },
+  floorGlass: { type: 'scene', texture: { default: {sx: 132, sy: 165, sWidth: 32, sHeight: 32}} },
   // item
-  wallYellow: { type: 'block', sx: 132, sy: 495, sWidth: 32, sHeight: 32 },
-  doorYellow: { type: 'item', property: { key: { yk: -1 } }, sx: 99, sy: 660, sWidth: 32, sHeight: 32 },
-  keyYellow: { type: 'item', property: { key: { yk: 1 } }, sx: 231, sy: 660, sWidth: 32, sHeight: 32 },
-  smallBottleRed: { type: 'item', property: { hp: 100}, sx: 330, sy: 726, sWidth: 32, sHeight: 32 },
-  gemRed: { type: 'item', property: { ak: 1 }, sx: 495, sy: 726, sWidth: 32, sHeight: 32 },
-  gemBlue: { type: 'item', property: { df: 1 }, sx: 528, sy: 726, sWidth: 32, sHeight: 32 },
+  wallYellow: { type: 'block', texture: { default: {sx: 132, sy: 495, sWidth: 32, sHeight: 32}} },
+  doorYellow: { type: 'item', property: { key: { yk: -1 } }, texture: { default: {sx: 99, sy: 660, sWidth: 32, sHeight: 32}} },
+  keyYellow: { type: 'item', property: { key: { yk: 1 } }, texture: { default: {sx: 231, sy: 660, sWidth: 32, sHeight: 32}} },
+  smallBottleRed: { type: 'item', property: { hp: 100}, texture: { default: {sx: 330, sy: 726, sWidth: 32, sHeight: 32}} },
+  gemRed: { type: 'item', property: { ak: 1 }, texture: { default: {sx: 495, sy: 726, sWidth: 32, sHeight: 32}} },
+  gemBlue: { type: 'item', property: { df: 1 }, texture: { default: {sx: 528, sy: 726, sWidth: 32, sHeight: 32}} },
   // enemy
-  slimeGreen: { type: 'enemy', sx: 759, sy: 0, sWidth: 32, sHeight: 32 },
-  slimeRed: { type: 'enemy', sx: 660, sy: 0, sWidth: 32, sHeight: 32 },
-  slimeBlue: { type: 'enemy', sx: 660, sy: 0, sWidth: 32, sHeight: 32 },
-  skullWhite: { type: 'enemy', sx: 891, sy: 66, sWidth: 32, sHeight: 32 },
-  skullWhiteEquip: { type: 'enemy', sx: 693, sy: 132, sWidth: 32, sHeight: 32 },
-  smallBatBlue: { type: 'enemy', sx: 924, sy: 0, sWidth: 32, sHeight: 32 },
-  wizardBlue: { type: 'enemy', sx: 891, sy: 198, sWidth: 32, sHeight: 32 },
+  slimeGreen: { 
+    type: 'enemy', 
+    texture: { 
+      default: { sx: 759, sy: 0, sWidth: 32, sHeight: 32 },
+      active: { sx: 759, sy: 32, sWidth: 32, sHeight: 32 },
+    } },
+  slimeRed: { 
+    type: 'enemy', 
+    texture: { 
+      default: {sx: 660, sy: 0, sWidth: 32, sHeight: 32},
+      active: { sx: 660, sy: 33, sWidth: 32, sHeight: 32 },
+    } },
+  slimeBlue: { 
+    type: 'enemy', 
+    texture: { 
+      default: { sx: 660, sy: 0, sWidth: 32, sHeight: 32 },
+      active: { sx: 660, sy: 33, sWidth: 32, sHeight: 32 },
+    } },
+  skullWhite: { 
+    type: 'enemy', 
+    texture: { 
+      default: { sx: 891, sy: 66, sWidth: 32, sHeight: 32 },
+      active: { sx: 891, sy: 99, sWidth: 32, sHeight: 32 },
+    } },
+  skullWhiteEquip: { 
+    type: 'enemy', 
+    texture: { 
+      default: { sx: 693, sy: 132, sWidth: 32, sHeight: 32 },
+      active: { sx: 693, sy: 165, sWidth: 32, sHeight: 32 },
+    } },
+  smallBatBlue: { 
+    type: 'enemy', 
+    texture: { 
+      default: { sx: 924, sy: 0, sWidth: 32, sHeight: 32 },
+      active: { sx: 924, sy: 33, sWidth: 32, sHeight: 32 },
+    } },
+  wizardBlue: { 
+    type: 'enemy', texture: { 
+      default: { sx: 891, sy: 198, sWidth: 32, sHeight: 32 },
+      active: { sx: 891, sy: 231, sWidth: 32, sHeight: 32 },
+    } },
   // player
   playerFemale: { 
     type: 'item', 
@@ -97,8 +141,25 @@ const OPTIONS_MAP: {
         rk: 0
       },
       level: 1 
-    }, 
-    sx: 792, sy: 858, sWidth: 32, sHeight: 32}
+    },
+    texture: {
+      default: {
+        sx: 858, sy: 726, sWidth: 32, sHeight: 32
+      },
+      up: {
+        sx: 825, sy: 726, sWidth: 32, sHeight: 32
+      },
+      down: {
+        sx: 858, sy: 726, sWidth: 32, sHeight: 32
+      },
+      left: {
+        sx: 759, sy: 726, sWidth: 32, sHeight: 32
+      },
+      right: {
+        sx: 792, sy: 726, sWidth: 32, sHeight: 32
+      }
+    },
+  }
 }
 
 function getTextures(type: string) {
