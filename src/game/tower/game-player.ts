@@ -8,6 +8,13 @@ type propertyType = {
   [k: string]: number | { [k: string]: number }
 }
 
+type fightPropertyType = {
+  hp: number,
+  ak: number,
+  df: number,
+  [k: string]: number
+}
+
 class GamePlayer extends GameElement {
   element: ImageElement;
   elements: {
@@ -15,7 +22,6 @@ class GamePlayer extends GameElement {
   };
   texture: HTMLImageElement;
   direction: string;
-  [key: string]: any;
 
   constructor(texture: HTMLImageElement, playerCode: string) {
     let options = getTextureOption(playerCode);
@@ -61,24 +67,15 @@ class GamePlayer extends GameElement {
   }
 
   moveBy (direction: string) {
-    this.updateReplaceBy(direction);
     let distance = this.getMoveDistance(direction);
     this.move(distance.x, distance.y);
-  }
-
-  updateReplaceBy(direction: string) {
-    if (this.direction !== direction) {
-      if (['left', 'right', 'up', 'down'].indexOf(direction) !== -1) {
-        this.direction = direction;
-        this.elements[direction].setCoordinates(this.element.x, this.element.y);
-        this.element = this.elements[direction];
-      }
-    }
   }
 
   touchWith (element: GameElement, elementType: string) {
     if (elementType === 'item') {
       this.eatItem(element.property!, this.property!);
+    } else if (elementType === 'enemy') {
+      this.injuredFrom(element.property as fightPropertyType, this.property as fightPropertyType);
     }
     return true;
   }
@@ -92,6 +89,15 @@ class GamePlayer extends GameElement {
         this.eatItem(property[key] as propertyType, playerProperty[key] as propertyType);
       }
     }
+  }
+
+  injuredFrom(property: fightPropertyType, playerProperty: fightPropertyType) {
+    let playerInjure = playerProperty.ak - property.df;
+    let enemyInjure = property.ak - playerProperty.df;
+
+    let playerAttackCount = property.hp / playerInjure;
+    let damage = playerAttackCount * enemyInjure;
+    playerProperty.hp -= damage;
   }
 
   getMoveDistance(direction: string): {x: number, y: number} {
@@ -109,8 +115,19 @@ class GamePlayer extends GameElement {
     }
   }
 
+  turnDirection (direction: string): boolean {
+    if (this.direction !== direction) {
+      if (['left', 'right', 'up', 'down'].indexOf(direction) !== -1) {
+        this.direction = direction;
+        this.elements[direction].setCoordinates(this.element.x, this.element.y);
+        this.element = this.elements[direction];
+        return true;
+      }
+    }
+    return false;
+  }
 
-  replacePlayer(playerCode: string) {
+  replacePlayer (playerCode: string) {
     let options = getTextureOption(playerCode);
     this.element = new ImageElement(this.texture, {
       x: this.x,
@@ -118,11 +135,6 @@ class GamePlayer extends GameElement {
       ...options
     });
   }
-
-  // render() {
-  //   this.element.render();
-  // }
-
 }
 
 export default GamePlayer;

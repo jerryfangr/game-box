@@ -5,6 +5,7 @@ class EngineScene implements EngineElementInterface {
   engine: Engine;
   isDead: boolean;
   elements: EngineElementInterface[];
+  
   constructor() {
     this.engine = Engine.getInstance();
     this.isDead = false;
@@ -38,6 +39,10 @@ class EngineScene implements EngineElementInterface {
   }
   
   deleteElementCallback(element: EngineElementInterface) {}
+  
+  bindInputEvents () {
+    this.engine.bindPause('p');
+  }
 
   delete() {
     this.isDead = true;

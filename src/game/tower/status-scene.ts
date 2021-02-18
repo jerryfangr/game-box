@@ -129,7 +129,7 @@ class StatusScene extends EngineScene {
       this.levelText.changeTexture('第 ' + (this.level+1) + ' 层');
       this.lifeText.changeTexture('生命     ' + this.property.hp);
       this.attackText.changeTexture('攻击     ' + this.property.ak);
-      this.defenseText.changeTexture('防御     ' + this.property.ak);
+      this.defenseText.changeTexture('防御     ' + this.property.df);
       this.yellowKeyText.changeTexture('            ' + this.property.key.yk);
     }
   }

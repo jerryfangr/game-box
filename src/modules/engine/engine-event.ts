@@ -1,5 +1,5 @@
 class EngineEvent {
-  inputs: { [key: string]: (string | KeyboardEvent | MouseEvent)[] | ''};
+  inputs: { [key: string]: (string | KeyboardEvent | MouseEvent)[] | '' | undefined};
   events: { [key: string]: Function[] };
 
   constructor() {
@@ -14,11 +14,11 @@ class EngineEvent {
 
   listenInputs() {
     window.addEventListener('keydown', e => {
-      let keyName = e.key === '' ? 'SPACE' : e.key.toUpperCase();
+      let keyName = e.key === ' ' ? 'SPACE' : e.key.toUpperCase();
       this.inputs[keyName] = ['down', e];
     })
     window.addEventListener('keyup', e => {
-      let keyName = e.key === '' ? 'SPACE' : e.key.toUpperCase();
+      let keyName = e.key === ' ' ? 'SPACE' : e.key.toUpperCase();
       this.inputs[keyName] = ['up', e];
     })
     window.addEventListener('mousedown', e => {
@@ -50,19 +50,21 @@ class EngineEvent {
 
   emitEvent(keyName: string) {
     if (this.events[keyName] !== undefined) {
-      let keyState = this.inputs[keyName][0];
-      let event = this.inputs[keyName][1];
+      let keyState = this.inputs[keyName]![0];
+      let event = this.inputs[keyName]![1];
       this.events[keyName].forEach(callback => {
-        callback(keyState, event); // .call(undefined/this,keyState,event)
+        callback(keyState, event);
       })
-      this.inputs[keyName] = '';
+      if (keyState === 'up') {
+        this.inputs[keyName] = undefined;
+      }
       // delete this.inputs[keyName];
     }
   }
 
   emitEvents() {
     for (const key in this.inputs) {
-      if (this.inputs[key]) {
+      if (this.inputs[key] !== undefined) {
         this.emitEvent(key);
       }
     }

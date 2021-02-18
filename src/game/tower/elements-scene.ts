@@ -1,6 +1,4 @@
 import {
-  EngineElementInterface,
-  ImageElement,
   EngineScene
 } from '@/modules/engine'
 
@@ -11,21 +9,33 @@ import Enemy from './enemy';
 
 import { elementsCodeToOptions } from './level-load';
 
+type optionType = {
+  width?: number;
+  height?: number;
+  texture: {
+    default: {
+      sx: number,
+      sy: number,
+      sWidth: number,
+      sHeight: number
+    },
+    [k: string]: any
+  }
+  [k: string]: any
+};
+
 class ElementsScene extends EngineScene {
   elements: GameElement[];
   elementsCode: string[][];
+  elementsOption: optionType[][];
+  elementDistance: number;
   texture: HTMLImageElement;
-  [key: string]: any;
 
   constructor(texture: HTMLImageElement, elementsCode: string[][]) {
     super();
     this.elementsCode = elementsCode;
     this.elements = [];
     this.texture = texture;
-    this.init();
-  }
-
-  init() {
     this.elementsOption = elementsCodeToOptions(this.elementsCode);
     this.elementDistance = 32;
     this.loadElements();
@@ -49,6 +59,7 @@ class ElementsScene extends EngineScene {
         rIndex: rowIndex,
         cIndex: columIndex
       };
+      
       if (options.type === 'block') {
         this.addElement(new Block(this.texture, tempOptions));
       } else if (options.type === 'item') {

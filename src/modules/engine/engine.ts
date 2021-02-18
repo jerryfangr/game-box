@@ -10,15 +10,19 @@ class Engine {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D ;
   maxFps:number;
-  _listener: EngineEvent;
-  [props: string]: any;
+  private _listener: EngineEvent;
+  private _pause: boolean;
+  private _scene: EngineScene;
+  private _listenInput :boolean;
 
-  constructor(canvas: HTMLCanvasElement, maxFps:number = 60) {
+  private constructor(canvas: HTMLCanvasElement, maxFps:number = 60) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     this.maxFps = maxFps;
     this._listener = new EngineEvent();
-    this.init();
+    this._pause = false;
+    this._scene = {} as EngineScene;
+    this._listenInput = true;
   }
 
   static getInstance (canvas?: HTMLCanvasElement, maxFps?: number) {
@@ -29,11 +33,6 @@ class Engine {
       return this.instance = new this(canvas, maxFps);
     }
     throw new Error('You have to create at least one instance')
-  }
-
-  init() {
-    this._pause = false;
-    this._scene = null;
   }
 
   get width ():number {
@@ -60,19 +59,18 @@ class Engine {
     this.ctx.clearRect(0, 0, this.width, this.height);
   }
 
-  _render () {
+  private _render () {
     this._scene.render?.()
   }
 
-  _update () {
+  private _update () {
     this._scene.update?.() 
   }
 
-  _run () {
-    // console.log('pause', this._pause);
+  private _run () {
     if (!this._pause) {
       this.clearScreen();
-      this._listener.emitEvents();
+      this._listenInput && this._listener.emitEvents();
       this._render();
       this._update();
     }
@@ -81,8 +79,20 @@ class Engine {
     }, 1000 / this.maxFps);
   }
 
-  togglePause () {
-    this._pause = !this._pause;
+  togglePause (value?: boolean) {
+    if (value !== undefined) {
+      this._pause = value;
+    } else {
+      this._pause = !this._pause;
+    }
+  }
+
+  toggleListener(value?: boolean) {
+    if (value !== undefined) {
+      this._listenInput = value;
+    } else {
+      this._listenInput = !this._listenInput;
+    }
   }
 
   bindPause (keyName: string) {
@@ -95,12 +105,14 @@ class Engine {
 
   startWith (scene: EngineScene) {
     this._scene = scene;
+    this._scene.bindInputEvents()
     this._run();
   }
 
   replace (scene: EngineScene) {
     this._scene = scene;
     this.clearEvents();
+    this._scene.bindInputEvents()
   }
 }
 

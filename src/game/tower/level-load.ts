@@ -1,6 +1,20 @@
 import { getOptions, getTextures } from './level-mapping';
 import levelsOriginCode from './level-config';
 
+type optionType = {
+  width?: number;
+  height?: number;
+  texture: {
+    default: {
+      sx: number,
+      sy: number,
+      sWidth: number,
+      sHeight: number
+    },
+    [k: string]: any
+  }
+};
+
 function getConfig(shortName: string) {
   let configList = shortName.split('-');
   let textureName = configList[0];
@@ -15,7 +29,25 @@ function getConfig(shortName: string) {
  * get texture  by a shortcut name
  * @param nameCoded eg: b1-10 => options: TEXTURE_NAME.background[0], counts: 10
  */
-function getTextureOption(nameCode: string) {
+function getTextureOption(nameCode: string): {
+  width?: number,
+  height?: number,
+  texture: {
+    default: {
+      sx: number,
+      sy: number,
+      sWidth: number,
+      sHeight: number,
+    },
+    [k: string]: {
+      sx: number,
+      sy: number,
+      sWidth: number,
+      sHeight: number,
+    }
+  },
+  [k: string]: any
+} {
   let config = getConfig(nameCode);
   let textures = getTextures(config.textureName[0])
   let optionName = textures[config.textureName[1]];
@@ -32,8 +64,8 @@ function shortNameToList(shortName: string): string[] {
   return list;
 }
 
-function elementsCodeToOptions(elementsCode: string[][]): { [key: string]: any }[][] {
-  let elementsOptions: { [key: string]: any }[][] = [];
+function elementsCodeToOptions(elementsCode: string[][]): optionType[][] {
+  let elementsOptions: optionType[][] = [];
   for (let r = 0; r < elementsCode.length; r++) {
     const row = elementsCode[r];
     elementsOptions[r] = [];

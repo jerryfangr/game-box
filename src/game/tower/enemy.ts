@@ -42,13 +42,10 @@ class Enemy extends GameElement {
 
   touchWith(player?: GameElement) {
     if (!player || !this.property || !player.property) {
-      console.log(player);
-      console.log('this.property');
       return false;
     }
     if (this.canFight(this.property as propertyType, player.property as propertyType)) {
       player.touchWith(this, 'enemy');
-      console.log('delete', this);
       this.delete();
       return true;
     }
@@ -56,7 +53,18 @@ class Enemy extends GameElement {
   }
 
   canFight(property: propertyType, playerProperty: propertyType): boolean {
-    return true;
+    let playerInjure = playerProperty.ak - property.df;
+    if (playerInjure <= 0) {
+      return false;
+    }
+    let enemyInjure = property.ak - playerProperty.df;
+    if (enemyInjure <= 0) {
+      return true;
+    }
+
+    let playerAttackCount = property.hp / playerInjure;
+    let enemyAttackCount = playerProperty.hp / enemyInjure;
+    return playerAttackCount < enemyAttackCount;
   }
 
   update () {

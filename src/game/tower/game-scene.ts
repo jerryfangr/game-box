@@ -1,7 +1,6 @@
 // import imageUrl from '@/assets/tower.jpg';
 import imageUrl from './tower.png';
 import { 
-  Engine, 
   EngineElement, 
   EngineScene, 
   FontElement, 
@@ -13,7 +12,7 @@ import ElementsScene from './elements-scene';
 import StatusScene from './status-scene';
 import GameElement from './game-element';
 import GamePlayer from './game-player';
-import { getLevelCode, getTextureOption } from './level-load';
+import { getLevelCode } from './level-load';
 
 type rectType = {
   x: number,
@@ -43,7 +42,7 @@ class GameScene extends EngineScene {
     this.levelsCode = [];
     this.levelNumber = 0;
     this.lock = false;
-    this.loadLevel(this.levelNumber);
+    this.loadLevelCode(this.levelNumber);
     this.loadTexture(() => {
       this.init();
     });
@@ -54,10 +53,9 @@ class GameScene extends EngineScene {
     this.initElementScene();
     this.initPlayer();
     this.initStatusBar();
-    this.bindEvents();
   }
 
-  loadLevel (levelNumber: number) {
+  loadLevelCode (levelNumber: number) {
     if (this.levelsCode[levelNumber] === undefined) {
       let levelCode: null | { bg: string, elements: string[][] } = getLevelCode(levelNumber);
       if (levelCode === null) {
@@ -65,6 +63,12 @@ class GameScene extends EngineScene {
       }
       this.levelsCode[levelNumber] = levelCode;
     }
+  }
+
+  replaceLevel (levelNumber: number) {
+    this.loadLevelCode(levelNumber);
+    this.levelNumber = levelNumber;
+    this.init();
   }
 
   loadTexture (callback: Function) {
@@ -105,19 +109,25 @@ class GameScene extends EngineScene {
   // 1. 以地图数组移动
   // 2. 以循环判断移动 -- choosed lock => 只允许单向移动
   move(keyState: string, direction: string) {
-    if (this.lock) {
-      return;
-    }
+    if (this.lock) {return;}
+    // locke this function
     this.lock = true;
+    // need to turn to a new direction
+    if (this.player.turnDirection(direction)) {
+      return this.lock = false;
+    }
+    // get moved player position
     let nextPlayer = this.player.nextStatus(keyState, direction)
     if (nextPlayer === null) {
       return this.lock = false;
     }
+    // if there are nothing, just move
     let element = this.getTouchedItem(nextPlayer, this.gameElements);
     if (element === null) {
-      this.lock = false;
-      return this.player.moveBy(direction);
+      this.player.moveBy(direction);
+      return this.lock = false;
     } 
+    // if there are something, trigger touched event
     element.touchWith(this.player, this);
     this.lock = false;
   }
@@ -132,21 +142,20 @@ class GameScene extends EngineScene {
     return null;
   }
 
-  bindEvents () {
-    this.engine.bindPause('p');
-
+  bindInputEvents () {
+    super.bindInputEvents();
     this.engine.bindEvent('d', (keyState) => {
       this.move(keyState, 'right');
-    }, 50);
+    }, 90);
     this.engine.bindEvent('a', (keyState) => {
       this.move(keyState, 'left');
-    }, 50);
+    }, 90);
     this.engine.bindEvent('w', (keyState) => {
       this.move(keyState, 'up');
-    }, 50);
+    }, 90);
     this.engine.bindEvent('s', (keyState) => {
       this.move(keyState, 'down');
-    }, 50);
+    }, 90);
   }
 }
 

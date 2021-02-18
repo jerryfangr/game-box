@@ -88,43 +88,51 @@ const OPTIONS_MAP: {
   gemBlue: { type: 'item', property: { df: 1 }, texture: { default: {sx: 528, sy: 726, sWidth: 32, sHeight: 32}} },
   // enemy
   slimeGreen: { 
-    type: 'enemy', 
+    type: 'enemy',
+    property: {hp: 100, ak: 15, df: 1,}, 
     texture: { 
       default: { sx: 759, sy: 0, sWidth: 32, sHeight: 32 },
       active: { sx: 759, sy: 32, sWidth: 32, sHeight: 32 },
     } },
   slimeRed: { 
-    type: 'enemy', 
+    type: 'enemy',
+    property: {hp: 100, ak: 20, df: 0,}, 
     texture: { 
       default: {sx: 660, sy: 0, sWidth: 32, sHeight: 32},
       active: { sx: 660, sy: 33, sWidth: 32, sHeight: 32 },
     } },
   slimeBlue: { 
-    type: 'enemy', 
+    type: 'enemy',
+    property: {hp: 1000, ak: 5, df: 5,}, 
     texture: { 
       default: { sx: 660, sy: 0, sWidth: 32, sHeight: 32 },
       active: { sx: 660, sy: 33, sWidth: 32, sHeight: 32 },
     } },
   skullWhite: { 
-    type: 'enemy', 
+    type: 'enemy',
+    property: {hp: 1000, ak: 5, df: 5,}, 
     texture: { 
       default: { sx: 891, sy: 66, sWidth: 32, sHeight: 32 },
       active: { sx: 891, sy: 99, sWidth: 32, sHeight: 32 },
     } },
   skullWhiteEquip: { 
-    type: 'enemy', 
+    type: 'enemy',
+    property: {hp: 1000, ak: 5, df: 5,}, 
     texture: { 
       default: { sx: 693, sy: 132, sWidth: 32, sHeight: 32 },
       active: { sx: 693, sy: 165, sWidth: 32, sHeight: 32 },
     } },
   smallBatBlue: { 
-    type: 'enemy', 
+    type: 'enemy',
+    property: {hp: 1000, ak: 5, df: 5,}, 
     texture: { 
       default: { sx: 924, sy: 0, sWidth: 32, sHeight: 32 },
       active: { sx: 924, sy: 33, sWidth: 32, sHeight: 32 },
     } },
   wizardBlue: { 
-    type: 'enemy', texture: { 
+    type: 'enemy',
+    property: {hp: 1000, ak: 5, df: 5,},
+      texture: { 
       default: { sx: 891, sy: 198, sWidth: 32, sHeight: 32 },
       active: { sx: 891, sy: 231, sWidth: 32, sHeight: 32 },
     } },
@@ -179,7 +187,25 @@ function getTextures(type: string) {
   }
 }
 
-function getOptions (name:string) {
+function getOptions (name:string): {
+  width?: number,
+  height?: number,
+  texture: {
+    default: {
+      sx: number,
+      sy: number,
+      sWidth: number,
+      sHeight: number,
+    },
+    [k: string]: {
+      sx: number,
+      sy: number,
+      sWidth: number,
+      sHeight: number,
+    }
+  },
+  [k:string]: any
+} {
   return OPTIONS_MAP[name] || OPTIONS_MAP['nothing'];
 }
 

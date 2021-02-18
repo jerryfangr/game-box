@@ -6,33 +6,31 @@ import {
 import { getTextureOption } from './level-load';
 
 type optionType = {
-  sx: number;
-  sy: number;
-  sWidth: number;
-  sHeight: number;
   width?: number;
   height?:number;
+  texture: {
+    default: {
+      sx: number,
+      sy: number,
+      sWidth: number,
+      sHeight: number
+    },
+    [k:string]: any
+  }
 };
 
 class BackGround implements EngineElementInterface {
   element: ImageElement;
   texture: HTMLImageElement;
   size: { rowNumber: number, columnNumber: number };
-  bgCode: string;
-  [key: string]: any;
+  elementDistance: number;
 
   constructor(texture: HTMLImageElement, size: { rowNumber: number, columnNumber: number }, bgCode: string) {
-    this.element = {} as ImageElement;
     this.texture = texture;
     this.size = size;
-    this.bgCode = bgCode;
-    this.init();
-  }
-
-  init () {
-    this.bgOptions = getTextureOption(this.bgCode);
+    let bgOptions: optionType = getTextureOption(bgCode);
     this.elementDistance = 32;
-    this.element = this.createElementsBy(this.bgOptions);
+    this.element = this.createElementsBy(bgOptions);
   }
 
   createElementsBy(bgOptions: optionType): ImageElement {
@@ -41,10 +39,10 @@ class BackGround implements EngineElementInterface {
         y: 0,
         width: bgOptions.width,
         height: bgOptions.height,
-        sx: bgOptions.sx, 
-        sy: bgOptions.sy, 
-        sWidth: bgOptions.sWidth, 
-        sHeight: bgOptions.sHeight,
+        sx: bgOptions.texture.default.sx, 
+        sy: bgOptions.texture.default.sy, 
+        sWidth: bgOptions.texture.default.sWidth, 
+        sHeight: bgOptions.texture.default.sHeight,
       }
       return new ImageElement(this.texture, options);
   }
