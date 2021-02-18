@@ -1,18 +1,10 @@
 import  {EngineElement} from './engine-element';
 
-type optionType = {
-  x?: number,   // x coordinate in canvas
-  y?: number,   // y coordinate in canvas
-  text: string, // text content
-  font?: string,// font size and family
-  type?: 'stroke' | 'fill',
-  style?: string | CanvasGradient | CanvasPattern,
-  [k: string]: any
-}
-
-
 class FontElement extends EngineElement {
-  [props: string]: any;
+  text: string;
+  font: string;
+  type: 'stroke' | 'fill';
+  style: string | CanvasGradient | CanvasPattern;
 
   constructor(options: {
     x?: number,   // x coordinate in canvas
@@ -24,10 +16,6 @@ class FontElement extends EngineElement {
     [k: string]: any
   }) {
     super(options);
-    this.init(options);
-  }
-
-  init (options: optionType) {
     this.text = options.text;
     this.font = options.font || '16px Microsoft YaHei';
     this.type = options.type || 'fill';

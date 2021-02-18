@@ -1,19 +1,13 @@
 import  Engine from './engine';
 import {EngineElementInterface} from './engine-element';
 
-type optionType = {
-  lineWidth?: number,   // x coordinate in canvas
-  type?: 'stroke' | 'fill',
-  style?: string | CanvasGradient | CanvasPattern,
-  [k: string]: any
-}
-
-
 class PenElement implements EngineElementInterface {
   engine: Engine;
   isDead: boolean;
   hasDraw: boolean;
-  [k: string]: any;
+  lineWidth: number;
+  type: 'stroke' | 'fill';
+  style: string | CanvasGradient | CanvasPattern;
 
   constructor(options: {
     lineWidth?: number,   // x coordinate in canvas
@@ -24,10 +18,6 @@ class PenElement implements EngineElementInterface {
     this.engine = Engine.getInstance();
     this.hasDraw = false;
     this.isDead = false;
-    this.init(options);
-  }
-
-  init (options: optionType) {
     this.lineWidth = options.lineWidth || 2;
     this.type = options.type || 'fill';
     this.style = options.style || '#000';

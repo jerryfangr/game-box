@@ -1,20 +1,11 @@
 import { EngineElement} from './engine-element';
 
-type optionType = {
-  x?: number,
-  y?: number,
-  width?: number,
-  height?: number,
-  sx?: number, // clipe x coordinates
-  sy?: number, // clipe x coordinates
-  sWidth?: number, // clipe width
-  sHeight?: number,// clipe height
-  [k: string]: any
-}
-
 class ImageElement extends EngineElement {
   image: CanvasImageSource;
-  [props: string]: any;
+  sx: number; // clipe x coordinates
+  sy: number; // clipe x coordinates
+  sWidth: number; // clipe width
+  sHeight: number;// clipe height
 
   constructor(image: CanvasImageSource, options: {
     x?: number,
@@ -29,10 +20,6 @@ class ImageElement extends EngineElement {
   }) {
     super(options);
     this.image = image;
-    this.init(options);
-  }
-
-  init(options: optionType) {
     this.sx = options.sx || 0;
     this.sy = options.sy || 0;
     this.sWidth = options.sWidth || this.image.width as number;

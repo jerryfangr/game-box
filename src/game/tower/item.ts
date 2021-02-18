@@ -12,11 +12,11 @@ type propertyType = {
 }
 
 class Item extends GameElement {
+  
   constructor(texture: HTMLImageElement, options: {
     [k: string]: any
   }) {
     super(options);
-    this.options = options;
     this.element = new ImageElement(texture, options);
   }
 

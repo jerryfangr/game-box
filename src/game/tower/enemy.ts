@@ -4,6 +4,13 @@ import {
 
 import GameElement from './game-element';
 
+type propertyType = {
+  hp: number,
+  ak: number,
+  df: number,
+  [k: string]: number
+}
+
 class Enemy extends GameElement {
   animationElements: ImageElement[];
   activeAnimation: number;
@@ -33,8 +40,23 @@ class Enemy extends GameElement {
     }
   }
 
-  touchWith() {
+  touchWith(player?: GameElement) {
+    if (!player || !this.property || !player.property) {
+      console.log(player);
+      console.log('this.property');
+      return false;
+    }
+    if (this.canFight(this.property as propertyType, player.property as propertyType)) {
+      player.touchWith(this, 'enemy');
+      console.log('delete', this);
+      this.delete();
+      return true;
+    }
     return false;
+  }
+
+  canFight(property: propertyType, playerProperty: propertyType): boolean {
+    return true;
   }
 
   update () {

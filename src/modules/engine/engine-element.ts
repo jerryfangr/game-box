@@ -13,7 +13,6 @@ class EngineElement implements EngineElementInterface {
   y: number;
   width: number;
   height: number;
-  [k:string]: any;
 
   constructor(options: {
     x?: number,   // x coordinate in canvas

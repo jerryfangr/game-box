@@ -17,6 +17,7 @@ class StatusScene extends EngineScene {
   width: number;
   height: number;
   lineRange: number;
+  level: number;
   texture: HTMLImageElement;
   property: { [k: string]: any};
   [k: string]: any;
@@ -26,6 +27,7 @@ class StatusScene extends EngineScene {
     y: number,
     width?: number,
     height?: number,
+    level?: number,
     [k:string]: number | undefined
   }) {
     super();
@@ -34,6 +36,7 @@ class StatusScene extends EngineScene {
     this.y = options.y;
     this.width = options.width || 32*5;
     this.height = options.height || 32*13;
+    this.level = options.level || 0;
     this.lineRange = options.lineRange || 25;
     this.property = player.property || {};
     this.init();
@@ -46,8 +49,9 @@ class StatusScene extends EngineScene {
     this.initProperty();
   }
 
-  replacePlayer(player: GameElement) {
-    this.property = player.property || {};
+  replaceInfo (player?: GameElement, options?: {level: number}) {
+    this.property = player?.property || {};
+    this.level = options?.level || this.level;
   }
 
   initBackground() {
@@ -75,7 +79,7 @@ class StatusScene extends EngineScene {
     }
 
     let playerOption: { [k: string]: any } = getTextureOption('p0').texture.down;
-    playerOption.x = this.x + 32*2;
+    playerOption.x = commonOptions.x-5;
     playerOption.y = this.y + 32;
 
     let ykOptions: { [k: string]: any } = getTextureOption('i4').texture.default;
@@ -97,6 +101,11 @@ class StatusScene extends EngineScene {
       text: '',
     }
 
+    options.y = this.y + 32*1.28 + 13;
+    options.x = this.x + 32 * 2.59;
+    options.text = '第 ' + (this.level+1) + ' 层';
+    this.levelText = new FontElement(options)
+    options.x = this.x + 32 * 1.2;
     options.y = 32 * 3 + this.lineRange * 0;
     options.text = '生命     ' + (this.property.hp || 0);
     this.lifeText = new FontElement(options)
@@ -110,13 +119,14 @@ class StatusScene extends EngineScene {
     options.text = '            ' + (this.property.key?.yk || 0);
     this.yellowKeyText = new FontElement(options)
 
-    this.addElements([this.lifeText, this.attackText, this.defenseText, this.yellowKeyText]);
+    this.addElements([this.levelText, this.lifeText, this.attackText, this.defenseText, this.yellowKeyText]);
   }
 
   update () {
     this.updateCounter++;
     if (this.updateCounter >= this.updateNumber) {
       this.updateCounter = 0;
+      this.levelText.changeTexture('第 ' + (this.level+1) + ' 层');
       this.lifeText.changeTexture('生命     ' + this.property.hp);
       this.attackText.changeTexture('攻击     ' + this.property.ak);
       this.defenseText.changeTexture('防御     ' + this.property.ak);

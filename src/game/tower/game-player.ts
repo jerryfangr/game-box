@@ -70,7 +70,6 @@ class GamePlayer extends GameElement {
     if (this.direction !== direction) {
       if (['left', 'right', 'up', 'down'].indexOf(direction) !== -1) {
         this.direction = direction;
-        console.log(direction);
         this.elements[direction].setCoordinates(this.element.x, this.element.y);
         this.element = this.elements[direction];
       }

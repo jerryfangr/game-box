@@ -1,21 +1,12 @@
 import {EngineElement} from './engine-element';
 import PenElement from './pen-element';
 
-declare type optionType = {
-  x?: number,   // x coordinate in canvas
-  y?: number,   // y coordinate in canvas
-  lineWidth?: number,
-  width?: number,
-  height?: number,
-  radius?: number,
-  type?: 'stroke' | 'fill',
-  style?: string | CanvasGradient | CanvasPattern,
-  [k: string]: any
-}
-
 class RectElement extends EngineElement {
   pen: PenElement;
-  [props: string]: any;
+  radius: number;
+  lineWidth: number;
+  type: 'stroke' | 'fill';
+  style: string | CanvasGradient | CanvasPattern;
 
   constructor(options: {
     x?: number,   // x coordinate in canvas
@@ -26,27 +17,23 @@ class RectElement extends EngineElement {
     radius?: number,
     type?: 'stroke' | 'fill',
     style?: string | CanvasGradient | CanvasPattern,
-    [k: string]: any
+    [k:string]: any
   }) {
     super(options);
-    this.init(options);
-    this.pen = new PenElement({
-      lineWidth: this.lineWidth,
-      type: this.type,
-      style: this.style
-    })
-  }
-
-  init(options: optionType) {
     this.width = options.width || this.engine.width;
     this.height = options.height || this.engine.height;
     this.radius = options.radius || 0;
     this.lineWidth = options.lineWidth || 1;
     this.type = options.type || 'stroke';
     this.style = options.style || '#000';
-    if (this.radius*2 > this.width || this.radius*2 > this.height) {
+    if (this.radius * 2 > this.width || this.radius * 2 > this.height) {
       throw new Error('radius is too big, the diameter should small than width and height');
     }
+    this.pen = new PenElement({
+      lineWidth: this.lineWidth,
+      type: this.type,
+      style: this.style
+    })
   }
 
   changeStyle(style?: string | CanvasGradient | CanvasPattern, lineWidth?: number) {
