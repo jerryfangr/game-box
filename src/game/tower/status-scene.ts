@@ -16,15 +16,17 @@ class StatusScene extends EngineScene {
   y: number;
   width: number;
   height: number;
+  lineRange: number;
   texture: HTMLImageElement;
   property: { [k: string]: any};
   [k: string]: any;
 
-  constructor(texture: HTMLImageElement, property: {[k:string]:any}, options: {
+  constructor(texture: HTMLImageElement, player: GameElement, options: {
     x: number,
     y: number,
-    width?: number;
-    height?: number;
+    width?: number,
+    height?: number,
+    [k:string]: number | undefined
   }) {
     super();
     this.texture = texture;
@@ -32,7 +34,8 @@ class StatusScene extends EngineScene {
     this.y = options.y;
     this.width = options.width || 32*5;
     this.height = options.height || 32*13;
-    this.property = property;
+    this.lineRange = options.lineRange || 25;
+    this.property = player.property || {};
     this.init();
   }
 
@@ -43,8 +46,8 @@ class StatusScene extends EngineScene {
     this.initProperty();
   }
 
-  replaceProperty(property: { [k: string]: any }) {
-    this.property = property;
+  replacePlayer(player: GameElement) {
+    this.property = player.property || {};
   }
 
   initBackground() {
@@ -66,44 +69,46 @@ class StatusScene extends EngineScene {
   }
 
   initPropertyIcon() {
-    let playerOption: {[k:string]:any} = getTextureOption('p0').texture.default;
+    let commonOptions = {
+      x: this.x + 32 * 1.2,
+      y: 32 * 3,
+    }
+
+    let playerOption: { [k: string]: any } = getTextureOption('p0').texture.down;
     playerOption.x = this.x + 32*2;
     playerOption.y = this.y + 32;
-    this.addElement(new ImageElement(this.texture, playerOption));
+
+    let ykOptions: { [k: string]: any } = getTextureOption('i4').texture.default;
+    ykOptions.x = commonOptions.x;
+    ykOptions.y = commonOptions.y + this.lineRange*2 + 15;
+    ykOptions.width = ykOptions.height = 25;
+    
+    let p = new ImageElement(this.texture, playerOption);
+    let yk = new ImageElement(this.texture, ykOptions);
+    this.addElements([p, yk]);
   }
 
   initPropertyText () {
-    let x = this.x + 32*1.2;
-    let lineRannge = 25;
-    let space = '     ';
-    this.lifeText = new FontElement({
-      text: '生命     ' + this.property.hp,
+    let options = {
       font: '13px yehei',
-      x: x,
-      y: 32 * 3,
-      style: '#fff'
-    })
-    this.attackText = new FontElement({
-      text: '攻击     ' + this.property.ak,
-      font: '13px yehei',
-      x: x,
-      y: 32 * 3 + lineRannge*1,
-      style: '#fff'
-    })
-    this.defenseText = new FontElement({
-      text: '防御     ' + this.property.ak,
-      font: '13px yehei',
-      x: x,
-      y: 32 * 3 + lineRannge * 2,
-      style: '#fff'
-    })
-    this.yellowKeyText = new FontElement({
-      text: '            ' + this.property.key.yk,
-      font: '13px yehei',
-      x: x,
-      y: 32 * 3 + lineRannge * 3,
-      style: '#fff'
-    })
+      x: this.x + 32 * 1.2,
+      y: 0,
+      style: '#fff',
+      text: '',
+    }
+
+    options.y = 32 * 3 + this.lineRange * 0;
+    options.text = '生命     ' + (this.property.hp || 0);
+    this.lifeText = new FontElement(options)
+    options.y = 32 * 3 + this.lineRange * 1;
+    options.text = '攻击     ' + (this.property.ak || 0);
+    this.attackText = new FontElement(options)
+    options.y = 32 * 3 + this.lineRange*2;
+    options.text = '防御     ' + (this.property.df || 0);
+    this.defenseText = new FontElement(options)
+    options.y = 32 * 3 + this.lineRange * 3 + 9;
+    options.text = '            ' + (this.property.key?.yk || 0);
+    this.yellowKeyText = new FontElement(options)
 
     this.addElements([this.lifeText, this.attackText, this.defenseText, this.yellowKeyText]);
   }

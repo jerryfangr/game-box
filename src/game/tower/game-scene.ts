@@ -25,6 +25,7 @@ type rectType = {
 
 class GameScene extends EngineScene {
   texture: HTMLImageElement;
+  lock: boolean;
   levelsCode: { bg: string, elements: string[][]}[];
   levelNumber: number;
   gameWindowSize: {
@@ -41,6 +42,7 @@ class GameScene extends EngineScene {
     this.gameElements = [];
     this.levelsCode = [];
     this.levelNumber = 0;
+    this.lock = false;
     this.loadLevel(this.levelNumber);
     this.loadTexture(() => {
       this.init();
@@ -89,7 +91,7 @@ class GameScene extends EngineScene {
   }
 
   initStatusBar () {
-    this.statusScene = new StatusScene(this.texture, this.player.property, { x: 32 * 13, y: 0 });
+    this.statusScene = new StatusScene(this.texture, this.player, { x: 32 * 13, y: 0 });
     this.addElement(this.statusScene);
   }
 
@@ -101,20 +103,23 @@ class GameScene extends EngineScene {
   }
 
   // 1. 以地图数组移动
-  // 2. 以循环判断移动 -- choosed
+  // 2. 以循环判断移动 -- choosed lock => 只允许单向移动
   move(keyState: string, direction: string) {
+    if (this.lock) {
+      return;
+    }
+    this.lock = true;
     let nextPlayer = this.player.nextStatus(keyState, direction)
     if (nextPlayer === null) {
-      return;
+      return this.lock = false;
     }
     let element = this.getTouchedItem(nextPlayer, this.gameElements);
     if (element === null) {
-      return this.player.moveWidth(keyState, direction);
+      this.lock = false;
+      return this.player.moveBy(direction);
     } 
-    element.touchWith(this.player, this)
-    // if (element.touchWith(this.player, this)) {
-    //   this.player.moveWidth(keyState, direction, element);
-    // }
+    element.touchWith(this.player, this);
+    this.lock = false;
   }
 
   getTouchedItem(nextPlayer: EngineElement, items: GameElement[]) {
@@ -131,16 +136,16 @@ class GameScene extends EngineScene {
     this.engine.bindPause('p');
 
     this.engine.bindEvent('d', (keyState) => {
-        this.move(keyState, 'right');
+      this.move(keyState, 'right');
     }, 50);
     this.engine.bindEvent('a', (keyState) => {
       this.move(keyState, 'left');
     }, 50);
     this.engine.bindEvent('w', (keyState) => {
-      this.move(keyState, 'top');
+      this.move(keyState, 'up');
     }, 50);
     this.engine.bindEvent('s', (keyState) => {
-      this.move(keyState, 'bottom');
+      this.move(keyState, 'down');
     }, 50);
   }
 }

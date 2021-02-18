@@ -10,7 +10,11 @@ type propertyType = {
 
 class GamePlayer extends GameElement {
   element: ImageElement;
+  elements: {
+    [k:string]: ImageElement
+  };
   texture: HTMLImageElement;
+  direction: string;
   [key: string]: any;
 
   constructor(texture: HTMLImageElement, playerCode: string) {
@@ -18,13 +22,19 @@ class GamePlayer extends GameElement {
     super(options);
     this.texture = texture;
     this.element = new ImageElement(this.texture, options);
+    this.elements = {};
     this.width = this.element.width;
     this.height = this.element.height;
-    this.init();
+    this.direction = 'up';
+    this.init(options.texture);
   }
 
-  init() {
+  init(texture: {[k:string]: any}) {
     this.setCoordinates(32*6, 32*11);
+    for (const key in texture) {
+      let options = texture[key];
+      this.elements[key] = new ImageElement(this.texture, options);
+    }
   }
 
   setCoordinates(x?: number, y?: number) {
@@ -37,7 +47,7 @@ class GamePlayer extends GameElement {
     this.element.move(x, y);
   }
 
-  nextStatus(keyState: string,direction: string) {
+  nextStatus(keyState: string, direction: string) {
     if (keyState !== 'down') {
       return null;
     }
@@ -50,10 +60,20 @@ class GamePlayer extends GameElement {
     }
   }
 
-  moveWidth(keyState: string, direction: string, element?: GameElement) {
-    if (keyState === 'down') {
-      let distance = this.getMoveDistance(direction);
-      this.move(distance.x, distance.y);
+  moveBy (direction: string) {
+    this.updateReplaceBy(direction);
+    let distance = this.getMoveDistance(direction);
+    this.move(distance.x, distance.y);
+  }
+
+  updateReplaceBy(direction: string) {
+    if (this.direction !== direction) {
+      if (['left', 'right', 'up', 'down'].indexOf(direction) !== -1) {
+        this.direction = direction;
+        console.log(direction);
+        this.elements[direction].setCoordinates(this.element.x, this.element.y);
+        this.element = this.elements[direction];
+      }
     }
   }
 
@@ -81,9 +101,9 @@ class GamePlayer extends GameElement {
         return {x: -32, y:0};
       case 'right':
         return { x: 32, y: 0 };
-      case 'top':
+      case 'up':
         return { x: 0, y: -32 };
-      case 'bottom':
+      case 'down':
         return { x: 0, y: 32 };
       default:
         return { x: 0, y: 0 };

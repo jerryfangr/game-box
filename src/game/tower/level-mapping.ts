@@ -144,7 +144,7 @@ const OPTIONS_MAP: {
     },
     texture: {
       default: {
-        sx: 858, sy: 726, sWidth: 32, sHeight: 32
+        sx: 825, sy: 726, sWidth: 32, sHeight: 32
       },
       up: {
         sx: 825, sy: 726, sWidth: 32, sHeight: 32
