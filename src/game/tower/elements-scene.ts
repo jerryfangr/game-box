@@ -25,15 +25,23 @@ type optionType = {
 };
 
 class ElementsScene extends EngineScene {
+  x: number;
+  y: number;
   elements: GameElement[];
   elementsCode: string[][];
   elementsOption: optionType[][];
   elementDistance: number;
   texture: HTMLImageElement;
 
-  constructor(texture: HTMLImageElement, elementsCode: string[][]) {
+  constructor(texture: HTMLImageElement, options: {
+    x?: number,
+    y?: number,
+    elementsCode: string[][]
+  }) {
     super();
-    this.elementsCode = elementsCode;
+    this.x = options.x || 0;
+    this.y = options.y || 0;
+    this.elementsCode = options.elementsCode;
     this.elements = [];
     this.texture = texture;
     this.elementsOption = elementsCodeToOptions(this.elementsCode);
@@ -53,8 +61,8 @@ class ElementsScene extends EngineScene {
   createElement (options: { [k: string]: any }, rowIndex: number, columIndex: number) {
     if (options.type !== undefined && options.type !== 'none') {
       let tempOptions = options;
-      tempOptions.x = columIndex * this.elementDistance;
-      tempOptions.y = rowIndex * this.elementDistance;
+      tempOptions.x = this.x + columIndex * this.elementDistance;
+      tempOptions.y = this.y + rowIndex * this.elementDistance;
       tempOptions.position = {
         rIndex: rowIndex,
         cIndex: columIndex

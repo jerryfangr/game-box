@@ -49,6 +49,7 @@ class GameScene extends EngineScene {
   }
 
   init() {
+    this.resetElement();
     this.initBackground();
     this.initElementScene();
     this.initPlayer();
@@ -79,23 +80,35 @@ class GameScene extends EngineScene {
   }
 
   initBackground () {
-    let gbg = new BackGround(this.texture, this.gameWindowSize, this.levelsCode[this.levelNumber].bg)
-    this.addElement(gbg);
+    this.staticBg = this.staticBg || new BackGround(this.texture, {
+      x: 32*13,
+      height: this.gameWindowSize.rowNumber * 32,
+      width: 5 * 32,
+      bgCode: 'b4'
+    })
+
+    let levelbg = new BackGround(this.texture, {
+      height: 13 * 32,
+      width: this.gameWindowSize.rowNumber * 32,
+      bgCode: this.levelsCode[this.levelNumber].bg
+    });
+
+    this.addElements([this.staticBg, levelbg]);
   }
 
   initElementScene () {
-    let ge = new ElementsScene(this.texture, this.levelsCode[this.levelNumber].elements);
+    let ge = new ElementsScene(this.texture, {elementsCode: this.levelsCode[this.levelNumber].elements});
     this.gameElements = ge.elements;
     this.addElement(ge);
   }
 
   initPlayer () {
-    this.player = new GamePlayer(this.texture, 'p0');
+    this.player = this.player || new GamePlayer(this.texture, 'p0');
     this.addElement(this.player);
   }
 
   initStatusBar () {
-    this.statusScene = new StatusScene(this.texture, this.player, { x: 32 * 13, y: 0 });
+    this.statusScene = new StatusScene(this.texture, this.player, { x: 32 * 13, y: 32*0.5 });
     this.addElement(this.statusScene);
   }
 

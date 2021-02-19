@@ -40,11 +40,12 @@ class Enemy extends GameElement {
     }
   }
 
-  touchWith(player?: GameElement) {
-    if (!player || !this.property || !player.property) {
+  touchWith(player: GameElement) {
+    if (!this.property || !player.property) {
       return false;
     }
     if (this.canFight(this.property as propertyType, player.property as propertyType)) {
+      this.fightAnimation(player);
       player.touchWith(this, 'enemy');
       this.delete();
       return true;
@@ -52,6 +53,7 @@ class Enemy extends GameElement {
     return false;
   }
 
+  // 改成勇者先攻击模式
   canFight(property: propertyType, playerProperty: propertyType): boolean {
     let playerInjure = playerProperty.ak - property.df;
     if (playerInjure <= 0) {
@@ -65,6 +67,13 @@ class Enemy extends GameElement {
     let playerAttackCount = property.hp / playerInjure;
     let enemyAttackCount = playerProperty.hp / enemyInjure;
     return playerAttackCount < enemyAttackCount;
+  }
+
+  fightAnimation(player: GameElement) {
+    this.engine.toggleListener(false);
+    // fight animation
+    
+    this.engine.toggleListener(true);
   }
 
   update () {

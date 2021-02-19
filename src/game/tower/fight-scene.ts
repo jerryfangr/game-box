@@ -7,82 +7,48 @@ import {
 } from '@/modules/engine'
 
 import GameElement from './game-element';
-import Background from './background';
+
 import { getTextureOption } from './level-load';
 
 
-class StatusScene extends EngineScene {
+class FightScene extends EngineScene {
   x: number;
   y: number;
   width: number;
   height: number;
-  lineRange: number;
-  level: number;
-  texture: HTMLImageElement;
-  property: { [k: string]: any};
   [k: string]: any;
 
   constructor(texture: HTMLImageElement, player: GameElement, options: {
-    x?: number,
-    y?: number,
-    width?: number,
-    height?: number,
+    x: number,
+    y: number,
     level?: number,
-    [k:string]: number | undefined
+    [k: string]: number | undefined
   }) {
     super();
     this.texture = texture;
-    this.x = options.x || 0;
-    this.y = options.y || 0;
-    this.width = options.width || 32*5;
-    this.height = options.height || 32*13;
-    this.level = options.level || 0;
-    this.lineRange = options.lineRange || 25;
-    this.property = player.property || {};
+    this.x = options.x;
+    this.y = options.y;
+    this.width = 32 * 5;
+    this.height = 32 * 13;
     this.init();
   }
 
-  init () {
-    this.updateCounter = 0;
-    this.updateNumber = 10;
+  init() {
     this.initBackground();
     this.initProperty();
   }
 
-  replaceInfo (player?: GameElement, options?: {level: number}) {
-    this.property = player?.property || {};
-    this.level = options?.level || this.level;
-  }
-
   initBackground() {
-    let bgOption = {
-      x: this.x + 20,
-      y: this.y,
-      width: 3.9 * 32,
-      height: 5 * 32,
-      bgCode: 'b1'
-    }
-    this.addElement(new Background(this.texture, bgOption));
-
-    bgOption.y = bgOption.y + bgOption.height + 17;
-    this.addElement(new Background(this.texture, bgOption));
-
-    let bgBorderOption:{
-      type: 'stroke' | 'fill',
-      [k:string]: any
-    } = {
-      x: this.x + 20,
-      y: this.y + 2,
-      width: 3.9 * 32,
-      height: 5 * 32 - 4,
+    let barBorder = new RectElement({
+      x: 13 * 32 + 4,
+      y: 3,
+      width: 5 * 32 - 7,
+      height: 13 * 32 - 5,
       style: '#CF6C00',
       type: 'stroke',
-      lineWidth: 4
-    }
-    this.addElement(new RectElement(bgBorderOption));
-
-    bgBorderOption.y = bgBorderOption.y + bgBorderOption.height + 17 + bgBorderOption.lineWidth;
-    this.addElement(new RectElement(bgBorderOption));
+      lineWidth: 6
+    });
+    this.addElement(barBorder);
   }
 
   initProperty() {
@@ -93,60 +59,58 @@ class StatusScene extends EngineScene {
   initPropertyIcon() {
     let commonOptions = {
       x: this.x + 32 * 1.2,
-      y: this.y,
+      y: 32 * 3,
     }
 
     let playerOption: { [k: string]: any } = getTextureOption('p0').texture.down;
-    playerOption.x = commonOptions.x-5;
-    playerOption.y = this.y + 10;
+    playerOption.x = commonOptions.x - 5;
+    playerOption.y = this.y + 32;
 
     let ykOptions: { [k: string]: any } = getTextureOption('i4').texture.default;
     ykOptions.x = commonOptions.x;
-    ykOptions.y = commonOptions.y + 32 * 5 + this.lineRange + 10;
+    ykOptions.y = commonOptions.y + this.lineRange * 2 + 15;
     ykOptions.width = ykOptions.height = 25;
-    
+
     let p = new ImageElement(this.texture, playerOption);
     let yk = new ImageElement(this.texture, ykOptions);
     this.addElements([p, yk]);
   }
 
-  initPropertyText () {
+  initPropertyText() {
     let options = {
-      x: this.x + 32 * 1.2, y: 0,
       font: '13px yehei',
+      x: this.x + 32 * 1.2,
+      y: 0,
       style: '#fff',
       text: '',
     }
-    options.y = this.y + 13 + 4 + 32*0.5;
-    options.x = this.x + 32 * 2.59;
-    options.text = '第 ' + (this.level+1) + ' 层';
-    this.levelText = new FontElement(options)
 
+    options.y = this.y + 32 * 1.28 + 13;
+    options.x = this.x + 32 * 2.59;
+    options.text = '第 ' + (this.level + 1) + ' 层';
+    this.levelText = new FontElement(options)
     options.x = this.x + 32 * 1.2;
-    options.y = this.y + 32 * 2.1 + this.lineRange * 0;
+    options.y = 32 * 3 + this.lineRange * 0;
     options.text = '生命     ' + (this.property.hp || 0);
     this.lifeText = new FontElement(options)
-
-    options.y = this.y + 32 * 2.1 + this.lineRange * 1;
+    options.y = 32 * 3 + this.lineRange * 1;
     options.text = '攻击     ' + (this.property.ak || 0);
     this.attackText = new FontElement(options)
-
-    options.y = this.y + 32 * 2.1 + this.lineRange * 2;
+    options.y = 32 * 3 + this.lineRange * 2;
     options.text = '防御     ' + (this.property.df || 0);
     this.defenseText = new FontElement(options)
-
-    options.y = this.y + 32 * 5 + this.lineRange*2 + 4;
+    options.y = 32 * 3 + this.lineRange * 3 + 9;
     options.text = '            ' + (this.property.key?.yk || 0);
     this.yellowKeyText = new FontElement(options)
 
     this.addElements([this.levelText, this.lifeText, this.attackText, this.defenseText, this.yellowKeyText]);
   }
 
-  update () {
+  update() {
     this.updateCounter++;
     if (this.updateCounter >= this.updateNumber) {
       this.updateCounter = 0;
-      this.levelText.changeTexture('第 ' + (this.level+1) + ' 层');
+      this.levelText.changeTexture('第 ' + (this.level + 1) + ' 层');
       this.lifeText.changeTexture('生命     ' + this.property.hp);
       this.attackText.changeTexture('攻击     ' + this.property.ak);
       this.defenseText.changeTexture('防御     ' + this.property.df);
@@ -155,4 +119,4 @@ class StatusScene extends EngineScene {
   }
 }
 
-export default StatusScene;
+export default FightScene;

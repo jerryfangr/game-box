@@ -1,7 +1,7 @@
 import Engine from './engine';
 
 interface EngineElementInterface {
-  isDead?: boolean;
+  isDead: boolean;
   render ():void;
   update ():void;
 }

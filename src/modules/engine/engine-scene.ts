@@ -37,6 +37,10 @@ class EngineScene implements EngineElementInterface {
       })
     }
   }
+
+  resetElement () {
+    this.elements = [];
+  }
   
   deleteElementCallback(element: EngineElementInterface) {}
   
