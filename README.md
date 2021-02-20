@@ -1,7 +1,5 @@
 # game-box
 
-
-
 ## Introduction
 
 ~~to make some...~~
@@ -13,14 +11,11 @@
 既然是麦趣鸡盒，会原生去实现体积大概会小一点，大概。
 
 
-
 ## preview
 
 ### [click here](https://jerryfangr.github.io/game-box/dist/index.html)
 
-
-
-
+<br><br>
 
 ## install(for dev)
 
@@ -40,9 +35,6 @@
      yarn
      ```
 
-     
-
-   
 
 ## progress
 
@@ -58,9 +50,6 @@
    8. 商店面板
    9. 本地存档+配合leanCloud云存档
    10. ...
-
-
-
 
 
 ## TODO
