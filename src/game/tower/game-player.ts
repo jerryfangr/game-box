@@ -53,7 +53,7 @@ class GamePlayer extends GameElement {
     this.element.move(x, y);
   }
 
-  nextStatus(keyState: string, direction: string) {
+  nextPosition(keyState: string, direction: string) {
     if (keyState !== 'down') {
       return null;
     }

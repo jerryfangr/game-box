@@ -43,7 +43,7 @@ class FightScene extends EngineScene {
   }) {
     super();
     this.updateCounter = 0;
-    this.updateNumber = 12;
+    this.updateNumber = 8;
     this.attackCount = 0;
     this.texture = texture;
     this.x = options.x || 32 * 0.5;

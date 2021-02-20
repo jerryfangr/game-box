@@ -13,6 +13,7 @@ const TEXTURE_NAME: {
     '3': 'wallYellow',
     '4': 'floorBlue',
     '5': 'stairsDown',
+    '6': 'blockDoor'
   },
   item: {
     '0': 'doorYellow',
@@ -20,6 +21,11 @@ const TEXTURE_NAME: {
     '2': 'gemRed',
     '3': 'gemBlue',
     '4': 'keyYellow',
+    '5': 'doorRed',
+    '6': 'keyRed',
+    '7': 'keyBlue',
+    '8': 'doorBlue',
+    '9': 'smallBottleBlue',
   },
   enemy: {
     '0': 'slimeGreen',
@@ -29,6 +35,8 @@ const TEXTURE_NAME: {
     '4': 'skullWhiteEquip',
     '5': 'smallBatBlue',
     '6': 'wizardBlue',
+    '7': 'slimeBlack',
+    '8': 'orcish',
   },
   player: {
     '0': 'playerFemale'
@@ -92,11 +100,17 @@ const OPTIONS_MAP: {
   floorGrey: { type: 'none', texture: { default: { sx: 0, sy: 0, sWidth: 32, sHeight: 32 } } },
   floorBlue: { type: 'none', texture: { default: {sx: 33, sy: 0, sWidth: 32, sHeight: 32}} },
   floorGlass: { type: 'none', texture: { default: {sx: 132, sy: 165, sWidth: 32, sHeight: 32}} },
-  // item 200  500
   wallYellow: { type: 'block', texture: { default: {sx: 132, sy: 495, sWidth: 32, sHeight: 32}} },
-  doorYellow: { type: 'item', property: { key: { yk: -1 } }, texture: { default: {sx: 99, sy: 660, sWidth: 32, sHeight: 32}} },
-  keyYellow: { type: 'item', property: { key: { yk: 1 } }, texture: { default: {sx: 231, sy: 660, sWidth: 32, sHeight: 32}} },
-  smallBottleRed: { type: 'item', property: { hp: 100}, texture: { default: {sx: 330, sy: 726, sWidth: 32, sHeight: 32}} },
+  blockDoor: { type: 'block', texture: { default: { sx: 132, sy: 660, sWidth: 32, sHeight: 32 } } },
+  // item 
+  doorYellow: { type: 'item', property: { key: { yk: -1 } }, texture: { default: { sx: 99, sy: 660, sWidth: 32, sHeight: 32 } } },
+  doorBlue: { type: 'item', property: { key: { bk: -1 } }, texture: { default: { sx: 66, sy: 660, sWidth: 32, sHeight: 32 } } },
+  doorRed: { type: 'item', property: { key: { rk: -1 } }, texture: { default: {sx: 33, sy: 660, sWidth: 32, sHeight: 32}} },
+  keyYellow: { type: 'item', property: { key: { yk: 1 } }, texture: { default: { sx: 231, sy: 660, sWidth: 32, sHeight: 32 } } },
+  keyBlue: { type: 'item', property: { key: { bk: 1 } }, texture: { default: { sx: 198, sy: 660, sWidth: 32, sHeight: 32 } } },
+  keyRed: { type: 'item', property: { key: { rk: 1 } }, texture: { default: {sx: 165, sy: 660, sWidth: 32, sHeight: 32}} },
+  smallBottleRed: { type: 'item', property: { hp: 200 }, texture: { default: { sx: 330, sy: 726, sWidth: 32, sHeight: 32 } } },
+  smallBottleBlue: { type: 'item', property: { hp: 500}, texture: { default: {sx: 363, sy: 726, sWidth: 32, sHeight: 32}} },
   gemRed: { type: 'item', property: { ak: 3 }, texture: { default: {sx: 495, sy: 726, sWidth: 32, sHeight: 32}} },
   gemBlue: { type: 'item', property: { df: 3 }, texture: { default: {sx: 528, sy: 726, sWidth: 32, sHeight: 32}} },
   // enemy
@@ -114,14 +128,23 @@ const OPTIONS_MAP: {
       default: {sx: 660, sy: 0, sWidth: 32, sHeight: 32},
       active: { sx: 660, sy: 33, sWidth: 32, sHeight: 32 },
     } },
-  slimeBlue: { 
+  slimeBlue: {
     type: 'enemy',
-    property: {hp: 1000, ak: 5, df: 5,}, 
-    texture: { 
+    property: { hp: 1000, ak: 5, df: 5, },
+    texture: {
       default: { sx: 660, sy: 0, sWidth: 32, sHeight: 32 },
       active: { sx: 660, sy: 33, sWidth: 32, sHeight: 32 },
-    } },
-  skullWhite: { 
+    }
+  },
+  slimeBlack: {
+    type: 'enemy',
+    property: { hp: 50, ak: 5, df: 5, },
+    texture: {
+      default: { sx: 858, sy: 0, sWidth: 32, sHeight: 32 },
+      active: { sx: 858, sy: 33, sWidth: 32, sHeight: 32 },
+    }
+  },
+  skullWhite: {
     type: 'enemy',
     property: {hp: 110, ak: 25, df: 5,}, 
     texture: { 
@@ -148,6 +171,13 @@ const OPTIONS_MAP: {
       texture: { 
       default: { sx: 891, sy: 198, sWidth: 32, sHeight: 32 },
       active: { sx: 891, sy: 231, sWidth: 32, sHeight: 32 },
+    } },
+  orcish: {
+    type: 'enemy',
+    property: { hp: 1000, ak: 5, df: 5, },
+    texture: {
+      default: { sx: 858, sy: 132, sWidth: 32, sHeight: 32 },
+      active: { sx: 858, sy: 165, sWidth: 32, sHeight: 32 },
     } },
   // player
   playerFemale: { 

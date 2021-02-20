@@ -39,7 +39,7 @@ class StartScene extends EngineScene {
     })
 
     let author = new FontElement({
-      text: '本大爷',
+      text: '故事......',
       x: 200,
       y: 210,
       style: '#ff0',

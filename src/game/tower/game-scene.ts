@@ -1,11 +1,7 @@
-// import imageUrl from '@/assets/tower.jpg';
 import imageUrl from './assets/tower.png';
 import { 
   EngineElement, 
   EngineScene, 
-  FontElement, 
-  RectElement, 
-  ImageElement 
 } from '@/modules/engine'
 import BackGround from './element/background';
 import ElementsScene from './elements-scene';
@@ -31,12 +27,14 @@ class GameScene extends EngineScene {
     rowNumber: number,
     columnNumber: number
   }
+  direction: string;
   gameElements: GameElement[];
   [key: string]: any;
 
   constructor() {
     super();
     this.texture = new Image();
+    this.direction = 'up';
     this.gameWindowSize = { rowNumber: 13, columnNumber: 18 };
     this.gameElements = [];
     this.levelsCode = [];
@@ -60,7 +58,7 @@ class GameScene extends EngineScene {
     if (this.levelsCode[levelNumber] === undefined) {
       let levelCode: null | { bg: string, elements: string[][] } = getLevelCode(levelNumber);
       if (levelCode === null) {
-        throw new Error('Level config error, content is null')
+        throw new Error('Level config error, level' + (this.levelNumber+1) + ' is not exist')
       }
       this.levelsCode[levelNumber] = levelCode;
     }
@@ -70,12 +68,37 @@ class GameScene extends EngineScene {
     this.loadLevelCode(levelNumber);
     this.levelNumber = levelNumber;
     this.init();
+    this.statusScene.replaceInfo({level: this.levelNumber});
+    this.updatePlayerPosition();
   }
 
   loadTexture (callback: Function) {
     this.texture.src = imageUrl;
     this.texture.onload = () => {
       callback.call(this);
+    }
+  }
+
+  updatePlayerPosition () {
+    let stairElement = this.findElement('stair');
+    this.player.setCoordinates(stairElement?.x, stairElement?.y);
+    let nextPosition = this.findElement('floor');
+    this.player.setCoordinates(nextPosition?.x, nextPosition?.y);
+  }
+
+  findElement (name: string) {
+    if (name === 'stair') {
+      let playerPosition = this.player.nextPosition('down', this.direction);
+      return this.getTouchedItem(playerPosition, this.gameElements);
+    } else if (name === 'floor') {
+      let directions = ['right', 'down', 'left', 'up'];
+      for (let i = 0; i < directions.length; i++) {
+        const direction = directions[i];
+        let p = this.player.nextPosition('down', direction);
+        if (this.getTouchedItem(p, this.gameElements) === null) {
+          return p;
+        }
+      }
     }
   }
 
@@ -108,7 +131,7 @@ class GameScene extends EngineScene {
   }
 
   initStatusBar () {
-    this.statusScene = new StatusScene(this.texture, this.player, { x: 32 * 13, y: 32*0.5 });
+    this.statusScene = this.statusScene || new StatusScene(this.texture, this.player, { x: 32 * 13, y: 32*0.5 });
     this.addElement(this.statusScene);
   }
 
@@ -118,12 +141,13 @@ class GameScene extends EngineScene {
     if (this.lock) {return;}
     // locke this function
     this.lock = true;
+    this.direction = direction;
     // need to turn to a new direction
     if (this.player.turnDirection(direction)) {
       return this.lock = false;
     }
     // get moved player position
-    let nextPlayer = this.player.nextStatus(keyState, direction)
+    let nextPlayer = this.player.nextPosition(keyState, direction)
     if (nextPlayer === null) {
       return this.lock = false;
     }

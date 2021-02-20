@@ -49,9 +49,9 @@ class StatusScene extends EngineScene {
     this.initProperty();
   }
 
-  replaceInfo (player?: GameElement, options?: {level: number}) {
-    this.player = player || this.player;
+  replaceInfo(options?: { level: number }, player?: GameElement) {
     this.level = options?.level || this.level;
+    this.player = player || this.player;
   }
 
   delete () {
@@ -103,15 +103,19 @@ class StatusScene extends EngineScene {
     let playerOption: { [k: string]: any } = getTextureOption(this.player!.code).texture.down;
     playerOption.x = commonOptions.x-5;
     playerOption.y = this.y + 10;
+    this.addElement(new ImageElement(this.texture!, playerOption));
 
-    let ykOptions: { [k: string]: any } = getTextureOption('i4').texture.default;
-    ykOptions.x = commonOptions.x;
-    ykOptions.y = commonOptions.y + 32 * 5 + this.lineRange + 10;
-    ykOptions.width = ykOptions.height = 25;
-    
-    let p = new ImageElement(this.texture!, playerOption);
-    let yk = new ImageElement(this.texture!, ykOptions);
-    this.addElements([p, yk]);
+    this.loadKeyElement('i4', commonOptions.x, commonOptions.y + 32 * 5 + this.lineRange + 10, 25);
+    this.loadKeyElement('i7', commonOptions.x, commonOptions.y + 32 * 5 + this.lineRange * 2.5 + 5, 25);
+    this.loadKeyElement('i6', commonOptions.x, commonOptions.y + 32 * 5 + this.lineRange*4 , 25);
+  }
+
+  loadKeyElement (code:string, x:number, y:number, borderLength: number) {
+    let options: { [k: string]: any } = getTextureOption(code).texture.default;
+    options.x = x;
+    options.y = y;
+    options.width = options.height = borderLength;
+    this.addElement(new ImageElement(this.texture!, options));
   }
 
   initPropertyText () {
@@ -122,29 +126,35 @@ class StatusScene extends EngineScene {
       text: '',
     }
     let property = this.player!.property!;
-    options.y = this.y + 13 + 4 + 32*0.5;
-    options.x = this.x + 32 * 2.59;
-    options.text = '第 ' + (this.level+1) + ' 层';
-    this.levelText = new FontElement(options)
+    this.levelText = this.createTextElement(options, this.x + 32 * 2.59, this.y + 13 + 4 + 32 * 0.5, 
+      '第 ' + (this.level + 1) + ' 层');
+      
+    let baseX = this.x + 32 * 1.2;
+    let baseY = this.y + 32 * 2.1;
+    this.lifeText = this.createTextElement(options, baseX, baseY,
+      '生命     ' + (property.hp || 0));
+    this.attackText = this.createTextElement(options, baseX, baseY + this.lineRange * 1,
+      '攻击     ' + (property.ak || 0));
+    this.defenseText = this.createTextElement(options, baseX, baseY + this.lineRange * 2,
+      '防御     ' + (property.df || 0));
 
-    options.x = this.x + 32 * 1.2;
-    options.y = this.y + 32 * 2.1 + this.lineRange * 0;
-    options.text = '生命     ' + (property.hp || 0);
-    this.lifeText = new FontElement(options);
+    this.yellowKeyText = this.createTextElement(options, baseX, this.y + 32 * 5 + this.lineRange * 2 + 4,
+      '            ' + (property.key?.yk || 0));
+    this.blueKeyText = this.createTextElement(options, baseX, this.y + 32 * 5 + this.lineRange * 3 + 9,
+      '            ' + (property.key?.bk || 0));
+    this.redKeyText = this.createTextElement(options, baseX, this.y + 32 * 5 + this.lineRange * 4 + 15,
+      '            ' + (property.key?.rk || 0));
 
-    options.y = this.y + 32 * 2.1 + this.lineRange * 1;
-    options.text = '攻击     ' + (property.ak || 0);
-    this.attackText = new FontElement(options);
+    this.addElements([
+      this.levelText, this.lifeText, this.attackText, this.defenseText, 
+      this.yellowKeyText, this.blueKeyText, this.redKeyText])
+  }
 
-    options.y = this.y + 32 * 2.1 + this.lineRange * 2;
-    options.text = '防御     ' + (property.df || 0);
-    this.defenseText = new FontElement(options);
-
-    options.y = this.y + 32 * 5 + this.lineRange*2 + 4;
-    options.text = '            ' + (property.key?.yk || 0);
-    this.yellowKeyText = new FontElement(options);
-
-    this.addElements([this.levelText, this.lifeText, this.attackText, this.defenseText, this.yellowKeyText])
+  createTextElement (options: any, x:number, y: number, text: string) {
+    options.x = x;
+    options.y = y;
+    options.text = text;
+    return new FontElement(options);
   }
 
   update () {
@@ -157,6 +167,8 @@ class StatusScene extends EngineScene {
       this.attackText.changeTexture('攻击     ' + property.ak);
       this.defenseText.changeTexture('防御     ' + property.df);
       this.yellowKeyText.changeTexture('            ' + property.key.yk);
+      this.blueKeyText.changeTexture('            ' + property.key.bk);
+      this.redKeyText.changeTexture('            ' + property.key.rk);
     }
   }
 }
