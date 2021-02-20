@@ -12,6 +12,7 @@ const TEXTURE_NAME: {
     '2': 'floorGlass',
     '3': 'wallYellow',
     '4': 'floorBlue',
+    '5': 'stairsDown',
   },
   item: {
     '0': 'doorYellow',
@@ -36,7 +37,8 @@ const TEXTURE_NAME: {
 
 const OPTIONS_MAP: {
   [key: string]: {
-    type?: 'block' | 'item' | 'enemy' | 'sceneItem' | 'player' | 'scene' | 'none';
+    code?: string,
+    type?: 'block' | 'item' | 'sceneItem' | 'levelItem' | 'enemy' | 'player' | 'none';
     property?: { 
       // item or enemy or player property
       ak?: number, // attack value
@@ -48,7 +50,7 @@ const OPTIONS_MAP: {
         bk?: number, // blue
         rk?: number // red 
       },
-      // Only 'sceneItem have following property
+      // Only 'sceneItem&levelItem have following property
       // some item: jump level
       level?: number,
       // some item destory block
@@ -77,10 +79,19 @@ const OPTIONS_MAP: {
   // other
   nothing: { texture: { default: {sx: -1, sy: -1, sWidth: 32, sHeight: 32}} },
   // background
-  stairsUp: { type: 'sceneItem', texture: { default: {sx: 594, sy: 660, sWidth: 32, sHeight: 32}} },
-  floorGrey: { type: 'scene', texture: { default: { sx: 0, sy: 0, sWidth: 32, sHeight: 32 } } },
-  floorBlue: { type: 'scene', texture: { default: {sx: 33, sy: 0, sWidth: 32, sHeight: 32}} },
-  floorGlass: { type: 'scene', texture: { default: {sx: 132, sy: 165, sWidth: 32, sHeight: 32}} },
+  stairsUp: {
+    type: 'levelItem',
+    property: { level: 1, },
+    texture: { default: { sx: 594, sy: 660, sWidth: 32, sHeight: 32 } }
+  },
+  stairsDown: {
+    type: 'levelItem',
+    property: { level: -1, },
+    texture: { default: { sx: 594, sy: 628, sWidth: 32, sHeight: 32 } }
+  },
+  floorGrey: { type: 'none', texture: { default: { sx: 0, sy: 0, sWidth: 32, sHeight: 32 } } },
+  floorBlue: { type: 'none', texture: { default: {sx: 33, sy: 0, sWidth: 32, sHeight: 32}} },
+  floorGlass: { type: 'none', texture: { default: {sx: 132, sy: 165, sWidth: 32, sHeight: 32}} },
   // item 200  500
   wallYellow: { type: 'block', texture: { default: {sx: 132, sy: 495, sWidth: 32, sHeight: 32}} },
   doorYellow: { type: 'item', property: { key: { yk: -1 } }, texture: { default: {sx: 99, sy: 660, sWidth: 32, sHeight: 32}} },

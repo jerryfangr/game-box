@@ -43,7 +43,7 @@ class StartScene extends EngineScene {
       x: 200,
       y: 210,
       style: '#ff0',
-      font: '20px yahei'
+      font: '20px Arial'
     })
 
     let tips = new FontElement({
@@ -51,7 +51,7 @@ class StartScene extends EngineScene {
       x: 200,
       y: 260,
       style: '#fff',
-      font: '14px yahei'
+      font: '14px Arial'
     })
 
     this.addElements([title, author, tips]);

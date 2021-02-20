@@ -52,6 +52,7 @@ function getTextureOption(nameCode: string): {
   let textures = getTextures(config.textureName[0])
   let optionName = textures[config.textureName[1]];
   let option = JSON.parse(JSON.stringify(getOptions(optionName)));
+  option.code = nameCode;
   return option;
 }
 

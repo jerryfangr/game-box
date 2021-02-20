@@ -2,12 +2,13 @@ import {
   EngineScene
 } from '@/modules/engine'
 
-import GameElement from './game-element';
-import Block from './block';
-import Item from './item';
-import Enemy from './enemy';
+import GameElement from './element/game-element';
+import Block from './element/block';
+import Item from './element/item';
+import LevelItem from './element/level-item';
+import Enemy from './element/enemy';
 
-import { elementsCodeToOptions } from './level-load';
+import { elementsCodeToOptions } from './level/level-load';
 
 type optionType = {
   width?: number;
@@ -74,8 +75,16 @@ class ElementsScene extends EngineScene {
         this.addElement(new Item(this.texture, tempOptions));
       } else if (options.type === 'enemy') {
         this.addElement(new Enemy(this.texture, tempOptions));
+      } else if (options.type === 'levelItem') {
+        this.addElement(new LevelItem(this.texture, tempOptions));
       }
       // this.addElement(new ImageElement(this.texture, tempOptions));
+    }
+  }
+
+  deleteElementCallback(element: GameElement) {
+    if (element.position !== undefined) {
+      this.elementsCode[element.position.rIndex][element.position.cIndex] = 'o0';
     }
   }
 }

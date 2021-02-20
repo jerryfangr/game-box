@@ -3,7 +3,7 @@ import {
   ImageElement
 } from '@/modules/engine'
 
-import { getTextureOption } from './level-load';
+import { getTextureOption } from '../level/level-load';
 
 type optionType = {
   x?: number,
@@ -30,7 +30,7 @@ class BackGround implements EngineElementInterface {
   rcCutElement?: ImageElement;
   elementLength: number;
   isDead: boolean;
-  texture: HTMLImageElement;
+  texture?: HTMLImageElement;
   needCut: {
     row: boolean,
     column: boolean
@@ -65,6 +65,11 @@ class BackGround implements EngineElementInterface {
     this.rowCutElement = elements.rowCutElement;
     this.columnCutElement = elements.columnCutElement;
     this.rcCutElement = elements.rcCutElement;
+  }
+
+  delete () {
+    this.texture = undefined;
+    this.isDead = true;
   }
 
 
@@ -147,7 +152,7 @@ class BackGround implements EngineElementInterface {
         sWidth: bgOptions.texture.default.sWidth, 
         sHeight: bgOptions.texture.default.sHeight,
       }
-      return new ImageElement(this.texture, options);
+      return new ImageElement(this.texture!, options);
   }
 
   draw (element: ImageElement, x: number, y: number) {

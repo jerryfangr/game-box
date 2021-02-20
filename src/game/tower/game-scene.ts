@@ -1,5 +1,5 @@
 // import imageUrl from '@/assets/tower.jpg';
-import imageUrl from './tower.png';
+import imageUrl from './assets/tower.png';
 import { 
   EngineElement, 
   EngineScene, 
@@ -7,12 +7,12 @@ import {
   RectElement, 
   ImageElement 
 } from '@/modules/engine'
-import BackGround from './background';
+import BackGround from './element/background';
 import ElementsScene from './elements-scene';
 import StatusScene from './status-scene';
-import GameElement from './game-element';
+import GameElement from './element/game-element';
 import GamePlayer from './game-player';
-import { getLevelCode } from './level-load';
+import { getLevelCode } from './level/level-load';
 
 type rectType = {
   x: number,
@@ -110,13 +110,6 @@ class GameScene extends EngineScene {
   initStatusBar () {
     this.statusScene = new StatusScene(this.texture, this.player, { x: 32 * 13, y: 32*0.5 });
     this.addElement(this.statusScene);
-  }
-
-  deleteElementCallback(element: GameElement) {
-    let level = this.levelsCode[this.levelNumber];
-    if (element.position !== undefined) {
-      level.elements[element.position.rIndex][element.position.cIndex] = 'o0';
-    }
   }
 
   // 1. 以地图数组移动

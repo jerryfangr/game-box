@@ -1,19 +1,22 @@
 import {
+  EngineElementInterface,
   EngineElement,
   EngineScene,
 } from '@/modules/engine'
 
 abstract class GameElement extends EngineElement {
-  element?: EngineElement;
+  element?: EngineElementInterface;
+  code: string;
   position?: { // position ub levelCode Map rowIndex and columnIndex
     rIndex: number,
     cIndex: number
   };
   property?: {
-    [k: string]: number | { [k: string]: number}
+    [k: string]: any
   }
 
   constructor(options: {
+    code?: string;
     type?: string;
     property?: {
       [k: string]: any
@@ -43,6 +46,7 @@ abstract class GameElement extends EngineElement {
     [k: string]: any
   }) {
     super(options);
+    this.code = options.code || 'o0';
     if (options.position !== undefined) {
       this.position = {
         rIndex: options.position.rIndex,
@@ -50,7 +54,7 @@ abstract class GameElement extends EngineElement {
       }
     }
     if (options.property !== undefined) {
-      this.property = JSON.parse(JSON.stringify(options.property));
+      this.property = options.property;
     }
     if (options.texture !== undefined) {
       options.sx = options.texture.default.sx;

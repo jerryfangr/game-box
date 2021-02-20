@@ -1,11 +1,11 @@
 import {
   ImageElement,
 } from '@/modules/engine'
-import GameElement from './game-element';
-import { getTextureOption } from './level-load';
+import GameElement from './element/game-element';
+import { getTextureOption } from './level/level-load';
 
 type propertyType = {
-  [k: string]: number | { [k: string]: number }
+  [k: string]: any
 }
 
 type fightPropertyType = {
@@ -94,9 +94,10 @@ class GamePlayer extends GameElement {
   injuredFrom(property: fightPropertyType, playerProperty: fightPropertyType) {
     let playerInjure = playerProperty.ak - property.df;
     let enemyInjure = property.ak - playerProperty.df;
+    enemyInjure = enemyInjure < 0 ? 0 : enemyInjure;
 
-    let playerAttackCount = property.hp / playerInjure;
-    let damage = playerAttackCount * enemyInjure;
+    let playerAttackCount = Math.ceil(property.hp / playerInjure);
+    let damage = (playerAttackCount-1) * enemyInjure;
     playerProperty.hp -= damage;
   }
 

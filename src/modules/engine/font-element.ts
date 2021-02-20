@@ -23,7 +23,7 @@ class FontElement extends EngineElement {
   }
 
   changeTexture (text?: string, font?: string, style?: string | CanvasGradient | CanvasPattern) {
-    this.text = text || this.text;
+    this.text = text === undefined ? this.text : text;
     this.engine.ctx.font = font || this.engine.ctx.font;
     this.style = style || this.style;
   }

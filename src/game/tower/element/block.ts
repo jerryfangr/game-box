@@ -7,7 +7,6 @@ import GameElement from './game-element';
 class Block extends GameElement {
 
   constructor(texture: HTMLImageElement, options: {
-    
     [k:string]:any
   }) {
     super(options);

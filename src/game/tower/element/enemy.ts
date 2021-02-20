@@ -1,8 +1,12 @@
 import {
-  ImageElement
+  EngineElement,
+  ImageElement,
+  EngineScene
 } from '@/modules/engine'
 
 import GameElement from './game-element';
+import GameScene from '../game-scene';
+import FightScene from '../fight-scene';
 
 type propertyType = {
   hp: number,
@@ -12,6 +16,8 @@ type propertyType = {
 }
 
 class Enemy extends GameElement {
+  texture?: HTMLImageElement;
+  element: EngineElement | EngineScene;
   animationElements: ImageElement[];
   activeAnimation: number;
   updateCounter: number;
@@ -21,6 +27,7 @@ class Enemy extends GameElement {
     [k: string]: any
   }) {
     super(options);
+    this.texture = texture;
     this.activeAnimation = 0;
     this.updateCounter = 0;
     this.updateNumber = 10;
@@ -40,12 +47,12 @@ class Enemy extends GameElement {
     }
   }
 
-  touchWith(player: GameElement) {
+  touchWith(player: GameElement, scene: GameScene) {
     if (!this.property || !player.property) {
       return false;
     }
     if (this.canFight(this.property as propertyType, player.property as propertyType)) {
-      this.fightAnimation(player);
+      this.fightWidth(player, scene);
       player.touchWith(this, 'enemy');
       this.delete();
       return true;
@@ -64,16 +71,16 @@ class Enemy extends GameElement {
       return true;
     }
 
-    let playerAttackCount = property.hp / playerInjure;
-    let enemyAttackCount = playerProperty.hp / enemyInjure;
-    return playerAttackCount < enemyAttackCount;
+    let playerAttackCount = Math.ceil(property.hp / playerInjure);
+    let enemyAttackCount = Math.ceil(playerProperty.hp / enemyInjure);
+    return playerAttackCount <= enemyAttackCount;
   }
 
-  fightAnimation(player: GameElement) {
-    this.engine.toggleListener(false);
-    // fight animation
-    
-    this.engine.toggleListener(true);
+  fightWidth(player: GameElement, scene: GameScene) {
+    scene.addElement(new FightScene(this.texture!, {
+      player: player,
+      enemy: this
+    }));
   }
 
   update () {

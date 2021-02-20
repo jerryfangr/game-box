@@ -1,11 +1,8 @@
 import {
-  EngineElement,
-  EngineScene,
   ImageElement,
 } from '@/modules/engine'
 
 import GameElement from './game-element';
-import GamePlayer from './game-player'
 
 type propertyType = {
   [k: string]: number | { [k: string]: number }

@@ -33,7 +33,8 @@ class RectElement extends EngineElement {
       lineWidth: this.lineWidth,
       type: this.type,
       style: this.style
-    })
+    });
+    this.draw();
   }
 
   changeStyle(style?: string | CanvasGradient | CanvasPattern, lineWidth?: number) {
@@ -60,8 +61,7 @@ class RectElement extends EngineElement {
     });
   }
 
-  render(): void {
-    this.draw();
+  render() {
     this.pen.render();
   }
 }
