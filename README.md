@@ -10,13 +10,13 @@
 
 既然是麦趣鸡盒，会原生去实现体积大概会小一点，大概。
 
-<br><br>
+<br>
 
 ## preview
 
 ### [click here](https://jerryfangr.github.io/game-box/dist/index.html)
 
-<br><br>
+<br>
 
 ## install(for dev)
 
@@ -36,7 +36,7 @@
      yarn
      ```
 
-<br><br>
+<br>
 
 ## progress
 
@@ -53,7 +53,7 @@
    9. 本地存档+配合leanCloud云存档
    10. ...
 
-<br><br>
+<br>
 
 ## TODO
 
