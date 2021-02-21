@@ -11,7 +11,7 @@ module.exports = merge(commonConfig, {
     // sourceMapFilename: "[name].[contenthash].map",
     filename: '[name].[contenthash].bundle.js',
     path: path.resolve(__dirname, "dist"),
-    publicPath: '/',
+    publicPath: './',
     environment: {
       arrowFunction: false,
       const: false
