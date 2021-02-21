@@ -1,6 +1,6 @@
 import './index.less';
-// import {Engine} from '@/modules/engine'
-// import getGameBy from './game/index'
+import {Engine} from '@/modules/engine'
+import getGameBy from './game/index'
 
 type ObjType = { [k: string]: any };
 type viewType = {
@@ -20,7 +20,7 @@ type modelType = {
 
 let view: viewType = {
   el: '#gameChoose',
-  // engine: Engine,
+  engine: Engine,
   template: `
   <li data-number="{{gameNumber}}">
     <img class="cover" src="{{coverUrl}}" alt="" srcset="">
@@ -29,7 +29,7 @@ let view: viewType = {
   `,
   dom: document.body,
   init() {
-    // this.engine = Engine.getInstance(document.querySelector('#canvas') as HTMLCanvasElement, 30);
+    this.engine = Engine.getInstance(document.querySelector('#canvas') as HTMLCanvasElement, 30);
     let dom = document.querySelector(this.el);
     if (dom === null) {
       throw new Error('Can not get element ' + this.el);
@@ -53,11 +53,11 @@ let view: viewType = {
     this.dom.innerHTML = html;
   },
   openGame(gameName: string) {
-    // getGameBy(gameName)?.then(game => {
-    //   this.engine.startWith(game);
-    // }, error => {
-    //   console.log(error);
-    // })
+    getGameBy(gameName)?.then(game => {
+      this.engine.startWith(game);
+    }, error => {
+      console.log(error);
+    })
   },
   active(gameNumber: number) {
     let element = this.dom.querySelector('li[data-number="' + gameNumber + '"');
@@ -115,6 +115,8 @@ let controller: {
     this.model.init();
     this.view.render(this.model.data);
     this.bindEvents();
+    this.replaceGame('tower');
+
   },
   bindEvents() {
     this.bindEvent(this.view.dom, 'click', (e: MouseEvent, element: Element) => {

@@ -153,7 +153,7 @@ const OPTIONS_MAP: {
     } },
   skullWhiteEquip: { 
     type: 'enemy',
-    property: {hp: 1000, ak: 5, df: 5,}, 
+    property: {hp: 50, ak: 5, df: 5,}, 
     texture: { 
       default: { sx: 693, sy: 132, sWidth: 32, sHeight: 32 },
       active: { sx: 693, sy: 165, sWidth: 32, sHeight: 32 },
@@ -167,14 +167,14 @@ const OPTIONS_MAP: {
     } },
   wizardBlue: { 
     type: 'enemy',
-    property: {hp: 1000, ak: 5, df: 5,},
+    property: {hp: 50, ak: 5, df: 5,},
       texture: { 
       default: { sx: 891, sy: 198, sWidth: 32, sHeight: 32 },
       active: { sx: 891, sy: 231, sWidth: 32, sHeight: 32 },
     } },
   orcish: {
     type: 'enemy',
-    property: { hp: 1000, ak: 5, df: 5, },
+    property: { hp: 50, ak: 5, df: 5, },
     texture: {
       default: { sx: 858, sy: 132, sWidth: 32, sHeight: 32 },
       active: { sx: 858, sy: 165, sWidth: 32, sHeight: 32 },

@@ -50,7 +50,7 @@ class StatusScene extends EngineScene {
   }
 
   replaceInfo(options?: { level: number }, player?: GameElement) {
-    this.level = options?.level || this.level;
+    this.level = options?.level === undefined ? this.level : options.level;
     this.player = player || this.player;
   }
 

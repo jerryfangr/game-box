@@ -38,12 +38,17 @@ class GameScene extends EngineScene {
     this.gameWindowSize = { rowNumber: 13, columnNumber: 18 };
     this.gameElements = [];
     this.levelsCode = [];
-    this.levelNumber = 0;
+    this.levelNumber = 2;
     this.lock = false;
     this.loadLevelCode(this.levelNumber);
     this.loadTexture(() => {
       this.init();
+      this.debug?.();
     });
+  }
+
+  debug() {
+    this.player.setCoordinates(32*2, 32*11);
   }
 
   init() {
