@@ -99,7 +99,6 @@ class StatusScene extends EngineScene {
       x: this.x + 32 * 1.2,
       y: this.y,
     }
-    console.log(this.player);
     let playerOption: { [k: string]: any } = getTextureOption(this.player!.code).texture.down;
     playerOption.x = commonOptions.x-5;
     playerOption.y = this.y + 10;
