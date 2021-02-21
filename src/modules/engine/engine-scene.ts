@@ -63,10 +63,10 @@ class EngineScene implements EngineElementInterface {
   update() {
     let deadElements: EngineElementInterface[] = [];
     this.elements.forEach(element => {
-      if (element.isDead !== true) {
-        element.update();
-      } else {
+      if (element.isDead) {
         deadElements.push(element);
+      } else {
+        element.update();
       }
     })
     this.removeElements(deadElements)
