@@ -14,11 +14,11 @@ class EngineEvent {
 
   listenInputs() {
     window.addEventListener('keydown', e => {
-      let keyName = e.key === ' ' ? 'SPACE' : e.key.toUpperCase();
+      let keyName = this.normalize(e.key);
       this.inputs[keyName] = ['down', e];
     })
     window.addEventListener('keyup', e => {
-      let keyName = e.key === ' ' ? 'SPACE' : e.key.toUpperCase();
+      let keyName = this.normalize(e.key);
       this.inputs[keyName] = ['up', e];
     })
     window.addEventListener('mousedown', e => {
@@ -27,6 +27,21 @@ class EngineEvent {
     window.addEventListener('mouseup', e => {
       this.inputs['MOUSE'] = ['up', e];
     })
+  }
+
+  normalize (keyName: string): string {
+    if (keyName === ' ' || keyName === 'Spacebar') {
+      keyName = 'SPACE';
+    } else if (keyName === 'Up') {
+      keyName = 'ARROWUP';
+    } else if (keyName === 'Down') {
+      keyName = 'ARROWDOWN';
+    } else if (keyName === 'Left') {
+      keyName = 'ARROWLEFT';
+    } else if (keyName === 'Right') {
+      keyName = 'ARROWRIGHT';
+    }
+    return keyName.toUpperCase();
   }
 
   bindEvent(keyName: string, callback: (keyState: string, event: Event) => void, delay?: number): Function {
