@@ -16,7 +16,15 @@
 
 ### [click here](https://jerryfangr.github.io/game-box/dist/index.html)
 
+
+
+* **Tower**
+
+  ![preview-tower-01](other/preview-tower-01.jpg)
+
 <br>
+
+
 
 ## install(for dev)
 
