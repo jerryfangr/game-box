@@ -20,7 +20,7 @@
 
 * **Tower**
 
-  ![preview-tower-01](other/preview-tower-01.jpg)
+  ![preview-tower-01](other/preview/tower-01.jpg)
 
 <br>
 
