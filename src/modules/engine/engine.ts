@@ -11,8 +11,8 @@ class Engine {
   ctx: CanvasRenderingContext2D ;
   maxFps:number;
   private _listener: EngineEvent;
-  private _pause: boolean;
   private _scene: EngineScene;
+  private _pause: boolean;
   private _listenInput :boolean;
 
   private constructor(canvas: HTMLCanvasElement, maxFps:number = 60) {

@@ -1,5 +1,8 @@
+/**
+ * get device input, and bindEvent
+ */
 class EngineEvent {
-  inputs: { [key: string]: (string | KeyboardEvent | MouseEvent)[] | '' | undefined};
+  inputs: { [key: string]: (string | KeyboardEvent | MouseEvent)[] | undefined};
   events: { [key: string]: Function[] };
 
   constructor() {
