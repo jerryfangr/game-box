@@ -73,6 +73,7 @@ module.exports = merge(commonConfig, {
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "styles/[name].[contenthash].css",
     }),

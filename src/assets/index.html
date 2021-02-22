@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <div class="game-box" id='gameBox'>
-    <section class="left-section"></section>
-    <section class="center-section">
-      <ul class="game-choose" id="gameChoose"></ul>
-      <canvas class="game-window" id="canvas" width="576" height="416">
-        您的浏览器不支持canvas，换个新时代的浏览器试试
-      </canvas>
-    </section>
-    <section class="right-section"></section>
-  </div>
-
-  <script>
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>game box | some funny game</title>
+  </head>
+  <body>
+    <div class="game-box" id="gameBox">
+      <section class="wrapper left">
+        <div class="game-joy"></div>
+        <div class="ellipse up"></div>
+        <div class="ellipse down"></div>
+      </section>
+      <section class="game-window">
+        <ul class="game-choose" id="gameChoose">
+          <!-- <li data-number="{{gameNumber}}">
+            <img class="cover" src="{{coverUrl}}" alt="" srcset="" />
+            <span>{{name}}</span>
+          </li> -->
+        </ul>
+        <canvas id="canvas" width="576" height="416">
+          您的浏览器不支持canvas，换个新时代的浏览器试试
+        </canvas>
+      </section>
+      <section class="wrapper right">
+        <div class="game-joy"></div>
+        <div class="ellipse up"></div>
+        <div class="ellipse down"></div>
+      </section>
+    </div>
+  </body>
 </html>

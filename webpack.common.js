@@ -56,9 +56,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: 'game box | some funny game',
       template: './src/assets/index.html'
     })
   ],
