@@ -51,6 +51,10 @@ class Engine {
     this._listener.cancelEvent(keyName, callback);
   }
 
+  triggerInput(keyName: string, keyState: 'up' | 'down', event: MouseEvent | KeyboardEvent) {
+    this._listener.triggerInput(keyName, keyState, event);
+  }
+
   clearEvents () {
     this._listener.clear();
   }

@@ -32,6 +32,11 @@ class EngineEvent {
     })
   }
 
+  triggerInput(keyName: string, keyState: 'up' | 'down', event: MouseEvent | KeyboardEvent) {
+    keyName = this.normalize(keyName);
+    this.inputs['MOUSE'] = [keyName, event];
+  }
+
   normalize (keyName: string): string {
     if (keyName === ' ' || keyName === 'Spacebar') {
       keyName = 'SPACE';
