@@ -25,7 +25,10 @@
 <br>
 
 ## Compatibility
+
 * IE >= 9
+
+<br>
 
 ## install(for dev)
 
