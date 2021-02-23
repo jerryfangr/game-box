@@ -10,14 +10,6 @@ import GameElement from './element/game-element';
 import GamePlayer from './game-player';
 import { getLevelCode } from './level/level-load';
 
-type rectType = {
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  [key: string]: any
-}
-
 class GameScene extends EngineScene {
   texture: HTMLImageElement;
   lock: boolean;
@@ -43,6 +35,7 @@ class GameScene extends EngineScene {
     this.loadLevelCode(this.levelNumber);
     this.loadTexture(() => {
       this.init();
+      this.bindInputEvents();
       // this.debug?.();
     });
   }
@@ -140,8 +133,14 @@ class GameScene extends EngineScene {
     this.addElement(this.statusScene);
   }
 
-  // 1. 以地图数组移动
-  // 2. 以循环判断移动 -- choosed lock => 只允许单向移动
+  /**
+   * player move, touch and battle
+   * 1.check what moved player will touch 
+   * 2. if there item or enemy, trigger touch event, end this function
+   * 3. if there nothing, just move to new position
+   * @param keyState 'up' or 'down
+   * @param direction move direction: left / right / up / down
+   */
   move(keyState: string, direction: string) {
     if (this.lock) {return;}
     // locke this function
