@@ -1,0 +1,179 @@
+/* normalize */
+* {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+/* style config */
+/* common style */
+/* layout */
+body > .game-box {
+  position: relative;
+  margin: 60px auto;
+  margin-top: 50px;
+  overflow: hidden;
+}
+body > .game-box section {
+  display: block;
+  float: left;
+  overflow: hidden;
+}
+body > .game-box section.wrapper > .game-joy {
+  position: absolute;
+  width: 18%;
+  height: 100%;
+}
+body > .game-box section.game-window {
+  position: relative;
+  margin-left: 18%;
+  width: 64%;
+}
+body > .game-box::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+/* style */
+.ellipse {
+  position: absolute;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  padding: 1.3% 0.8%;
+  background-color: #fff147;
+  border: 9px solid #3a2e35;
+  z-index: 1;
+}
+.ellipse.up {
+  top: -9px;
+  border-radius: 0 0 50% 50%;
+  border-top: none;
+}
+.ellipse.down {
+  bottom: -9px;
+  border-radius: 50% 50% 0 0;
+  border-bottom: none;
+}
+body {
+  background-color: #fff147;
+  text-align: center;
+}
+body .game-box {
+  text-align: left;
+  max-width: 1100px;
+}
+section.wrapper .game-joy {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 6px solid #3a2e35;
+}
+section.wrapper.left .game-joy {
+  border-right: none;
+  border-radius: 100px 0 0 100px;
+  background: #0ab4e0;
+  background: -webkit-gradient(linear, left bottom, left top, from(#028fb6), color-stop(10%, #01a7d7), color-stop(60%, #01d7f3), to(#6affff));
+  background: -o-linear-gradient(bottom, #028fb6 0%, #01a7d7 10%, #01d7f3 60%, #6affff 100%);
+  background: linear-gradient(0deg, #028fb6 0%, #01a7d7 10%, #01d7f3 60%, #6affff 100%);
+}
+section.wrapper.left .ellipse {
+  left: 18%;
+  -webkit-transform: translateX(-35%);
+      -ms-transform: translateX(-35%);
+          transform: translateX(-35%);
+}
+section.wrapper.right .game-joy {
+  border-radius: 0 100px 100px 0;
+  border-left: none;
+  background: #c53c24;
+  background: -webkit-gradient(linear, left bottom, left top, from(#d63a1f), color-stop(10%, #f6591e), color-stop(60%, #f6662e), to(#fed187));
+  background: -o-linear-gradient(bottom, #d63a1f 0%, #f6591e 10%, #f6662e 60%, #fed187 100%);
+  background: linear-gradient(0deg, #d63a1f 0%, #f6591e 10%, #f6662e 60%, #fed187 100%);
+}
+section.wrapper.right .ellipse {
+  right: 18%;
+  -webkit-transform: translateX(35%);
+      -ms-transform: translateX(35%);
+          transform: translateX(35%);
+}
+section.game-window {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 10px solid #3a2e35;
+  border-radius: 20px;
+}
+section.game-window ul.game-choose {
+  position: absolute;
+  display: block;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #111010;
+  padding: 5% 0;
+}
+section.game-window ul.game-choose::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+  z-index: 0;
+  height: 90%;
+  width: 100%;
+  background-color: #262427;
+}
+section.game-window ul.game-choose::after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 0;
+  vertical-align: middle;
+}
+section.game-window ul.game-choose li.game-item {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 100%;
+  width: 20%;
+  height: 160px;
+  margin-left: 5%;
+  -webkit-transition: all 0.6s;
+  -o-transition: all 0.6s;
+  transition: all 0.6s;
+  font-size: 0px;
+}
+section.game-window ul.game-choose li.game-item.active {
+  font-size: 16px;
+  -webkit-transform: scale(1.2);
+      -ms-transform: scale(1.2);
+          transform: scale(1.2);
+}
+section.game-window ul.game-choose li.game-item img.cover {
+  border: 2px solid #9FA0A3;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+section.game-window ul.game-choose li.game-item span {
+  position: absolute;
+  color: #FCF5F3;
+  font-weight: bold;
+  bottom: 5px;
+  left: 5px;
+}
+section.game-window ul.close {
+  display: none;
+}
+section.game-window canvas {
+  display: block;
+  width: 100%;
+  background-color: #3a2e35;
+}
+
