@@ -32,7 +32,7 @@ class EngineEvent {
     })
   }
 
-  triggerInput(keyName: string, keyState: 'up' | 'down', event: MouseEvent | KeyboardEvent) {
+  setInput(keyName: string, keyState: 'up' | 'down', event: MouseEvent | KeyboardEvent) {
     keyName = this.normalize(keyName);
     this.inputs['MOUSE'] = [keyName, event];
   }
@@ -52,7 +52,7 @@ class EngineEvent {
     return keyName.toUpperCase();
   }
 
-  bindEvent(keyName: string, callback: (keyState: string, event: Event) => void, delay?: number): Function {
+  on (keyName: string, callback: (keyState: string, event: Event) => void, delay?: number): Function {
     keyName = keyName.toUpperCase();
     let fn = callback;
     if (delay !== undefined) {
@@ -63,7 +63,7 @@ class EngineEvent {
     return fn;
   }
 
-  cancelEvent(keyName: string, callback: Function) {
+  off (keyName: string, callback: Function) {
     keyName = keyName.toUpperCase();
     let index = this.events[keyName]?.indexOf(callback);
     if (index && index !== -1) {
@@ -71,7 +71,7 @@ class EngineEvent {
     }
   }
 
-  emitEvent(keyName: string) {
+  emit (keyName: string) {
     if (this.events[keyName] !== undefined) {
       let keyState = this.inputs[keyName]![0];
       let event = this.inputs[keyName]![1];
@@ -81,14 +81,13 @@ class EngineEvent {
       if (keyState === 'up') {
         this.inputs[keyName] = undefined;
       }
-      // delete this.inputs[keyName];
     }
   }
 
-  emitEvents() {
+  emitEvents () {
     for (const key in this.inputs) {
       if (this.inputs[key] !== undefined) {
-        this.emitEvent(key);
+        this.emit(key);
       }
     }
   }

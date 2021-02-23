@@ -8,7 +8,7 @@ import EngineEvent from './engine-event';
 class Engine {
   static instance: Engine;
   canvas: HTMLCanvasElement;
-  ctx: CanvasRenderingContext2D ;
+  ctx: CanvasRenderingContext2D;
   maxFps:number;
   private _listener: EngineEvent;
   private _scene: EngineScene;
@@ -44,15 +44,15 @@ class Engine {
   }
 
   bindEvent(keyName: string, callback: (keyState: string, event: Event) => void, delay?: number): Function {
-    return this._listener.bindEvent(keyName, callback, delay);
+    return this._listener.on(keyName, callback, delay);
   }
 
   cancelEvent (keyName: string, callback: Function) {
-    this._listener.cancelEvent(keyName, callback);
+    this._listener.off(keyName, callback);
   }
 
-  triggerInput(keyName: string, keyState: 'up' | 'down', event: MouseEvent | KeyboardEvent) {
-    this._listener.triggerInput(keyName, keyState, event);
+  setInput(keyName: string, keyState: 'up' | 'down', event: MouseEvent | KeyboardEvent) {
+    this._listener.setInput(keyName, keyState, event);
   }
 
   clearEvents () {
