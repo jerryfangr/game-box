@@ -109,14 +109,12 @@ class Engine {
 
   startWith (scene: EngineScene) {
     this._scene = scene;
-    this._scene.bindInputEvents()
     this._run();
   }
 
   replace (scene: EngineScene) {
-    this._scene = scene;
     this.clearEvents();
-    this._scene.bindInputEvents()
+    this._scene = scene;
   }
 }
 
