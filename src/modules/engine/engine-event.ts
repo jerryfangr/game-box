@@ -8,10 +8,6 @@ class EngineEvent {
   constructor() {
     this.inputs = {};
     this.events = {};
-    this.init();
-  }
-
-  init() {
     this.listenInputs();
   }
 
@@ -34,7 +30,7 @@ class EngineEvent {
 
   setInput(keyName: string, keyState: 'up' | 'down', event: MouseEvent | KeyboardEvent) {
     keyName = this.normalize(keyName);
-    this.inputs['MOUSE'] = [keyName, event];
+    this.inputs['MOUSE'] = [keyState, event];
   }
 
   normalize (keyName: string): string {
