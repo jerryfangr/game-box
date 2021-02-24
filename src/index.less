@@ -8,23 +8,6 @@ li {list-style: none;}
 @game-size: 64%;
 @joy-size: (100% - @game-size) * 0.5;
 
-/* common style */
-// .center(@_) {
-//   position: absolute;
-// }
-.ab-center(horizontal) {
-  left: 50%;
-  transform: translateX(-50%);
-}
-.ab-center(vertical) {
-  top: 50%;
-  transform: translateY(-50%);
-}
-.ab-center(both) {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 
 /* layout */
 body > .game-box {
@@ -35,7 +18,6 @@ body > .game-box {
   section {
     display: block;
     float: left;
-    overflow: hidden;
     &.wrapper {
       .game-joy {
         position: absolute;
@@ -56,41 +38,84 @@ body > .game-box {
   }
 }
 
-/* style */
-.ellipse {
-  position: absolute;
-  box-sizing: border-box;
-  width: 30px;
-  height: 30px;
-  // padding: 1%;
-  padding: 1.3% 0.8%;
-  background-color: @bg-color;
-  border: 9px solid @border-color;
-  z-index: 1;
-  &.up {
-    top: -9px;
-    border-radius: 0 0 50% 50%;
-    border-top: none;
-  }
-  &.down {
-    bottom: -9px;
-    border-radius: 50% 50% 0 0;
-    border-bottom: none;
-  }
+/* common style */
+.ab-center(horizontal) {
+  left: 50%;
+  transform: translateX(-50%);
+}
+.ab-center(vertical) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.ab-center(both) {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
+/* style */
 body {
   background-color: @bg-color;
   text-align: center;
   .game-box {
     text-align: left;
     max-width: 1100px;
+    min-width: 650px;
   }
 }
 section.wrapper {
   .game-joy {
     box-sizing: border-box;
     border: 6px solid @border-color;
+    button.joy-button {
+      background-color: #685767;
+      color: #fff;
+      border: 2px solid #1D1317;
+      position: absolute;
+      .ab-center(both);
+      border-radius: 50%;
+      box-shadow: 0 3px 2px #111010;
+      &.active {
+        background-color: #fcde8e;
+        color: #111010;
+      }
+      &.up {
+        padding: 4% 4.51%;
+        transform: translate(-50%, -160%);
+      }
+      &.down {
+        padding: 4% 5.48%;
+        transform: translate(-50%, 60%);
+      }
+      &.left {
+        padding: 4% 5.48%;
+        transform: translate(-160%, -50%);
+      }
+      &.right {
+        padding: 4% 5.28%;
+        transform: translate(60%, -50%);
+      }
+    }
+  }
+  .ellipse {
+    position: absolute;
+    box-sizing: border-box;
+    width: 30px;
+    height: 30px;
+    padding: 1.3% 0.8%;
+    background-color: @bg-color;
+    border: 9px solid @border-color;
+    z-index: 1;
+    &.up {
+      top: -9px;
+      border-radius: 0 0 50% 50%;
+      border-top: none;
+    }
+    &.down {
+      bottom: -9px;
+      border-radius: 50% 50% 0 0;
+      border-bottom: none;
+    }
   }
   &.left{
     .game-joy {
@@ -110,6 +135,18 @@ section.wrapper {
       border-left: none;
       background: rgb(197, 60, 36);
       background: linear-gradient(0deg, rgb(214, 58, 31) 0%, rgba(246,89,30,1) 10%, rgba(246,102,46,1) 60%, rgba(254,209,135,1) 100%);
+      button.joy-button {
+        font-size: 17px;
+        box-shadow: 0 4px 3px #111010;
+      }
+      button.joy-button.up {
+        padding: 8% 11%;
+        transform: translate(-50%, -130%);
+      }
+      button.joy-button.down {
+        padding: 8% 10.25%;
+        transform: translate(-50%, 30%);
+      }
     }
     .ellipse {
       right: @joy-size;
@@ -117,7 +154,6 @@ section.wrapper {
     }
   }
 }
-
 section.game-window {
     box-sizing: border-box;
     border: 10px solid @border-color;
@@ -130,7 +166,7 @@ section.game-window {
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgb(17, 16, 16);
+      background-color: #111010;
       padding: 5% 0;
       &::before {
         content: "";
@@ -155,7 +191,7 @@ section.game-window {
         vertical-align: middle;
         width: 20%;
         min-height: 35%;
-        background-color: #857a05;
+        background-color: #111010;
         margin-left: 5%;
         transition-property: trasform font;
         transition-duration: .6s;
@@ -164,7 +200,8 @@ section.game-window {
           font-size: 14px;
           transform: scale(1.2);
           border: 2px solid #FCF5F3;
-          background-color: @border-color;
+          background-color: #111010;
+          box-shadow:0 0 5px #F2EBF2;        
         }
         img.cover {
           position: relative;
@@ -202,6 +239,6 @@ section.game-window {
       width: 100%;
       background-color: @border-color;
     }
-  }
+}
 
 

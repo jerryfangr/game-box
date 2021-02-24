@@ -7,27 +7,28 @@
     <title>game box | some funny game</title>
   </head>
   <body>
-    <h3>A and S to Choose Game</h3>
-    <h3>Space open choosed Game</h3>
     <div class="game-box" id="gameBox">
       <section class="wrapper left">
-        <div class="game-joy"></div>
+        <div class="game-joy">
+          <button class="joy-button up">W</button>
+          <button class="joy-button down">S</button>
+          <button class="joy-button left">A</button>
+          <button class="joy-button right">D</button>
+        </div>
         <div class="ellipse up"></div>
         <div class="ellipse down"></div>
       </section>
       <section class="game-window">
-        <ul class="game-choose" id="gameChoose">
-          <!-- <li data-number="{{gameNumber}}">
-            <img class="cover" src="{{coverUrl}}" alt="" srcset="" />
-            <span>{{name}}</span>
-          </li> -->
-        </ul>
+        <ul class="game-choose" id="gameChoose"></ul>
         <canvas id="canvas" width="576" height="416">
-          您的浏览器不支持canvas，换个新时代的浏览器试试
+          您的浏览器不支持canvas，换个新时代的浏览器试试。
         </canvas>
       </section>
       <section class="wrapper right">
-        <div class="game-joy"></div>
+        <div class="game-joy">
+          <button class="joy-button up">J</button>
+          <button class="joy-button down">K</button>
+        </div>
         <div class="ellipse up"></div>
         <div class="ellipse down"></div>
       </section>
