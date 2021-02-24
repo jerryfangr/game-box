@@ -1,4 +1,4 @@
-import imageUrl from './assets/tower.png';
+import imageUrl from './assets/resource.png';
 import { 
   EngineElement, 
   EngineScene, 
@@ -36,12 +36,7 @@ class GameScene extends EngineScene {
     this.loadTexture(() => {
       this.init();
       this.bindInputEvents();
-      // this.debug?.();
     });
-  }
-
-  debug() {
-    this.player.setCoordinates(32*2, 32*11);
   }
 
   init() {
@@ -70,6 +65,10 @@ class GameScene extends EngineScene {
     this.updatePlayerPosition();
   }
 
+  /**
+   * after load image, call callback function
+   * @param callback function
+   */
   loadTexture (callback: Function) {
     this.texture.src = imageUrl;
     this.texture.onload = () => {
@@ -77,6 +76,10 @@ class GameScene extends EngineScene {
     }
   }
 
+  /**
+   * (when player enter portal)
+   * put player into a new floor position, where near the portal stair
+   */
   updatePlayerPosition () {
     let stairElement = this.findElement('stair');
     this.player.setCoordinates(stairElement?.x, stairElement?.y);
