@@ -64,7 +64,7 @@ class ChooseModel extends Model {
     super(options);
     this.data = [
       { coverUrl: towerImageUrl, title: 'Magic Tower', name: 'tower' },
-      { coverUrl: '#', title: 'Flappy Bird', name: 'tower' },
+      { coverUrl: '#', title: 'Flappy Bird', name: 'flappyBird' },
       { coverUrl: '#', title: 'Foo', name: 'tower' },
     ]
   }
@@ -85,6 +85,7 @@ class ChooseController extends Controller {
       throw new Error('can not find canvas element')
     }
     this.engine = Engine.getInstance(document.querySelector('#canvas') as HTMLCanvasElement, 30);
+    // this.startGame('flappyBird');
     this.bindEvents();
   }
 
@@ -113,10 +114,11 @@ class ChooseController extends Controller {
     this.view.activeItem(gameIndex);
   }
 
-  startGame() {
-    let gameName = this.model.data[this.view.activeIndex].name;
-    getGameBy(gameName)?.then(game => {
-      console.log(game);
+  startGame(gameName?:string) {
+    if (gameName === undefined) {
+      gameName = this.model.data[this.view.activeIndex].name;
+    }
+    getGameBy(<string>gameName)?.then(game => {
       this.engine.startWith(game);
       this.view.toggleClose(true);
     }, error => {
