@@ -11,7 +11,7 @@ class Engine {
   ctx: CanvasRenderingContext2D;
   maxFps:number;
   private _listener: EngineEvent;
-  private _scene: EngineScene;
+  private _scene: EngineScene | null;
   private _pause: boolean;
   private _listenInput :boolean;
 
@@ -21,7 +21,7 @@ class Engine {
     this.maxFps = maxFps;
     this._listener = new EngineEvent();
     this._pause = false;
-    this._scene = {} as EngineScene;
+    this._scene = null;
     this._listenInput = true;
   }
 
@@ -64,11 +64,11 @@ class Engine {
   }
 
   private _render () {
-    this._scene.render?.()
+    this._scene?.render?.()
   }
 
   private _update () {
-    this._scene.update?.() 
+    this._scene?.update?.() 
   }
 
   private _run () {
@@ -108,8 +108,12 @@ class Engine {
   }
 
   startWith (scene: EngineScene) {
-    this._scene = scene;
-    this._run();
+    if (this._scene === null) {
+      this._scene = scene;
+      this._run();
+    } else {
+      this.replace(scene);
+    }
   }
 
   replace (scene: EngineScene) {
