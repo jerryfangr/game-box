@@ -37,7 +37,7 @@ body > .game-box {
     float: left;
     overflow: hidden;
     &.wrapper {
-      >.game-joy {
+      .game-joy {
         position: absolute;
         width: @joy-size;
         height: 100%;
@@ -153,29 +153,45 @@ section.game-window {
         position: relative;
         display: inline-block;
         vertical-align: middle;
-        line-height: 100%;
         width: 20%;
-        height: 160px;
+        min-height: 35%;
+        background-color: #857a05;
         margin-left: 5%;
-        transition: all .6s;
+        transition-property: trasform font;
+        transition-duration: .6s;
         font-size: 0px;
         &.active {
-          font-size: 16px;
+          font-size: 14px;
           transform: scale(1.2);
+          border: 2px solid #FCF5F3;
+          background-color: @border-color;
         }
         img.cover {
-          border: 2px solid #9FA0A3;
+          position: relative;
+          z-index: 1;
+          box-sizing: border-box;
           display: block;
           width: 100%;
-          height: 100%;
         }
         span {
           position: absolute;
-          color: #FCF5F3;
           font-weight: bold;
-          bottom: 5px;
-          left: 5px;
+          height: auto;
+          text-align: center;
+          &.error {
+            font-size: 12px;
+            color: #bdb9b8;
+            .ab-center(vertical);
+          }
+          &.game-title {
+            color: #FCF5F3;
+            width: 100%;
+            bottom: 5px;
+            .ab-center(horizontal);
+            word-break: keep-all;
+          }
         }
+        
       }
     }
     ul.close {

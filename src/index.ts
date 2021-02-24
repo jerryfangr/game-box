@@ -2,9 +2,7 @@ import './index.less';
 import { Engine} from '@/modules/engine'
 import InputListener from './input-listener';
 import getGameBy from './game/index'
-
-type ObjType = { [k: string]: any };
-type InputEvent = MouseEvent | KeyboardEvent;
+import towerImageUrl from './assets/cover-tower.png';
 
 
 class View {
@@ -26,7 +24,7 @@ class View {
     this.activeIndex = 0;
   }
 
-  render(data: ObjType[]) {
+  render(data: { [k: string]: any }[]) {
     let regexp = /\{\{([a-zA-Z0-9_ ]{1,})\}\}/g;
     let html = '';
     data.forEach((d, index) => {
@@ -92,7 +90,7 @@ class Model {
 
   constructor(options: {}) {
     this.data = [
-      { coverUrl: '#', title: 'Magic Tower', name: 'tower' },
+      { coverUrl: towerImageUrl, title: 'Magic Tower', name: 'tower' },
       { coverUrl: '#', title: 'Flappy Bird', name: 'tower' },
       { coverUrl: '#', title: 'Foo', name: 'tower' },
     ]
@@ -192,7 +190,8 @@ let view = new View({
   template: `
   <li class="game-item" data-number="{{gameIndex}}">
     <img class="cover" src="{{coverUrl}}" alt="" srcset="">
-    <span>{{title}}</span>
+    <span class="error">Error: can't load cover image</span>
+    <span class="game-title">{{title}}</span>
   </li>
   `,
 })
