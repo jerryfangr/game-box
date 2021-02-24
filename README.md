@@ -16,7 +16,8 @@
 
 ### [click here](https://jerryfangr.github.io/game-box/dist/index.html)
 
-
+* **UI**
+  ![preview-tower-01](./other/preview/ui.jpg)
 
 * **Tower**
 
