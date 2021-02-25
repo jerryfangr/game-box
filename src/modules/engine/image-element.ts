@@ -48,8 +48,10 @@ class ImageElement extends EngineElement {
     this.engine.ctx.translate(this.x + this.width/2, this.y + this.height/2);
     // rotate ctx
     this.engine.ctx.rotate(Math.PI / 180 * angle);
+    // restore rotate spot
+    this.engine.ctx.translate(-this.x - this.width / 2, -this.y - this.height / 2);
     // draw
-    this.engine.ctx.drawImage(this.image, this.sx, this.sy, this.sWidth, this.sHeight, this.x-this.width/2, this.y-this.height/2, this.width, this.height);
+    this.engine.ctx.drawImage(this.image, this.sx, this.sy, this.sWidth, this.sHeight, this.x, this.y, this.width, this.height);
     // restore ctx config
     this.engine.ctx.restore();
   }
