@@ -35,6 +35,7 @@ class ChooseView extends View {
 
   toggleClose(value: boolean) {
     let method: 'add' | 'remove' = value ? 'add' : 'remove';
+    console.log(method, '  closeed');
     this.editClass(this.dom, method, 'close');
   }
 
@@ -75,6 +76,7 @@ class ChooseController extends Controller {
   view: ChooseView;
   engine: Engine;
   _listener: InputListener;
+  game: string;
 
   constructor(view: ChooseView, model: ChooseModel) {
     super(view, model);
@@ -85,7 +87,8 @@ class ChooseController extends Controller {
       throw new Error('can not find canvas element')
     }
     this.engine = Engine.getInstance(document.querySelector('#canvas') as HTMLCanvasElement, 30);
-    // this.startGame('flappyBird');
+    this.startGame('flappyBird');
+    this.game = '';
     this.bindEvents();
   }
 
@@ -102,8 +105,16 @@ class ChooseController extends Controller {
     });
     this._listener.on('j', (keyState) => {
       if (keyState === 'down') {
+        this.engine.togglePause(false);
         this._listener.toggle(false)
         this.startGame();
+      }
+    });
+    window.addEventListener('keydown', e => {
+      if (e.key === 'k') {
+        this._listener.toggle(true)
+        this.engine.togglePause(true);
+        this.view.toggleClose(false);
       }
     });
   }
@@ -118,9 +129,14 @@ class ChooseController extends Controller {
     if (gameName === undefined) {
       gameName = this.model.data[this.view.activeIndex].name;
     }
+    if (gameName === this.game) {
+      this.view.toggleClose(true);
+      return;
+    }
     getGameBy(<string>gameName)?.then(game => {
       this.engine.startWith(game);
       this.view.toggleClose(true);
+      this.game = gameName || 'error';
     }, error => {
       console.log('error-->', error);
     })
