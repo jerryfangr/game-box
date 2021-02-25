@@ -54,9 +54,7 @@ class EngineScene implements EngineElementInterface {
 
   render() {
     this.elements.forEach(element => {
-      this.engine.ctx.save();
       element.render();
-      this.engine.ctx.restore();
     })
   }
 

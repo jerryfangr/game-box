@@ -37,6 +37,7 @@ class PenElement implements EngineElementInterface {
 
   render(): void {
     if (this.hasDraw) {
+      this.engine.ctx.save();
       this.engine.ctx.beginPath();
       this.drawCallback.call(this, this.engine.ctx);
       this.engine.ctx.lineWidth = this.lineWidth;
@@ -48,6 +49,7 @@ class PenElement implements EngineElementInterface {
         this.engine.ctx.stroke();
       }
       this.engine.ctx.closePath();
+      this.engine.ctx.restore();
     }
   }
 

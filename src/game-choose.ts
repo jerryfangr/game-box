@@ -35,7 +35,6 @@ class ChooseView extends View {
 
   toggleClose(value: boolean) {
     let method: 'add' | 'remove' = value ? 'add' : 'remove';
-    console.log(method, '  closeed');
     this.editClass(this.dom, method, 'close');
   }
 
@@ -87,7 +86,7 @@ class ChooseController extends Controller {
       throw new Error('can not find canvas element')
     }
     this.engine = Engine.getInstance(document.querySelector('#canvas') as HTMLCanvasElement, 30);
-    this.startGame('flappyBird');
+    // this.startGame('flappyBird');
     this.game = '';
     this.bindEvents();
   }
@@ -104,7 +103,7 @@ class ChooseController extends Controller {
       }
     });
     this._listener.on('j', (keyState) => {
-      if (keyState === 'down') {
+      if (keyState === 'up') {
         this.engine.togglePause(false);
         this._listener.toggle(false)
         this.startGame();

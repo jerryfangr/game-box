@@ -108,17 +108,13 @@ class Engine {
   }
 
   startWith (scene: EngineScene) {
+    this.clearEvents();
     if (this._scene === null) {
       this._scene = scene;
       this._run();
     } else {
-      this.replace(scene);
+      this._scene = scene;
     }
-  }
-
-  replace (scene: EngineScene) {
-    this.clearEvents();
-    this._scene = scene;
   }
 }
 

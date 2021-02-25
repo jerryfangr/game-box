@@ -29,6 +29,7 @@ class FontElement extends EngineElement {
   }
 
   render(): void {
+    this.engine.ctx.save();
     this.engine.ctx.font = this.font;
     if (this.type === 'fill') {
       this.engine.ctx.fillStyle = this.style;
@@ -37,6 +38,7 @@ class FontElement extends EngineElement {
       this.engine.ctx.strokeStyle = this.style;
       this.engine.ctx.strokeText(this.text, this.x, this.y);
     }
+    this.engine.ctx.restore();
   }
 }
 
