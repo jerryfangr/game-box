@@ -23,6 +23,7 @@ class Background extends EngineElement {
     groundOption.y = bgOption.height - groundOption.height + 5;
     this.bgElement = new ImageElement(texture, bgOption);
     this.groundElement = new ImageElement(texture, groundOption);
+    this.width = this.bgElement.width;
     this.isPlaying = false;
   }
 

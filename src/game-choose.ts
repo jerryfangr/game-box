@@ -2,6 +2,7 @@ import getGameBy from './game/index'
 import { Engine} from '@/modules/engine'
 import InputListener from './input-listener';
 import towerImageUrl from './assets/cover-tower.png';
+import flappyImageUrl from './assets/cover-flappy.png';
 import { View, Model, Controller} from '@/modules/mvc';
 
 class ChooseView extends View {
@@ -64,7 +65,7 @@ class ChooseModel extends Model {
     super(options);
     this.data = [
       { coverUrl: towerImageUrl, title: 'Magic Tower', name: 'tower' },
-      { coverUrl: '#', title: 'Flappy Bird', name: 'flappyBird' },
+      { coverUrl: flappyImageUrl, title: 'Flappy Bird', name: 'flappyBird' },
       { coverUrl: '#', title: 'Foo', name: 'tower' },
     ]
   }
@@ -86,7 +87,6 @@ class ChooseController extends Controller {
       throw new Error('can not find canvas element')
     }
     this.engine = Engine.getInstance(document.querySelector('#canvas') as HTMLCanvasElement, 30);
-    // this.startGame('flappyBird');
     this.game = '';
     this.bindEvents();
   }

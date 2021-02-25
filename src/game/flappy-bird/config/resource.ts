@@ -19,7 +19,7 @@ const RESOURCE:{
   }
 } = {
   bg: {
-    width: 416,
+    width: 436,
     height: 416,
     texture: {
       default: {
@@ -55,8 +55,8 @@ const RESOURCE:{
     }
   },
   bird: {
-    width: 78,
-    height: 446,
+    width: 50,
+    height: 36,
     texture: {
       default: {
         sx: 902,

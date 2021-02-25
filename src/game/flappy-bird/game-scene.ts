@@ -3,9 +3,10 @@ import {
   EngineElement, 
   EngineScene, 
   ImageElement,
-} from '@/modules/engine'
-import getResourceBy from './config/resource';
+} from '@/modules/engine';
 import Background from './bakground';
+import Player from './player';
+import Panel from './panel';
 
 class GameScene extends EngineScene {
   texture: HTMLImageElement;
@@ -27,8 +28,8 @@ class GameScene extends EngineScene {
   init() {
     this.initBackground();
     // this.initPipes();
-    // this.initPlayer();
-    // this.initStatusBar();
+    this.initPlayer();
+    this.initPanel();
   }
 
   loadTexture (callback: Function) {
@@ -39,13 +40,34 @@ class GameScene extends EngineScene {
   }
 
   initBackground() {
-    this.addElement(new Background(this.texture, {x: 0, y: 0}));
+    this.bg = new Background(this.texture, { x: 0, y: 0 });
+    this.addElement(this.bg);
+  }
+
+  initPlayer() {
+    this.player = new Player(this.texture, {x: 100, y:230});
+    this.addElement(this.player);
+  }
+
+  initPanel() {
+    let panel = new Panel({
+      x: this.bg.width,
+      y: 0,
+      width: this.engine.width-this.bg.width,
+      height: this.engine.height
+    }, );
+    this.addElement(panel);
   }
 
   bindInputEvents () {
     super.bindInputEvents();
     this.engine.bindEvent('j', (keyState) => {
-      // player fly
+      if (keyState === 'down') {
+        this.bg.toggle(true);
+        this.player.fly()
+      } else {
+        this.player.setStatus('dropping');
+      }
     });
     this.engine.bindEvent('k', (keyState) => {
       // end game, back to game choose page
