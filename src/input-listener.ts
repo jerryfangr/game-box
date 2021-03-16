@@ -1,10 +1,13 @@
 /**
- * an pc input event listener (mouse and keyboard event)
+ * a pc input event listener (listen mouse and keyboard event)
  * use "on" function to add event, it will auto trigger when event happened
  */
 export default class InputListener {
+  // Key usage record(keyboard and mouse)
   inputs: { [key: string]: string };
+  // the functions thich bind with inputs 
   events: { [key: string]: Function[] };
+  // false: do nothing
   needListen: boolean;
 
   constructor() {
@@ -14,6 +17,9 @@ export default class InputListener {
     this.needListen = true;
   }
 
+  /**
+   * * listen keyboard and mouse input
+   */
   listenInputs() {
     window.addEventListener('keydown', e => {
       let keyName = this.normalize(e.key);
@@ -31,6 +37,10 @@ export default class InputListener {
     })
   }
 
+  /**
+   * * open or close the Listener
+   * @param value true | false
+   */
   toggle (value?: boolean) {
     if (value !== undefined) {
       this.needListen = value;
@@ -39,6 +49,11 @@ export default class InputListener {
     }
   }
 
+  /**
+   * * Make the keyName uniform
+   * @param keyName such as A|B|SPACE...
+   * @returns a normalized keyName
+   */
   normalize(keyName: string): string {
     if (keyName === ' ' || keyName === 'Spacebar') {
       keyName = 'SPACE';
@@ -54,12 +69,23 @@ export default class InputListener {
     return keyName.toUpperCase();
   }
 
+  /**
+   * * bind event
+   * @param keyName such as A|B|SPACE...
+   * @param callback callback function
+   */
   on(keyName: string, callback: (keyState: string, event: Event) => void) {
     keyName = keyName.toUpperCase();
     this.events[keyName] = this.events[keyName] || [];
     this.events[keyName].push(callback);
   }
 
+  /**
+   * * trigger event
+   * @param keyName such as A|B|SPACE...
+   * @param keyState 'down' | 'up'
+   * @param event event from brower
+   */
   emit(keyName: string, keyState: string, event: Event) {
     if (this.events[keyName] !== undefined) {
       this.events[keyName].forEach(callback => {

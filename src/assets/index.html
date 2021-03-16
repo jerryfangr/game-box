@@ -8,6 +8,7 @@
   </head>
   <body>
     <div class="game-box" id="gameBox">
+      <!-- left joy start -->
       <section class="wrapper left">
         <div class="game-joy">
           <button class="joy-button up" data-key="W">W</button>
@@ -18,12 +19,18 @@
         <div class="ellipse up"></div>
         <div class="ellipse down"></div>
       </section>
+      <!-- left joy end -->
+
+      <!-- game window start -->
       <section class="game-window">
         <ul class="game-choose" id="gameChoose"></ul>
         <canvas id="canvas" width="576" height="416">
           您的浏览器不支持canvas，换个新时代的浏览器试试。
         </canvas>
       </section>
+      <!-- game window end -->
+
+      <!-- right joy start -->
       <section class="wrapper right">
         <div class="game-joy">
           <button class="joy-button up" data-key="J">J</button>
@@ -32,6 +39,7 @@
         <div class="ellipse up"></div>
         <div class="ellipse down"></div>
       </section>
+      <!-- right joy end -->
     </div>
   </body>
 </html>

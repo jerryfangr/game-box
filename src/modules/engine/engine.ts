@@ -2,17 +2,25 @@ import EngineScene from './engine-scene';
 import EngineEvent from './engine-event';
 
 /**
- * engine
- * draw scene to canvas 
+ * * engine
+ * * draw scene to canvas 
  */
 class Engine {
+  // the Engine instance
   static instance: Engine;
+  // canvas element
   canvas: HTMLCanvasElement;
+  // Context2D from canvas element
   ctx: CanvasRenderingContext2D;
+  // max fps
   maxFps:number;
+  // input listener
   private _listener: EngineEvent;
+  // scene
   private _scene: EngineScene | null;
+  // true: stop this Engine
   private _pause: boolean;
+  // The _listener switch, false: input will be ignore
   private _listenInput :boolean;
 
   private constructor(canvas: HTMLCanvasElement, maxFps:number = 60) {
@@ -25,6 +33,12 @@ class Engine {
     this._listenInput = true;
   }
 
+  /**
+   * * get the single instance of Engine
+   * @param canvas canvas element
+   * @param maxFps max fps
+   * @returns Engine instance
+   */
   static getInstance (canvas?: HTMLCanvasElement, maxFps?: number) {
     if (this.instance) {
       return this.instance;
@@ -35,30 +49,60 @@ class Engine {
     throw new Error('You have to create at least one instance')
   }
 
+  /**
+   * * canvas width
+   */
   get width ():number {
     return this.canvas.width;
   }
 
+  /**
+ * * canvas height
+ */
   get height ():number {
     return this.canvas.height;
   }
 
+  /**
+   * bind event
+   * @param keyName such as A|B|C|SPACE...
+   * @param callback callback function
+   * @param delay the delay time of function execution
+   * @returns the bind function
+   */
   bindEvent(keyName: string, callback: (keyState: string, event: Event) => void, delay?: number): Function {
     return this._listener.on(keyName, callback, delay);
   }
 
+  /**
+   * delete event
+   * @param keyName such as A|B|C|SPACE...
+   * @param callback which return by bindEvent
+   */
   cancelEvent (keyName: string, callback: Function) {
     this._listener.off(keyName, callback);
   }
 
+  /**
+   * input key
+   * @param keyName such as A|B|C|SPACE...
+   * @param keyState 'down' | 'up'
+   * @param event the event from brower
+   */
   setInput(keyName: string, keyState: 'up' | 'down', event: MouseEvent | KeyboardEvent) {
     this._listener.setInput(keyName, keyState, event);
   }
 
+  /**
+   * clear all input and binded events
+   */
   clearEvents () {
     this._listener.clear();
   }
 
+  /**
+   * clear screen by clearRect full screen
+   */
   clearScreen() {
     this.ctx.clearRect(0, 0, this.width, this.height);
   }
@@ -83,6 +127,10 @@ class Engine {
     }, 1000 / this.maxFps);
   }
 
+  /**
+   * stop or continue the enigne
+   * @param value true | false
+   */
   togglePause (value?: boolean) {
     if (value !== undefined) {
       this._pause = value;
@@ -91,6 +139,10 @@ class Engine {
     }
   }
 
+  /**
+   * ignore or listen input
+   * @param value true | false
+   */
   toggleListener(value?: boolean) {
     if (value !== undefined) {
       this._listenInput = value;
@@ -99,6 +151,10 @@ class Engine {
     }
   }
 
+  /**
+   * use a key to controll this engine pause status
+   * @param keyName any key in keyboards
+   */
   bindPause (keyName: string) {
     window.addEventListener('keydown', e => {
       if (e.key === keyName) {
@@ -107,6 +163,10 @@ class Engine {
     })
   }
 
+  /**
+   * run this engine
+   * @param scene EngineScene
+   */
   startWith (scene: EngineScene) {
     this.clearEvents();
     if (this._scene === null) {

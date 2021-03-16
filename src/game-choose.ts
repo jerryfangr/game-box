@@ -34,11 +34,19 @@ class ChooseView extends View {
     this.activeItem(0);
   }
 
+  /**
+   * * toggle this view by add/remove className close
+   * @param value true | false
+   */
   toggleClose(value: boolean) {
     let method: 'add' | 'remove' = value ? 'add' : 'remove';
     this.editClass(this.dom, method, 'close');
   }
 
+  /**
+   * * Adds the class 'active' to the specified element
+   * @param gameIndex the data-number in html
+   */
   activeItem(gameIndex: number) {
     this.deActiveAll();
     this.activeIndex = gameIndex;
@@ -46,6 +54,9 @@ class ChooseView extends View {
     this.editClass(element, 'add', 'active');
   }
 
+  /**
+   * * remove all active className: 'aa active' -> 'aa'
+   */
   deActiveAll() {
     this.dom.querySelectorAll('.active').forEach(ele => {
       this.editClass(ele, 'remove', 'active');
