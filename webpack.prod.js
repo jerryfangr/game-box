@@ -68,7 +68,7 @@ module.exports = merge(commonConfig, {
           },
           'ts-loader'
         ],
-        exclude: /node-modules/i
+        exclude: /node_modules/i
       },
 
     ],
